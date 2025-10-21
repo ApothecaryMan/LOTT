@@ -71,13 +71,13 @@ strong {
   color: (226, 226, 226);
 }
 .next {
-  border-radius: 3px 15px 15px 3px;
+  border-radius: 3px 20px 20px 3px;
 }
 .next:active {
   border-radius: 15px;
 }
 .previous {
-  border-radius: 15px 3px 3px 15px;
+  border-radius: 20px 3px 3px 20px;
 }
 .previous:active {
   border-radius: 15px;
@@ -145,9 +145,4 @@ strong {
 /* 5. كلاس يجعل السهم يلف 180 درجة */
 .toggle-btn.active .arrow {
   transform: rotate(180deg);
-}
-.content-wrapper.expanded {
-  /* الارتفاع سيتم تحديده بالجافاسكريبت (scrollHeight)
-              ليناسب المحتوى تماماً مهما كان طوله
-            */
 }
