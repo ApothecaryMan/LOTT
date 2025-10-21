@@ -10,6 +10,7 @@ body {
   padding: 0 0 0 0;
 
   /* prevent tap highlight */
+
   -webkit-tap-highlight-color: transparent;
 }
 h1,
