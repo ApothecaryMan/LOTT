@@ -37,6 +37,7 @@ strong {
   align-items: center;
   justify-content: right;
   gap: 2px;
+  user-select:none;
 }
 .next,
 .previous {
@@ -46,7 +47,7 @@ strong {
   padding: 4px;
   border: 0px;
   background-color: silver;
-  transition: border-radius 0.4s ease-out;
+  transition: border-radius 0.1s ease-out;
   cursor: pointer;
 }
 .next:hover,
