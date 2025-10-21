@@ -135,6 +135,8 @@ strong {
   position: absolute;
   left: 1px;
   margin-top: 2px;
+
+  display: none;
 }
 .toggle-btn .arrow {
   display: inline-block;
@@ -145,4 +147,9 @@ strong {
 /* 5. كلاس يجعل السهم يلف 180 درجة */
 .toggle-btn.active .arrow {
   transform: rotate(180deg);
+}
+#expand-info,
+#expand-support {
+  user-select: none;
+  cursor: pointer;
 }
