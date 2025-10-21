@@ -2,7 +2,7 @@
 .cards {
   display: grid;
   /* Using 1fr creates flexible columns that share space equally */
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   row-gap: 30px;
   column-gap: 10px;
 }
