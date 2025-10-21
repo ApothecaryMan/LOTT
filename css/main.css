@@ -47,7 +47,7 @@ strong {
   padding: 4px;
   border: 0px;
   background-color: silver;
-  transition: border-radius 0.1s ease-out;
+  transition: border-radius 0.1s ease-in-out;
   cursor: pointer;
 }
 .next:hover,
