@@ -16,6 +16,9 @@ strong {
   /* color: #d9534f; */
   color: #eb8517;
 }
+button{
+  -webkit-tap-highlight-color: transparent;
+}
 .chapter-title {
   padding: 15px 0 0 0;
   margin: 0;
@@ -47,7 +50,7 @@ strong {
   padding: 4px;
   border: 0px;
   background-color: silver;
-  /*transition: border-radius 0.1s ease-out;*/
+  transition: border-radius 0.1s ease-out;
   cursor: pointer;
 }
 .next:hover,
