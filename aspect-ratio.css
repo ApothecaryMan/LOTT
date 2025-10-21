@@ -1,0 +1,39 @@
+@media (max-width: 500px) {
+  body {
+    margin: 2% 3% 0 3%;
+  }
+  .title {
+    font-size: 200%;
+    margin: 10px 0 0px 0;
+  }
+  .search-container {
+    gap: 1px;
+    margin: 0px 0 10px 0;
+  }
+  .search-btn {
+    height: 27px;
+  }
+  .search-bar {
+    height: 25px;
+    width: 200px;
+    font-size: 10px;
+  }
+  .search-bar::placeholder {
+    font-size: 10px;
+  }
+
+  li {
+    width: 60px;
+    font-size: 11px;
+    padding: 5px;
+  }
+  .chaper,
+  .info {
+    font-size: 17px;
+  }
+  .pre-nex {
+    width: 60px;
+    font-size: 11px;
+    padding: 5px;
+  }
+}

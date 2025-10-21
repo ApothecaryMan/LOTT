@@ -1,0 +1,58 @@
+/* --- Main Container --- */
+.cards {
+  display: grid;
+  /* Using 1fr creates flexible columns that share space equally */
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 30px;
+  column-gap: 10px;
+}
+
+/* --- Card Styling --- */
+.card {
+  border-radius: 15px; /* A single border-radius for the whole card */
+  display: flex; /* Use flex to structure content within the card */
+  flex-direction: column;
+}
+
+/* --- Card Image --- */
+.card-img {
+  width: 100%; /* Makes the image fill the full width of the card */
+  display: block; /* Removes any extra space below the image */
+  border-radius: 8px 8px 8px 8px;
+}
+
+/* --- Info Section --- */
+.card .info {
+  /* Use fixed padding for consistent spacing */
+  padding: 10px;
+  row-gap: 4px;
+  margin-top: -105px;
+  background: linear-gradient(to top, #eb8517, transparent);
+  border-radius: 0 0 8px 8px;
+}
+
+/* --- Author and Date Section --- */
+.info .date {
+  justify-content: right;
+}
+
+.date .zeus {
+  width: 25px; /* Make the author image smaller, like an icon */
+  height: 25px;
+  border-radius: 50%; /* Make it circular */
+}
+
+/* --- General Typography --- */
+.cards p {
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  font-weight: 900;
+}
+.x {
+  padding-top: 20px;
+}
+@media (max-width: 500px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

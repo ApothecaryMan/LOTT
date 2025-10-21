@@ -1,0 +1,85 @@
+.arizonia-regular {
+  font-family: "Arizonia", cursive;
+  font-weight: 350;
+  font-style: normal;
+}
+
+.title {
+  color: #ffffff;
+  font-size: 400%;
+  /* font-family: Felipa; */
+  font-family: Arizonia;
+  font-weight: bolder;
+  text-shadow: 2px 5px 10px #000000;
+  margin: 20px 0 0px 0;
+  user-select: none;
+}
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* background-color: #FFDA77; */
+  border-radius: 20px;
+  background-size: cover;
+}
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin: 10px 0 10px 0;
+}
+.search-btn {
+  border-radius: 50px 4px 4px 50px;
+  width: 50px;
+  height: 40px;
+  border: 0px;
+  /* background-color: #EB8317; */
+  background-color: silver;
+  border: 2px;
+  cursor: pointer;
+}
+.search-bar {
+  height: 38px;
+  width: 300px;
+  border: 0px;
+  padding-right: 15px;
+  border-radius: 4px 50px 50px 4px;
+  font-size: 15px;
+  text-align: right;
+  direction: rtl;
+}
+.search-bar:focus {
+  outline: none;
+}
+.search-bar:focus .search-btn:focus {
+  outline: 1px solid #eb8317;
+}
+.search-bar::placeholder {
+  color: #595959;
+  font-size: 15px;
+  text-align: right;
+}
+.main-nav {
+  height: 50px;
+}
+#first,
+#last {
+  transition: border-radius 0.4s ease-in;
+}
+#first {
+  border-radius: 4px 15px 15px 4px;
+}
+#first:active {
+  border-radius: 15px;
+  background-color: #eb8317;
+  font-weight: bold;
+}
+#last {
+  border-radius: 15px 4px 4px 15px;
+}
+#last:active {
+  border-radius: 15px;
+}
