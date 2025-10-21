@@ -5,6 +5,7 @@ body {
   /* MARGIN */
   margin: 2% 12% 0 12%;
   padding: 0 0 0 0;
+  -webkit-tap-highlight-color: transparent;
 }
 h1,
 p {
