@@ -1,4 +1,5 @@
-.chaper {
+.chaper,
+.support {
   margin: 1px 0 4px 0;
   background-color: rgb(36, 36, 36);
 
@@ -8,9 +9,14 @@
   font-size: 20px;
   display: flex;
   flex-direction: column;
+
+  /* FONTS */
+  font-family: "Playpen Sans Arabic", cursive;
+  font-weight: 800px;
+  font-style: normal;
 }
 p {
-  margin-bottom: 1em;
+  margin: 7px 0 7px 0;
 }
 strong {
   /* color: #d9534f; */
@@ -19,16 +25,25 @@ strong {
 .chapter-title {
   padding: 15px 0 0 0;
   margin: 0;
+
+  /* FONTS */
+  font-family: "Playpen Sans Arabic", cursive;
+  font-weight: 800px;
+  font-style: normal;
 }
 .date {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin: 5px 0 10px 0;
+}
+.date p {
+  margin: 0;
 }
 .zeus {
   width: 255x;
   height: 25px;
-  border-radius: 15px;
+  border-radius: 50%;
   outline: 1px solid #eb8517;
   outline-offset: 2px;
 }
@@ -37,17 +52,16 @@ strong {
   align-items: center;
   justify-content: right;
   gap: 2px;
-  user-select:none;
 }
 .next,
 .previous {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 6px;
   border: 0px;
   background-color: silver;
-  transition: border-radius 0.1s ease-in-out;
+  transition: border-radius 0.1s ease-out;
   cursor: pointer;
 }
 .next:hover,
@@ -89,8 +103,51 @@ strong {
   font-size: 20px;
   display: flex;
   flex-direction: column;
-  line-height: 0;
-  padding: 3% 3% 3% 3%;
+  padding: 0% 3% 0 0;
   border-radius: 5px 5px 20px 20px;
-  margin-bottom: 19px;
+  margin-bottom: 19px auto;
+}
+.info-container {
+  overflow: hidden;
+  display: grid;
+  position: relative;
+}
+
+.support-container {
+  overflow: hidden;
+  position: relative;
+  display: grid;
+}
+.support,
+.info-container .info {
+  /* الارتفاع الأولي الثابت الذي طلبته */
+  max-height: 40px;
+
+  /* إخفاء أي محتوى يتجاوز الـ 100px */
+  overflow: hidden;
+
+  transition: max-height 0.5s ease-in-out;
+}
+.toggle-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  left: 1px;
+  margin-top: 2px;
+}
+.toggle-btn .arrow {
+  display: inline-block;
+  margin-left: 8px; /* في العربي نستخدم margin-left */
+  /* حركة ناعمة لتدوير السهم */
+  transition: transform 0.3s;
+}
+/* 5. كلاس يجعل السهم يلف 180 درجة */
+.toggle-btn.active .arrow {
+  transform: rotate(180deg);
+}
+.content-wrapper.expanded {
+  /* الارتفاع سيتم تحديده بالجافاسكريبت (scrollHeight)
+              ليناسب المحتوى تماماً مهما كان طوله
+            */
 }
