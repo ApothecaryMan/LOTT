@@ -62,3 +62,17 @@ button {
   padding: 5px;
   border-radius: 25px;
 }
+
+/* FONTS */
+.chaper,
+.support,
+.info-container .info {
+  font-family: "Playpen Sans Arabic", cursive;
+  font-weight: 800px;
+  font-style: normal;
+
+  margin: 1px 0 4px 0;
+  background-color: rgb(36, 36, 36);
+  border-radius: 5px 5px 5px 5px;
+  padding: 0 3% 0 2%;
+}
