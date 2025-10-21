@@ -67,7 +67,11 @@
 }
 #first,
 #last {
+<<<<<<< HEAD
   transition: border-radius 0.1s ease-in-out;
+=======
+  transition: border-radius 0.1s ease-in;
+>>>>>>> 2a28c60 (Version 1.0)
 }
 #first {
   border-radius: 4px 15px 15px 4px;
