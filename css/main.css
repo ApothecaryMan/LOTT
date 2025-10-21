@@ -53,6 +53,7 @@ strong {
   align-items: center;
   justify-content: right;
   gap: 2px;
+  user-select: none;
 }
 .next,
 .previous {
