@@ -16,6 +16,7 @@
   /* background-color: #FFDA77; */
   border-radius: 20px;
   background-size: cover;
+  user-select: none;
 }
 .search-container {
   display: flex;

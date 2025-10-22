@@ -18,23 +18,28 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="css/general.css" />
-    <link rel="stylesheet" href="css/header.css" />
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="stylesheet" href="css/aspect-ratio.css" />
-    <link rel="stylesheet" href="css/card.css" />
-    <link rel="stylesheet" href="css/carousel.css" />
+    <link id="dynamic-theme-styles" rel="stylesheet" href="css/general.css" />
+    <link id="dynamic-theme-styles" rel="stylesheet" href="css/header.css" />
+    <link id="dynamic-theme-styles" rel="stylesheet" href="css/main.css" />
+    <link
+      id="dynamic-theme-styles"
+      rel="stylesheet"
+      href="css/aspect-ratio.css"
+    />
+    <link id="dynamic-theme-styles" rel="stylesheet" href="css/card.css" />
+    <link id="dynamic-theme-styles" rel="stylesheet" href="css/carousel.css" />
 
     <!-- SCRIPT -->
     <script src="scripts/script.js" defer></script>
     <script src="scripts/carousel.js" defer></script>
     <script src="scripts/font.js" defer></script>
+    <script src="scripts/color.js" defer></script>
   </head>
 
   <body>
     <div class="header-container" style="background-image: url('img/55.jpg')">
       <header class="header">
-        <h1 class="title">Lord Of The Truth</h1>
+        <h2 class="title">Lord Of The Truth</h2>
 
         <nav class="main-nav">
           <ul class="menu">
@@ -142,6 +147,15 @@
               <!-- <button class="carousel-btn-end"  ">
                 العربي
               </button> -->
+            </div>
+
+            <div class="carousel-item" id="color-selector">
+              <button class="carousel-btn-start" id="default"></button>
+              <button class="carousel-btn-middle active" id="orange"></button>
+              <button class="carousel-btn-middle" id="red"></button>
+              <button class="carousel-btn-middle" id="blue"></button>
+              <button class="carousel-btn-middle" id="green"></button>
+              <button class="carousel-btn-end" id="pink"></button>
             </div>
           </div>
         </div>
@@ -386,7 +400,7 @@
     <div class="cards">
       <div class="card">
         <img class="card-img" src="img/card.jpg" />
-        <div class="info">
+        <div class="card-info">
           <p class="x">1767 - قرار صعب</p>
           <div class="date">
             <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
@@ -397,7 +411,7 @@
       </div>
       <div class="card">
         <img class="card-img" src="img/card.jpg" />
-        <div class="info">
+        <div class="card-info">
           <p class="x">1767 - قرار صعب</p>
           <div class="date">
             <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
@@ -408,7 +422,7 @@
       </div>
       <div class="card">
         <img class="card-img" src="img/card.jpg" />
-        <div class="info">
+        <div class="card-info">
           <p class="x">1767 - قرار صعب</p>
           <div class="date">
             <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
@@ -419,7 +433,7 @@
       </div>
       <div class="card">
         <img class="card-img" src="img/card.jpg" />
-        <div class="info">
+        <div class="card-info">
           <p class="x">1767 - قرار صعب</p>
           <div class="date">
             <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
@@ -430,7 +444,7 @@
       </div>
       <div class="card">
         <img class="card-img" src="img/card.jpg" />
-        <div class="info">
+        <div class="card-info">
           <p class="x">1767 - قرار صعب</p>
           <div class="date">
             <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />

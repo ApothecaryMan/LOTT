@@ -36,6 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Apply the base size directly
     paragraph.style.fontSize = currentBaseSize + "px";
+    supportText.style.fontSize = currentBaseSize + "px";
+    infoText.style.fontSize = currentBaseSize + "px";
 
     // Show the base size in the display
     if (sizeDisplay) {
@@ -52,12 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (chapterTitle) {
       chapterTitle.style.fontFamily = currentActiveFontFamily;
-    }
-    if (supportText) {
-      supportText.style.fontFamily = currentActiveFontFamily;
-    }
-    if (infoText) {
-      infoText.style.fontFamily = currentActiveFontFamily;
     }
     // No longer need to call applyFontSize() here
   }

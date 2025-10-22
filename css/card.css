@@ -3,7 +3,7 @@
   display: grid;
   /* Using 1fr creates flexible columns that share space equally */
   grid-template-columns: repeat(2, 1fr);
-  row-gap: 5px;
+  row-gap: 30px;
   column-gap: 10px;
 }
 
@@ -22,11 +22,10 @@
 }
 
 /* --- Info Section --- */
-.card .info {
+.card-info {
   /* Use fixed padding for consistent spacing */
   padding: 10px;
-  row-gap: 4px;
-  margin-top: -130px;
+  margin-top: -150px;
   background: linear-gradient(to top, #eb8517, transparent);
   border-radius: 0 0 25px 25px;
 }
@@ -44,12 +43,13 @@
 
 /* --- General Typography --- */
 .cards p {
-  font-size: 16px;
   color: rgb(255, 255, 255);
   font-weight: 900;
 }
 .x {
-  padding-top: 20px;
+  padding-top: 50px;
+  font-family: ink-2;
+  font-size: 20px;
 }
 @media (max-width: 1080px) {
   .cards {
