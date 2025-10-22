@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newColor = window.getComputedStyle(clickedButton).backgroundColor;
 
     // --- B. Update H1 and STRONG font color ---
-    const elementsToChange = document.querySelectorAll("h1, strong");
+    const elementsToChange = document.querySelectorAll("strong"); //>>>>>>>>>>>>>h1 deleted
     elementsToChange.forEach((element) => {
       element.style.color = newColor;
     });
@@ -106,6 +106,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 background-color: ${newColor};
                 color: white;
             }
+
+            #chapter-title{
+                color: ${newColor};
+            }
+
+           
         `;
 
     // Apply the new rules

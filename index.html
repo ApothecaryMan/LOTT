@@ -21,11 +21,7 @@
     <link id="dynamic-theme-styles" rel="stylesheet" href="css/general.css" />
     <link id="dynamic-theme-styles" rel="stylesheet" href="css/header.css" />
     <link id="dynamic-theme-styles" rel="stylesheet" href="css/main.css" />
-    <link
-      id="dynamic-theme-styles"
-      rel="stylesheet"
-      href="css/aspect-ratio.css"
-    />
+    <link rel="stylesheet" href="css/aspect-ratio.css" />
     <link id="dynamic-theme-styles" rel="stylesheet" href="css/card.css" />
     <link id="dynamic-theme-styles" rel="stylesheet" href="css/carousel.css" />
 
@@ -75,7 +71,17 @@
     <div class="body">
       <div class="carousel-container">
         <div class="carousel-wrapper">
-          <div class="carousel"></div>
+          <button id="prev-btn" class="carousel-nav-btn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="white"
+            >
+              <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+            </svg>
+          </button>
           <div class="carousel" id="carousel">
             <div class="carousel-item">
               <button class="carousel-btn-start" id="increase-font-size">
@@ -158,6 +164,19 @@
               <button class="carousel-btn-end" id="pink"></button>
             </div>
           </div>
+          <button id="next-btn" class="carousel-nav-btn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="white"
+            >
+              <path
+                d="M400-240 344-296l184-184-184-184 56-56 240 240-240 240Z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -165,9 +184,9 @@
     <main class="main">
       <div class="main-header-container">
         <div class="main-header">
-          <h1 class="chapter-title" id="chapter-title">
+          <p class="chapter-title" id="chapter-title">
             1766 – ازمة الجيش الاول
-          </h1>
+          </p>
           <div class="date">
             <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
             <p>بواسطــــه زيـــوس</p>

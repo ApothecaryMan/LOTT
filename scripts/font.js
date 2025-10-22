@@ -49,9 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function applyFontFamily() {
     if (currentActiveFontFamily.includes("Naskh")) {
-      // --- Naskh Font is Active ---
-      const naskhSize = "28px";
-      const naskhTitleSize = "55px";
+      const naskhSize = "30px";
+      const naskhTitleSize = "50px";
 
       // Apply fixed sizes
       paragraph.style.fontSize = naskhSize;

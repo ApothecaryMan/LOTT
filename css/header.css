@@ -36,13 +36,13 @@
   border: 2px;
   cursor: pointer;
 }
-/* .search-btn:hover {
+.search-btn:hover {
   background-color: #eb8317;
   transition: border-radius 0.2s ease-in-out;
 }
 .search-btn:active {
   border-radius: 25px;
-} */
+}
 
 .search-bar {
   height: 38px;

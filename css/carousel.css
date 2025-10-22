@@ -13,7 +13,7 @@
 }
 
 .carousel-container {
-  width: 95%;
+  width: 100%;
   max-width: 1000px;
   border-radius: 0;
   padding: 0;
@@ -46,6 +46,8 @@
   justify-content: center;
   flex: 0 0 auto;
   gap: 1px;
+
+  padding: 0 5px 0 5px;
 }
 
 .carousel-item button {
@@ -159,4 +161,37 @@
 }
 #pink {
   background-color: rgb(196, 64, 189);
+}
+
+/* NEXT PREV */
+
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%; /* يجعله في منتصف الكاروسيل عمودياً */
+  transform: translateY(-50%); /* يضبط مكانه ليكون في المنتصف بالضبط */
+  z-index: 10; /* يضمن أنه فوق العناصر الأخرى */
+
+  /* تصميم الشكل */
+  background-color: rgba(0, 0, 0); /* خلفية شفافة قليلاً */
+  border: 0;
+  width: 25px; /* حجم الزر */
+  height: 30px;
+  cursor: pointer;
+
+  /* لضبط الأيقونة (SVG) في المنتصف */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* تأثير ناعم للإخفاء والإظهار */
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+#prev-btn {
+  left: -3px; /* تثبيت الزر الأيسر */
+  border-radius: 0 25px 25px 0;
+}
+#next-btn {
+  right: -3px;
+  border-radius: 25px 0 0 25px;
 }

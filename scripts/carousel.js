@@ -1,39 +1,68 @@
-// const carousel = document.getElementById("carousel");
-// const prevBtn = document.getElementById("prevBtn");
-// const nextBtn = document.getElementById("nextBtn");
+// Wait for the page to be loaded
+document.addEventListener("DOMContentLoaded", () => {
+  const carousel = document.getElementById("carousel");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
 
-// const itemWidth = 155; // 150px width + 15px gap
-// const visibleItems = 4;
-// const totalItems = carousel.children.length;
-// const maxScroll = (totalItems - visibleItems) * itemWidth;
+  if (!carousel || !prevBtn || !nextBtn) {
+    console.error("Carousel elements NOT FOUND.");
+    return;
+  }
 
-// let currentPosition = 0;
+  const scrollAmount = 300; // The distance to scroll
 
-// function updateCarousel() {
-//   carousel.scrollLeft = currentPosition;
-//   updateButtons();
-// }
+  /**
+   * The "smart" function, corrected for RTL
+   */
+  function checkButtonVisibility() {
+    // We use Math.round to handle decimal numbers
+    const currentScroll = Math.round(carousel.scrollLeft);
+    const visibleWidth = Math.round(carousel.clientWidth);
+    const totalWidth = Math.round(carousel.scrollWidth);
 
-// function updateButtons() {
-//   prevBtn.disabled = currentPosition <= 0;
-//   nextBtn.disabled = currentPosition >= maxScroll;
-// }
+    // A 10px buffer for safety
+    const buffer = 10;
 
-// prevBtn.addEventListener("click", () => {
-//   currentPosition -= itemWidth * visibleItems;
-//   if (currentPosition < 0) currentPosition = 0;
-//   updateCarousel();
-// });
+    // --- RTL Logic ---
 
-// nextBtn.addEventListener("click", () => {
-//   currentPosition += itemWidth * visibleItems;
-//   if (currentPosition > maxScroll) currentPosition = maxScroll;
-//   updateCarousel();
-// });
+    // (isAtStart) means at the far RIGHT (scroll position 0)
+    const isAtStart = currentScroll >= -buffer;
 
-// function handleClick(btnNum) {
-//   alert(`Button ${btnNum} clicked!`);
-// }
+    // (isAtEnd) means at the far LEFT
+    // (Total width - visible width) as a negative number
+    const maxNegativeScroll = -(totalWidth - visibleWidth);
+    const isAtEnd = currentScroll <= maxNegativeScroll + buffer;
 
-// // Initialize
-// updateCarousel();
+    // --- THIS IS THE FIX ---
+
+    // Hide the RIGHT arrow (next-btn) when at the START
+    nextBtn.classList.toggle("hidden", isAtStart);
+
+    // Hide the LEFT arrow (prev-btn) when at the END
+    prevBtn.classList.toggle("hidden", isAtEnd);
+
+    // --- END OF FIX ---
+  }
+
+  // nextBtn (RIGHT arrow) moves content RIGHT (towards start)
+  nextBtn.addEventListener("click", () => {
+    carousel.scrollBy({
+      left: scrollAmount, // Positive to scroll towards the start
+      behavior: "smooth", // Restored smooth behavior
+    });
+  });
+
+  // prevBtn (LEFT arrow) moves content LEFT (towards end)
+  prevBtn.addEventListener("click", () => {
+    carousel.scrollBy({
+      left: -scrollAmount, // Negative to scroll towards the end
+      behavior: "smooth",
+    });
+  });
+
+  // This listener works when scrolling with the mouse
+  carousel.addEventListener("scroll", checkButtonVisibility);
+
+  // Initial check on page load
+  checkButtonVisibility();
+});

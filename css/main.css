@@ -10,6 +10,9 @@ strong {
   /* color: #d9534f; */
   /* color: #eb8517; */
 }
+#chapter-title {
+  font-size: 30px;
+}
 .chapter-title {
   padding: 20px 0 0 0;
   margin: 0;
