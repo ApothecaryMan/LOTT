@@ -1,0 +1,85 @@
+.body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0 5px 0;
+}
+
+.carousel-container {
+  width: 100%;
+  max-width: 800px;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  /* padding: 0 50px; */
+}
+
+.carousel {
+  display: flex;
+  gap: 5px;
+  scroll-behavior: smooth;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 1px;
+}
+
+.carousel-item button {
+  padding: 7px;
+  background: #f2f2f2;
+  color: #030303;
+  border: 1px solid #d4d4d4;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  height: 25px;
+  border: 0px solid black;
+}
+
+.carousel-btn-start {
+  border-radius: 3px 20px 20px 3px;
+}
+.carousel-btn-middle {
+  border-radius: 3px;
+}
+.carousel-btn-end {
+  border-radius: 20px 3px 3px 20px;
+}
+.carousel-btn-start,
+.carousel-btn-middle,
+.carousel-btn-end {
+  background-color: silver;
+  cursor: pointer;
+}
+
+.carousel-btn-start:hover,
+.carousel-btn-end:hover {
+  background-color: #eb8317;
+  transition: border-radius 0.2s ease-in-out;
+}
+.carousel-btn-middle:hover {
+  background-color: #eb8317;
+  transition: border-radius 0.4s ease-in-out;
+}
+.carousel-btn-start:active,
+.carousel-btn-middle:active,
+.carousel-btn-end:active {
+  border-radius: 30px;
+}

@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Arizonia&family=Felipa&family=Playpen+Sans+Arabic:wght@100..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Arizonia&family=Beiruti:wght@200..900&family=El+Messiri:wght@400..700&family=Felipa&family=Lalezar&family=Playpen+Sans+Arabic:wght@100..800&display=swap"
       rel="stylesheet"
     />
 
@@ -24,9 +24,11 @@
     <link rel="stylesheet" href="css/caro-cell.css" />
     <link rel="stylesheet" href="css/aspect-ratio.css" />
     <link rel="stylesheet" href="css/card.css" />
+    <link rel="stylesheet" href="css/carousel.css" />
 
     <!-- SCRIPT -->
     <script src="scripts/script.js" defer></script>
+    <script src="scripts/carousel.js" defer></script>
   </head>
 
   <body>
@@ -63,6 +65,92 @@
           </button>
         </div>
       </header>
+    </div>
+
+    <div class="body">
+      <div class="carousel-container">
+        <div class="carousel-wrapper">
+          <div class="carousel"></div>
+          <div class="carousel" id="carousel">
+            <div class="carousel-item">
+              <button class="carousel-btn-start" onclick="handleClick(1)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="18px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="color: rgb(166, 166, 166);
+"
+                >
+                  <path
+                    d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"
+                  />
+                </svg>
+              </button>
+              <button class="carousel-btn-middle" onclick="handleClick(1)">
+                الحجم
+              </button>
+              <button class="carousel-btn-end" onclick="handleClick(1)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="18px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="color: rgb(166, 166, 166);
+"
+                >
+                  <path
+                    d="M280-440q-17 0-28.5-11.5T240-480q0-17 11.5-28.5T280-520h400q17 0 28.5 11.5T720-480q0 17-11.5 28.5T680-440H280Z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="carousel-item">
+              <button class="carousel-btn-start" onclick="handleClick(1)">
+                الخط
+              </button>
+              <button
+                class="carousel-btn-middle"
+                style="font-family: Alexandria; font-weight: 350"
+                onclick="handleClick(1)"
+              >
+                الاسكندريه
+              </button>
+              <button
+                class="carousel-btn-middle"
+                style="font-family: 'El Messiri', sans-serif"
+                onclick="handleClick(1)"
+              >
+                المسيري
+              </button>
+              <button
+                class="carousel-btn-middle"
+                stylr="font-family: 'Playpen Sans Arabic', cursive;"
+                onclick="handleClick(1)"
+              >
+                بلايبن
+              </button>
+              <button
+                class="carousel-btn-middle"
+                style="font-family: 'Lalezar', sans-serif; font-weight: 400"
+                onclick="handleClick(1)"
+              >
+                لاليزار
+              </button>
+              <button
+                class="carousel-btn-middle"
+                style="font-family: 'Beiruti', sans-serif; font-weight: 600"
+                onclick="handleClick(1)"
+              >
+                بيروتي
+              </button>
+              <button class="carousel-btn-end" onclick="handleClick(1)">
+                العربي
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <main class="main">

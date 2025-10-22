@@ -67,7 +67,7 @@
 }
 #first,
 #last {
-  transition: border-radius 0.1s ease-in-out;
+  transition: border-radius 0.2s ease-in-out;
 }
 #first {
   border-radius: 4px 15px 15px 4px;

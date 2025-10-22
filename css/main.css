@@ -58,7 +58,6 @@ strong {
 .previous:hover {
   color: rgb(226, 226, 226);
   background-color: #eb8517;
-  color: (226, 226, 226);
 }
 .next {
   border-radius: 3px 20px 20px 3px;
@@ -73,7 +72,7 @@ strong {
   border-radius: 15px;
 }
 .main-header-container {
-  margin: 15px 0 3px 0;
+  margin: 0px 0 3px 0;
   background-color: rgb(36, 36, 36);
   border-radius: 25px 25px 5px 5px;
   padding: 0 3% 3% 3%;
