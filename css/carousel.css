@@ -4,6 +4,12 @@
   align-items: center;
   padding: 10px 5px 10px 1px;
   user-select: none;
+
+  /* STICK CAROUSEL */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: black;
 }
 
 .carousel-container {
