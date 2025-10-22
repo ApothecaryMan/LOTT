@@ -80,13 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 color: white; /* Make text readable on dark color */
             }
 
-            /* Expand Support/Info Buttons (Hover/Active) */
-            #expand-support:hover,
-            #expand-info:hover,
-            #expand-support:active,
-            #expand-info:active {
-                color: ${newColor};
-            }
+            
             
             /* Card Info Gradient (the "shadow") */
             .card .card-info {

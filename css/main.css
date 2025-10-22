@@ -8,12 +8,12 @@ p {
 }
 strong {
   /* color: #d9534f; */
-  color: #eb8517;
+  /* color: #eb8517; */
 }
 .chapter-title {
   padding: 20px 0 0 0;
   margin: 0;
-  color: #eb8517;
+  /* color: #eb8517; */
   height: 55px;
   /* FONTS */
   font-family: "Playpen Sans Arabic", cursive;
@@ -34,7 +34,7 @@ strong {
   width: 255x;
   height: 25px;
   border-radius: 50%;
-  outline: 1px solid #eb8517;
+  /* outline: 1px solid #eb8517; */
   outline-offset: 2px;
 }
 .pre-nex {
@@ -51,15 +51,15 @@ strong {
   justify-content: center;
   padding: 6px 10px 6px 10px;
   border: 0px;
-  background-color: silver;
+  /* background-color: silver; */
   transition: border-radius 0.1s ease-out;
   cursor: pointer;
 }
-.next:hover,
+/* .next:hover,
 .previous:hover {
   color: rgb(226, 226, 226);
   background-color: #eb8517;
-}
+} */
 .next {
   border-radius: 3px 20px 20px 3px;
 }

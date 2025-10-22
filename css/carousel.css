@@ -44,16 +44,13 @@
 
 .carousel-item button {
   padding: 7px;
-  background: #f2f2f2;
-  color: #030303;
+  /* background: #f2f2f2; */
+  /* color: #030303; */
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   height: 25px;
   border: 0px;
-
-  transition: border-radius 0.4s ease-in-out, background-color 0.1s ease-in-out,
-    fill 0.1s ease-in-out;
 }
 
 .carousel-btn-start {
@@ -69,21 +66,36 @@
 .carousel-btn-middle,
 .carousel-btn-end {
   background-color: #f2f2f2;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .carousel-btn-start:hover,
 .carousel-btn-end:hover {
-  background-color: #eb8317;
   transition: border-radius 0.2s ease-in-out;
 }
-.carousel-btn-middle:hover {
-  background-color: #eb8317;
-  transition: border-radius 0.4s ease-in-out;
+#font-selector button {
+  display: flex;
+  /* width: 50px; */
+  padding: 0 10px 0 10px;
+  /* border: 0px solid #f2f2f2; */
+  /* 1. Define a CSS variable for the bouncy timing function */
+  --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  transition: border-radius 0.2s ease-in-out, padding 0.5s var(--bounce-timing),
+    transform 0.5s var(--bounce-timing);
+}
+
+#font-selector button:active {
+  padding: 0 25px 0 25px;
+  /* 3. Add "scale" to make the button "pop" when pressed */
+  transform: scale(1.01);
+
+  transition: border-radius 0.2s ease-in-out, padding 0.5s var(--bounce-timing),
+    transform 0.5s var(--bounce-timing);
 }
 #font-size:hover {
   border-radius: 4px;
-  background-color: #f2f2f2;
+  /* background-color: #f2f2f2; */
 }
 #font-naskh {
   font-size: 22px;
@@ -98,7 +110,7 @@
 }
 .carousel-item .active {
   border-radius: 50px;
-  background-color: #eb8317;
+  /* background-color: #eb8317; */
 }
 
 /* COLOR ACCENT */
@@ -107,23 +119,23 @@
 }
 #color-selector button {
   width: 25px;
-  border: 0px solid #f2f2f2;
+  /* border: 0px solid #f2f2f2; */
   /* 1. Define a CSS variable for the bouncy timing function */
   --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
   transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
-    transform 0.5s var(--bounce-timing);
+    transform 0.2s var(--bounce-timing);
 }
 #color-selector button:active {
   width: 60px;
-  border: 0px;
-  border-color: transparent;
+
   /* 3. Add "scale" to make the button "pop" when pressed */
   transform: scale(1.01);
 
   transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
-    transform 0.5s var(--bounce-timing);
+    transform 0.2s var(--bounce-timing);
 }
+
 #color-selector #default {
   background-color: rgb(166, 166, 166);
 }
