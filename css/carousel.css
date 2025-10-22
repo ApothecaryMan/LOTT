@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 0 -5px 0;
+  padding: 10px 0 10px 0;
 }
 
 .carousel-container {
@@ -45,12 +45,14 @@
   padding: 7px;
   background: #f2f2f2;
   color: #030303;
-  border: 1px solid #d4d4d4;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   height: 25px;
-  border: 0px solid black;
+  border: 0px;
+
+  transition: border-radius 0.4s ease-in-out, background-color 0.1s ease-in-out,
+    fill 0.1s ease-in-out;
 }
 
 .carousel-btn-start {
@@ -65,7 +67,7 @@
 .carousel-btn-start,
 .carousel-btn-middle,
 .carousel-btn-end {
-  background-color: silver;
+  background-color: #f2f2f2;
   cursor: pointer;
 }
 
@@ -78,8 +80,18 @@
   background-color: #eb8317;
   transition: border-radius 0.4s ease-in-out;
 }
+#font-size:hover {
+  border-radius: 4px;
+  background-color: #f2f2f2;
+}
+
 .carousel-btn-start:active,
 .carousel-btn-middle:active,
 .carousel-btn-end:active {
   border-radius: 30px;
+}
+
+.carousel-item .active {
+  border-radius: 50px;
+  background-color: #eb8317;
 }

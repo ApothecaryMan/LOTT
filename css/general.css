@@ -43,17 +43,16 @@ li {
 
   /* STYLE2 */
   /* background-color: #eb8517ca ; */
-  background-color: silver;
+  background-color: #f2f2f2;
+  color: black;
   padding: 5px;
   border-radius: 4px;
   transition: border-radius 0.2s ease-out;
 }
 li:hover {
-  color: rgb(226, 226, 226);
   background-color: #eb8517;
 }
 li:active {
-  color: rgb(226, 226, 226);
   border-radius: 15px;
 }
 button {
@@ -70,7 +69,6 @@ button {
 .support,
 .info-container .info {
   font-family: "Playpen Sans Arabic", cursive;
-  font-weight: 800px;
   font-style: normal;
 
   margin: 1px 0 2px 0;

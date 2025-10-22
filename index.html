@@ -29,6 +29,7 @@
     <!-- SCRIPT -->
     <script src="scripts/script.js" defer></script>
     <script src="scripts/carousel.js" defer></script>
+    <script src="scripts/font.js" defer></script>
   </head>
 
   <body>
@@ -73,7 +74,7 @@
           <div class="carousel"></div>
           <div class="carousel" id="carousel">
             <div class="carousel-item">
-              <button class="carousel-btn-start" onclick="handleClick(1)">
+              <button class="carousel-btn-start" id="increase-font-size">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="18px"
@@ -87,10 +88,8 @@
                   />
                 </svg>
               </button>
-              <button class="carousel-btn-middle" onclick="handleClick(1)">
-                الحجم
-              </button>
-              <button class="carousel-btn-end" onclick="handleClick(1)">
+              <button class="carousel-btn-middle" id="font-size">الحجم</button>
+              <button class="carousel-btn-end" id="decrease-font-size">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="18px"
@@ -105,48 +104,48 @@
                 </svg>
               </button>
             </div>
-            <div class="carousel-item">
-              <button class="carousel-btn-start" onclick="handleClick(1)">
+            <div class="carousel-item" id="font-selector">
+              <!-- <button class="carousel-btn-start"  ">
                 الخط
-              </button>
+              </button> -->
               <button
-                class="carousel-btn-middle"
+                class="carousel-btn-start"
+                id="font-alexandria"
                 style="font-family: Alexandria; font-weight: 350"
-                onclick="handleClick(1)"
               >
                 الاسكندريه
               </button>
               <button
                 class="carousel-btn-middle"
+                id="font-el-messiri"
                 style="font-family: 'El Messiri', sans-serif"
-                onclick="handleClick(1)"
               >
                 المسيري
               </button>
               <button
-                class="carousel-btn-middle"
-                stylr="font-family: 'Playpen Sans Arabic', cursive;"
-                onclick="handleClick(1)"
+                class="carousel-btn-middle active"
+                id="font-playpen"
+                style="font-family: 'Playpen Sans Arabic', cursive"
               >
                 بلايبن
               </button>
               <button
                 class="carousel-btn-middle"
+                id="font-lalezar"
                 style="font-family: 'Lalezar', sans-serif; font-weight: 400"
-                onclick="handleClick(1)"
               >
                 لاليزار
               </button>
               <button
-                class="carousel-btn-middle"
+                class="carousel-btn-end"
+                id="font-beiruti"
                 style="font-family: 'Beiruti', sans-serif; font-weight: 600"
-                onclick="handleClick(1)"
               >
                 بيروتي
               </button>
-              <button class="carousel-btn-end" onclick="handleClick(1)">
+              <!-- <button class="carousel-btn-end"  ">
                 العربي
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -156,7 +155,9 @@
     <main class="main">
       <div class="main-header-container">
         <div class="main-header">
-          <h1 class="chapter-title">1766 – ازمة الجيش الاول</h1>
+          <h1 class="chapter-title" id="chapter-title">
+            1766 – ازمة الجيش الاول
+          </h1>
           <div class="date">
             <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
             <p>بواسطــــه زيـــوس</p>
@@ -187,7 +188,7 @@
         </div>
       </div>
 
-      <div class="chaper">
+      <div class="chaper" id="chapter-text">
         <p>بعد قرابة الـ 12 سنة– العام 555 بعد حفل التتويج</p>
         <p>القطاع 100 المتوسط–</p>
         <p><strong>*قعقعة*</strong></p>
