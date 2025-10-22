@@ -201,5 +201,7 @@
 }
 
 #word-count {
+  font-family: Alexandria;
+  font-size: 12px;
   border-radius: 25px;
 }

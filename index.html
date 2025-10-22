@@ -32,13 +32,7 @@
     <script src="scripts/font.js" defer></script>
     <script src="scripts/color.js" defer></script>
 
-    <script defer>
-      // انتظر تحميل الصفحة
-      document.addEventListener("DOMContentLoaded", () => {
-        // استدع الدالة وأعطها رقم الفصل الخاص بهذه الصفحة
-        loadChapter(1766);
-      });
-    </script>
+    <script src="scripts/chapter-throught.js" defer></script>
   </head>
 
   <body>
@@ -107,7 +101,7 @@
                   />
                 </svg>
               </button>
-              <button class="carousel-btn-middle" id="font-size">الحجم</button>
+              <button class="carousel-btn-middle" id="font-size"></button>
               <button class="carousel-btn-end" id="decrease-font-size">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -196,9 +190,7 @@
     <main class="main">
       <div class="main-header-container">
         <div class="main-header">
-          <p class="chapter-title" id="chapter-title">
-            1766 – ازمة الجيش الاول
-          </p>
+          <p class="chapter-title" id="chapter-title"></p>
           <div class="date">
             <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
             <p>بواسطــــه زيـــوس</p>
@@ -231,7 +223,6 @@
       </div>
 
       <div class="chaper" id="chapter-text"></div>
-      //////////////////////////////////////////////////////
     </main>
 
     <div class="support-container">

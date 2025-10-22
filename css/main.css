@@ -2,6 +2,14 @@
   font-size: 20px;
   display: flex;
   flex-direction: column;
+
+  /* ِANIMATION */
+  transform: translateY(0);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.chaper.is-loading {
+  opacity: 0;
+  transform: translateY(20px);
 }
 p {
   margin: 4px 0 7px 0;
@@ -10,19 +18,23 @@ strong {
   /* color: #d9534f; */
   /* color: #eb8517; */
 }
-#chapter-title {
-  font-size: 30px;
-}
+/* CHAPTER TITTLE */
 .chapter-title {
   padding: 20px 0 0 0;
   margin: 0;
   /* color: #eb8517; */
   height: 55px;
-  /* FONTS */
-  font-family: "Playpen Sans Arabic", cursive;
-  font-weight: 800px;
-  font-style: normal;
+
+  transition: opacity 0.3s ease-in-out;
 }
+#chapter-title {
+  font-size: 30px;
+  transition: opacity 0.3s ease-in-out;
+}
+#chapter-title.is-loading {
+  opacity: 0;
+}
+
 .date {
   display: flex;
   align-items: center;
@@ -81,6 +93,7 @@ strong {
   border-radius: 25px 25px 5px 5px;
   padding: 0 3% 3% 3%;
 }
+
 .footer {
   display: flex;
   flex-direction: column;
@@ -129,9 +142,20 @@ strong {
   cursor: pointer;
 }
 
-/* .main-header {
-  display: flex;
-  align-items: rigth;
-  justify-content: space-between;
-  flex-direction: column;
-} */
+/* إخفاء زر "التالي" عند إضافة هذا الكلاس */
+.pre-nex.next-hidden .next {
+  display: none;
+}
+/* جعل زر "السابق" مدوراً بالكامل */
+.pre-nex.next-hidden .previous {
+  border-radius: 20px;
+}
+
+/* إخفاء زر "السابق" عند إضافة هذا الكلاس */
+.pre-nex.prev-hidden .previous {
+  display: none;
+}
+/* جعل زر "التالي" مدوراً بالكامل */
+.pre-nex.prev-hidden .next {
+  border-radius: 20px;
+}

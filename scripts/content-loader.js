@@ -1,41 +1,59 @@
 /**
  * يقوم بجلب محتوى فصل معين من ملف HTML خارجي وحقنه في الصفحة.
+ * كما يقوم بتحديث العنوان الرئيسي.
  * @param {string | number} chapterNumber - رقم الفصل المراد تحميله (مثل "1766").
  */
 async function loadChapter(chapterNumber) {
-  const paragraph = document.getElementById("chapter-text");
+  // 1. جلب العناصر الأساسية من الصفحة
+  const paragraphContainer = document.getElementById("chapter-text");
+  const titleElement = document.getElementById("chapter-title");
 
-  if (!paragraph) {
-    console.error("Chapter text container not found!");
+  if (!paragraphContainer || !titleElement) {
+    console.error("Chapter containers not found!");
     return;
   }
 
-  // وضع رسالة "جاري التحميل" مؤقتاً
-  paragraph.innerHTML = "<p>...جاري تحميل الفصل...</p>";
-
   try {
-    // 1. جلب المحتوى (أصبح الآن ديناميكياً)
+    // 2. جلب المحتوى (أصبح الآن ديناميكياً)
     const response = await fetch(`chapters/${chapterNumber}.html`);
 
-    // التحقق من العثور على الملف
     if (!response.ok) {
       throw new Error(
         `Failed to load chapter ${chapterNumber}: ${response.status}`
       );
     }
 
-    // 2. الحصول على النص من الاستجابة
+    // 3. الحصول على النص كـ HTML
     const chapterHtml = await response.text();
 
-    // 3. حقن المحتوى في الـ div الفارغ
-    paragraph.innerHTML = chapterHtml;
+    // 4. --- (الجزء الذكي) ---
+    // إنشاء حاوية وهمية (غير مرئية) في الذاكرة
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = chapterHtml;
 
-    // 4. (هام جداً) إعلان أن المحتوى قد اكتمل تحميله
+    // 5. البحث عن العنوان الجديد داخل الحاوية الوهمية
+    const newTitleElement = tempDiv.querySelector("#chapter-title-data");
+    let newTitleText = `الفصل ${chapterNumber}`; // عنوان افتراضي
+
+    if (newTitleElement) {
+      newTitleText = newTitleElement.textContent; // استخراج نص العنوان
+      newTitleElement.remove(); // (هام) حذف العنوان من المحتوى
+    }
+
+    // 6. حقن العناصر في الصفحة
+    titleElement.textContent = newTitleText; // حقن العنوان الجديد
+    paragraphContainer.innerHTML = tempDiv.innerHTML; // حقن باقي المحتوى
+
+    // 7. إعلان أن المحتوى قد اكتمل تحميله
     // هذا "يوقظ" السكربتات الأخرى (مثل font.js و script.js)
     const event = new CustomEvent("contentLoaded");
     document.dispatchEvent(event);
+
+    return true;
   } catch (error) {
     console.error(error);
-    paragraph.innerHTML = `<p>خطأ في تحميل الفصل ${chapterNumber}. المرجو تحديث الصفحة.</p>`;
+    paragraphContainer.innerHTML = `<p>خطأ في تحميل الفصل ${chapterNumber}. المرجو تحديث الصفحة.</p>`;
+    titleElement.textContent = "خطأ";
+    return false;
   }
 }
