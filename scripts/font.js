@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Applies the currentBaseSize to the paragraph.
-   * All special logic for 'Naskh' has been removed.
    */
   function applyFontSize() {
     if (!paragraph) return;
@@ -49,6 +48,41 @@ document.addEventListener("DOMContentLoaded", () => {
    * Function to change the font
    */
   function applyFontFamily() {
+    if (currentActiveFontFamily.includes("Naskh")) {
+      // --- Naskh Font is Active ---
+      const naskhSize = "28px";
+      const naskhTitleSize = "55px";
+
+      // Apply fixed sizes
+      paragraph.style.fontSize = naskhSize;
+      supportText.style.fontSize = 17;
+      infoText.style.fontSize = 17;
+      chapterTitle.style.fontSize = naskhTitleSize;
+
+      // Update display and disable buttons
+      if (sizeDisplay) {
+        sizeDisplay.innerText = "ثابت"; // Show fixed size
+      }
+      if (increaseFontSizeBtn) increaseFontSizeBtn.disabled = true;
+      if (decreaseFontSizeBtn) decreaseFontSizeBtn.disabled = true;
+    } else {
+      // --- Any Other Font is Active ---
+      const newSize = currentBaseSize + "px";
+
+      // Apply the user-controlled base size
+      paragraph.style.fontSize = newSize;
+      supportText.style.fontSize = newSize;
+      infoText.style.fontSize = newSize;
+      chapterTitle.style.fontSize = ""; // Reset title size to CSS default
+
+      // Update display and enable buttons
+      if (sizeDisplay) {
+        sizeDisplay.innerText = newSize;
+      }
+      if (increaseFontSizeBtn) increaseFontSizeBtn.disabled = false;
+      if (decreaseFontSizeBtn) decreaseFontSizeBtn.disabled = false;
+    }
+
     if (paragraph) {
       paragraph.style.fontFamily = currentActiveFontFamily;
     }

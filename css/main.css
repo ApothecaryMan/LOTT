@@ -11,10 +11,10 @@ strong {
   color: #eb8517;
 }
 .chapter-title {
-  padding: 15px 0 0 0;
+  padding: 20px 0 0 0;
   margin: 0;
   color: #eb8517;
-
+  height: 55px;
   /* FONTS */
   font-family: "Playpen Sans Arabic", cursive;
   font-weight: 800px;
@@ -125,3 +125,10 @@ strong {
   user-select: none;
   cursor: pointer;
 }
+
+/* .main-header {
+  display: flex;
+  align-items: rigth;
+  justify-content: space-between;
+  flex-direction: column;
+} */
