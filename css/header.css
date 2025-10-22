@@ -1,12 +1,7 @@
-.arizonia-regular {
-  font-family: "Arizonia", cursive;
-  font-weight: 350;
-  font-style: normal;
-}
-
 .title {
   color: #ffffff;
-  font-family: Arizonia;
+  /* font-family: Arizonia; */
+  font-family: Ink;
   font-weight: bolder;
   text-shadow: 2px 5px 10px #000000;
   margin: 0px 0px 0px 0px;

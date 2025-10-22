@@ -1,6 +1,20 @@
 /* // <weight>: Use a value from 100 to 800
 // <uniquifier>: Use a unique and descriptive class name */
-
+@font-face {
+  /* 1. هذا هو الاسم الذي ستستخدمه لاحقاً (اختر أي اسم) */
+  font-family: "Ink";
+  src: url("fonts/ink.otf");
+  unicode-range: U+0621-064A, U+064B-065F, U+0670-06D3, U+06D5, U+06D6-06E8,
+    U+FB50-FDFF, U+FE70-FEFF;
+}
+@font-face {
+  font-family: "Ink";
+  src: url("fonts/Glaciels.otf");
+}
+@font-face {
+  font-family: Naskh;
+  src: url("fonts/JH_Naskh_Expanded_Medium.otf");
+}
 body {
   position: relative;
   /* STYLING */

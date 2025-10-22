@@ -84,7 +84,13 @@
   border-radius: 4px;
   background-color: #f2f2f2;
 }
-
+#font-naskh {
+  /* جرب 18 بكسل، أو زد الرقم حتى تصل للشكل المناسب */
+  font-size: 22px;
+}
+#font-alexandria {
+  font-size: 13px;
+}
 .carousel-btn-start:active,
 .carousel-btn-middle:active,
 .carousel-btn-end:active {

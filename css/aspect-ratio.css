@@ -1,10 +1,10 @@
-@media (max-width: 500px) {
+@media (max-width: 1080px) {
   body {
     margin: 2% 3% 0 3%;
   }
   .title {
-    font-size: 200%;
-    margin: 10px 0 0px 0;
+    font-size: 35px;
+    padding: 0 0 5px 0;
   }
   .search-container {
     gap: 1px;
