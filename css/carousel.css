@@ -199,3 +199,7 @@
   opacity: 0; /* اجعله شفافاً */
   pointer-events: none; /* امنع الضغط عليه وهو مخفي */
 }
+
+#word-count {
+  border-radius: 25px;
+}

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("contentLoaded", () => {
   // --- 1. Get Elements ---
   const paragraph = document.getElementById("chapter-text");
   const chapterTitle = document.getElementById("chapter-title");

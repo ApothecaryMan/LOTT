@@ -11,53 +11,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const scrollAmount = 300; // The distance to scroll
 
+  let isAtStart = true;
+  let isAtEnd = false;
+  let bounceTimeout; // Timer for the bounce
+
   /**
    * The "smart" function, corrected for RTL
    */
   function checkButtonVisibility() {
-    // We use Math.round to handle decimal numbers
     const currentScroll = Math.round(carousel.scrollLeft);
     const visibleWidth = Math.round(carousel.clientWidth);
     const totalWidth = Math.round(carousel.scrollWidth);
+    const buffer = 10; // 10px buffer
 
-    // A 10px buffer for safety
-    const buffer = 10;
-
-    // --- RTL Logic ---
-
-    // (isAtStart) means at the far RIGHT (scroll position 0)
-    const isAtStart = currentScroll >= -buffer;
-
-    // (isAtEnd) means at the far LEFT
-    // (Total width - visible width) as a negative number
+    isAtStart = currentScroll >= -buffer;
     const maxNegativeScroll = -(totalWidth - visibleWidth);
-    const isAtEnd = currentScroll <= maxNegativeScroll + buffer;
+    isAtEnd = currentScroll <= maxNegativeScroll + buffer;
 
-    // --- THIS IS THE FIX ---
-
-    // Hide the RIGHT arrow (next-btn) when at the START
     nextBtn.classList.toggle("hidden", isAtStart);
-
-    // Hide the LEFT arrow (prev-btn) when at the END
     prevBtn.classList.toggle("hidden", isAtEnd);
-
-    // --- END OF FIX ---
   }
 
-  // nextBtn (RIGHT arrow) moves content RIGHT (towards start)
-  nextBtn.addEventListener("click", () => {
-    carousel.scrollBy({
-      left: scrollAmount, // Positive to scroll towards the start
-      behavior: "smooth", // Restored smooth behavior
+  /**
+   * --- الدالة الجديدة "الذكية" للاهتزاز (باستخدام requestAnimationFrame) ---
+   */
+  function triggerBounce() {
+    // --- رسالة تصحيح ---
+    console.log("BOUNCE triggered!");
+    // --------------------
+
+    clearTimeout(bounceTimeout);
+    carousel.classList.remove("is-shaking");
+
+    // نستخدم requestAnimationFrame لضمان أن المتصفح "رأى" الحذف
+    requestAnimationFrame(() => {
+      // الآن نضيف الكلاس مرة أخرى لبدء الأنيميشن
+      carousel.classList.add("is-shaking");
+
+      // تعيين مؤقت لحذف الكلاس بعد 300ms
+      bounceTimeout = setTimeout(() => {
+        carousel.classList.remove("is-shaking");
+      }, 300); // يجب أن يتطابق هذا الرقم مع مدة الأنيميشن في CSS
     });
+  }
+
+  // --- مستمع زر "التالي" (السهم الأيمن) ---
+  nextBtn.addEventListener("click", () => {
+    if (isAtStart) {
+      triggerBounce();
+    } else {
+      carousel.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
   });
 
-  // prevBtn (LEFT arrow) moves content LEFT (towards end)
+  // --- مستمع زر "السابق" (السهم الأيسر) ---
   prevBtn.addEventListener("click", () => {
-    carousel.scrollBy({
-      left: -scrollAmount, // Negative to scroll towards the end
-      behavior: "smooth",
-    });
+    if (isAtEnd) {
+      triggerBounce();
+    } else {
+      carousel.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    }
   });
 
   // This listener works when scrolling with the mouse
@@ -65,4 +78,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initial check on page load
   checkButtonVisibility();
+});
+
+//>>>>>>>>>>>>>>>>>>>>>>>>> WORD COUNT >>>>>>>>>>>>>>
+document.addEventListener("contentLoaded", () => {
+  // 1. Get the elements
+  const wordCountBtn = document.getElementById("word-count");
+  const paragraph = document.getElementById("chapter-text");
+
+  if (wordCountBtn && paragraph) {
+    const textContent = paragraph.textContent;
+
+    const words = textContent
+      .trim() // Remove whitespace from start/end
+      .split(/\s+/) // Split by spaces or newlines
+      .filter((word) => word !== ""); // Remove empty strings
+
+    const wordCount = words.length;
+
+    wordCountBtn.innerText = wordCount + " كلمة ";
+  } else {
+    if (!wordCountBtn) console.error("Element with id 'word-count' not found.");
+    if (!paragraph) console.error("Element with id 'chapter-text' not found.");
+  }
 });
