@@ -21,11 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleGearScroll(event) {
       event.preventDefault();
 
-      if (event.deltaY < 0) {
-        // سكرول للأعلى
+      if (event.deltaX > 0) {
+        //لعكس السكرول اكسل العلامة  //انا خليتها اكس علشان تسكرول في محصور اكس
         currentValue++;
       } else {
-        // سكرول للأسفل
         currentValue--;
       }
       gear.textContent = currentValue;
