@@ -58,6 +58,7 @@ ul {
   border-radius: 10px;
   user-select: none;
   padding: 0 10px 0 10px;
+  display: none;
 }
 li {
   cursor: pointer;

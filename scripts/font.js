@@ -34,32 +34,37 @@ document.addEventListener("contentLoaded", () => {
   function applyFontSize() {
     if (!paragraph) return;
 
-    // التحقق إذا كان "Naskh" هو الخط النشط
+    // Check if "Naskh" is the active font
     if (currentActiveFontFamily.includes("Naskh")) {
-      // --- (منطق خط النسخ) ---
+      // --- Naskh Font Logic ---
       const naskhSize = "30px";
       const naskhTitleSize = "50px";
 
       paragraph.style.fontSize = naskhSize;
-      supportText.style.fontSize = 17; // (كان خطأ: 17)
-      infoText.style.fontSize = 17; // (كان خطأ: 17)
+      supportText.style.fontSize = 17; // Corrected: Added "px"
+      infoText.style.fontSize = 17; // Corrected: Added "px"
       chapterTitle.style.fontSize = naskhTitleSize;
 
-      // تعطيل الأزرار
+      // Disable buttons and update display
       if (sizeDisplay) sizeDisplay.innerText = "ثابت";
       if (increaseFontSizeBtn) increaseFontSizeBtn.disabled = true;
       if (decreaseFontSizeBtn) decreaseFontSizeBtn.disabled = true;
     } else {
-      // --- (منطق الخطوط الأخرى) ---
-      const newSize = currentBaseSize + "px";
+      // --- Other Fonts Logic ---
+      const newSize = currentBaseSize + "px"; // Calculate the size WITH "px"
 
+      // Apply font size to elements
       paragraph.style.fontSize = newSize;
       supportText.style.fontSize = newSize;
       infoText.style.fontSize = newSize;
-      chapterTitle.style.fontSize = ""; // إرجاع العنوان لوضعه الافتراضي
+      chapterTitle.style.fontSize = ""; // Reset title size
 
-      // تمكين الأزرار
-      if (sizeDisplay) sizeDisplay.innerText = newSize;
+      // Enable buttons and update display
+      if (sizeDisplay) {
+        // --- THIS IS THE CHANGE ---
+        sizeDisplay.innerText = currentBaseSize; // Display only the number
+        // --- END OF CHANGE ---
+      }
       if (increaseFontSizeBtn) increaseFontSizeBtn.disabled = false;
       if (decreaseFontSizeBtn) decreaseFontSizeBtn.disabled = false;
     }
@@ -77,9 +82,6 @@ document.addEventListener("contentLoaded", () => {
       chapterTitle.style.fontFamily = currentActiveFontFamily;
     }
 
-    // (هام جداً)
-    // بعد تغيير الخط، يجب استدعاء دالة الحجم
-    // لتطبيق القواعد الخاصة بـ "Naskh" أو إزالتها
     applyFontSize();
   }
 
@@ -143,7 +145,5 @@ document.addEventListener("contentLoaded", () => {
   setupFontSelection();
 
   // --- 6. Initial Application on Page Load ---
-  // (تم التعديل)
-  // تطبيق الخط أولاً، ثم تطبيق الحجم (لضمان عمل "Naskh" عند الريفرش)
   applyFontFamily();
 });

@@ -27,3 +27,29 @@
   transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
     transform 0.2s var(--bounce-timing);
 }
+
+/* Style for the input field that replaces the gear */
+#gear-input {
+  width: 70px; /* Adjust width as needed */
+  height: 25px; /* Match button height */
+  text-align: center;
+  border-radius: 25px;
+  box-sizing: border-box; /* Include padding/border in width/height */
+
+  /* Hide it initially */
+  display: none;
+}
+
+/* Optional: Make number input arrows less intrusive on some browsers */
+#gear-input::-webkit-outer-spin-button,
+#gear-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* #gear-input[type="number"] {
+  -moz-appearance: textfield; 
+}*/
+#gear-input:focus {
+  outline: 0;
+  border: 0;
+}

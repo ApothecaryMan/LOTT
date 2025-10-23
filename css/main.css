@@ -150,7 +150,7 @@ strong {
 }
 /* جعل زر "السابق" مدوراً بالكامل */
 .pre-nex.next-hidden .previous {
-  border-radius: 20px;
+  border-radius: 25px;
 }
 
 /* إخفاء زر "السابق" عند إضافة هذا الكلاس */
@@ -159,5 +159,5 @@ strong {
 }
 /* جعل زر "التالي" مدوراً بالكامل */
 .pre-nex.prev-hidden .next {
-  border-radius: 20px;
+  border-radius: 25px;
 }
