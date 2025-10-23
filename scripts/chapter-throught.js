@@ -4,17 +4,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentChapterNumber = 1766; // رقم الفصل الحالي لهذه الصفحة
 
   //////////////////GEAR/////////////////////////
+  // --- (الكود الخاص بزر الترس - يدعم الماوس واللمس) ---
   const gear = document.getElementById("gear");
   if (gear) {
-    // 1. اجعل القيمة الأولية تساوي رقم الفصل الحالي
+    // 1. القيمة الأولية
     let currentValue = currentChapterNumber;
-
-    // 2. تحديث النص الظاهر على الزر فوراً
     gear.textContent = currentValue;
 
-    // 3. دالة التعامل مع السكرول
+    // --- متغيرات اللمس ---
+    let touchStartY = 0;
+    let moved = false;
+
+    // --- دوال التعامل ---
+
+    // 2. دالة التعامل مع السكرول (للماوس)
     function handleGearScroll(event) {
-      event.preventDefault(); // منع سكرول الصفحة
+      event.preventDefault();
 
       if (event.deltaY < 0) {
         // سكرول للأعلى
@@ -23,47 +28,70 @@ document.addEventListener("DOMContentLoaded", () => {
         // سكرول للأسفل
         currentValue--;
       }
-
-      gear.textContent = currentValue; // تحديث الرقم
+      gear.textContent = currentValue;
     }
 
-    // 4. (الجزء الجديد) دالة التعامل مع الضغط
-    async function handleGearClick() {
-      // 1. اقرأ الرقم الحالي من الزر
-      const chapterToLoad = parseInt(gear.textContent);
+    // 3. دالة التعامل مع بداية اللمس
+    function handleTouchStart(event) {
+      touchStartY = event.touches[0].clientY;
+      moved = false;
+    }
 
-      // 2. تحقق إذا كان رقماً صحيحاً
-      if (isNaN(chapterToLoad)) {
-        console.error("Invalid chapter number on gear:", gear.textContent);
-        return; // لا تفعل شيئاً إذا لم يكن رقماً
+    // 4. دالة التعامل مع حركة اللمس
+    function handleTouchMove(event) {
+      event.preventDefault();
+
+      const currentY = event.touches[0].clientY;
+      const deltaY = currentY - touchStartY;
+
+      if (deltaY < -10) {
+        // تحرك للأعلى
+        currentValue++;
+        touchStartY = currentY;
+        moved = true;
+      } else if (deltaY > 10) {
+        // تحرك للأسفل
+        currentValue--;
+        touchStartY = currentY;
+        moved = true;
       }
+      gear.textContent = currentValue;
+    }
 
-      // --- كود التحميل (مشابه لأزرار التالي والسابق) ---
+    // 5. دالة التعامل مع الضغط (Click) أو نهاية اللمس (Tap)
+    async function handleGearTapOrClick() {
+      // إذا كان المستخدم قد قام بالتمرير (Swipe)، لا تعتبرها ضغطة
+      if (moved) return;
+
+      const chapterToLoad = parseInt(gear.textContent);
+      if (isNaN(chapterToLoad)) return;
+
+      // --- كود التحميل (كما هو) ---
       paragraphContainer.classList.add("is-loading");
       chapterTitle.classList.add("is-loading");
       await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const success = await loadChapter(chapterToLoad); // تحميل الفصل المحدد
-
+      const success = await loadChapter(chapterToLoad);
       if (success) {
-        currentChapterNumber = chapterToLoad; // (هام) تحديث الرقم الحالي
+        currentChapterNumber = chapterToLoad;
         paragraphContainer.classList.remove("is-loading");
         chapterTitle.classList.remove("is-loading");
-        await updateButtonVisibility(); // تحديث أزرار التالي/السابق
+        await updateButtonVisibility();
       } else {
-        // (اختياري) يمكنك إضافة رسالة خطأ هنا أو إعادة الرقم
         console.error(`Failed to load chapter ${chapterToLoad}`);
-        gear.textContent = currentChapterNumber; // أعد الرقم للرقم الصحيح
+        gear.textContent = currentChapterNumber;
         paragraphContainer.classList.remove("is-loading");
         chapterTitle.classList.remove("is-loading");
       }
       // --- نهاية كود التحميل ---
     }
 
-    // 5. إضافة مستمعات الأحداث
-    gear.addEventListener("wheel", handleGearScroll);
-    gear.addEventListener("click", handleGearClick); // <-- إضافة مستمع الضغط
+    // 6. إضافة مستمعات الأحداث (القديمة + الجديدة)
+    gear.addEventListener("wheel", handleGearScroll); // <<<=== للماوس
+    gear.addEventListener("touchstart", handleTouchStart); // <<<=== بداية اللمس
+    gear.addEventListener("touchmove", handleTouchMove); // <<<=== حركة اللمس
+    gear.addEventListener("click", handleGearTapOrClick); // <<<=== للضغط بالماوس أو النقر باللمس
   }
+  // --- نهاية الإضافة ---
   //////////////////GEAR/////////////////////////
 
   const nextBtn = document.querySelector(".next");

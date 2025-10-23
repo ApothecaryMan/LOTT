@@ -2,7 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 5px 10px 1px;
+  /* padding: 10px 5px 10px 1px; */
+  padding: 0 5px 0 0;
   user-select: none;
 
   /* STICK CAROUSEL */
@@ -204,4 +205,14 @@
   font-family: Alexandria;
   font-size: 12px;
   border-radius: 25px;
+}
+
+/* LOGO */
+#logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  background-color: none;
+  padding: 0;
 }
