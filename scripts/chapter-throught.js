@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gear.textContent = currentValue;
 
     // --- متغيرات اللمس ---
-    let touchStartX = 0;
+    let touchStartY = 0;
     let moved = false;
 
     // --- دوال التعامل ---
@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleGearScroll(event) {
       event.preventDefault();
 
-      if (event.deltaX > 0) {
-        //لعكس السكرول اكسل العلامة  //انا خليتها اكس علشان تسكرول في محصور اكس
+      if (event.deltaY > 0) {
+        //لعكس السكرول اكسل العلامة
         currentValue++;
       } else {
         currentValue--;
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. دالة التعامل مع بداية اللمس
     function handleTouchStart(event) {
-      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
       moved = false;
     }
 
@@ -40,18 +40,18 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleTouchMove(event) {
       event.preventDefault();
 
-      const currentX = event.touches[0].clientX;
-      const deltaY = currentX - touchStartX;
+      const currentY = event.touches[0].clientY;
+      const deltaY = currentY - touchStartY;
 
-      if (deltaX < -10) {
+      if (deltaY < -10) {
         // تحرك للأعلى
         currentValue++;
-        touchStartX = currentX;
+        touchStartY = currentY;
         moved = true;
-      } else if (deltaX > 10) {
+      } else if (deltaY > 10) {
         // تحرك للأسفل
         currentValue--;
-        touchStartX = currentX;
+        touchStartY = currentY;
         moved = true;
       }
       gear.textContent = currentValue;
