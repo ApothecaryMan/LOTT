@@ -1,0 +1,105 @@
+/* --- تصميم قائمة الفصول --- */
+
+#chapter-list-container {
+  background-color: rgb(36, 36, 36);
+  border-radius: 25px;
+  padding: 20px;
+  margin: 0 0 3px 0;
+  max-width: 100%;
+
+  /* --- Default State: Hidden --- */
+  max-height: 0; /* Collapse it vertically */
+  opacity: 0; /* Make it transparent */
+  overflow: hidden; /* Hide content during collapse */
+  margin-top: 0; /* Remove top margin when hidden */
+  margin-bottom: 0; /* Remove bottom margin when hidden */
+  padding-top: 0; /* Remove padding when hidden */
+  padding-bottom: 0; /* Remove padding when hidden */
+  border-width: 0; /* Hide border when hidden */
+
+  /* --- Transition --- */
+  /* Animate max-height, opacity, margins, padding, border */
+  transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out,
+    margin 0.5s ease-in-out, padding 0.5s ease-in-out,
+    border-width 0.4s ease-in-out;
+
+  /* --- Keep your existing styles --- */
+  background-color: rgb(36, 36, 36);
+  border-radius: 15px;
+  /* padding: 20px; <-- We moved padding control to .visible */
+  /* margin: 30px 0; <-- We moved margin control to .visible */
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #555; /* Base border color */
+}
+
+/* --- Visible State --- */
+#chapter-list-container.visible {
+  /* Values to animate back to */
+  opacity: 1;
+  border-radius: 25px;
+
+  margin-bottom: 3px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-width: 1px;
+
+  /* max-height will be set by JavaScript */
+}
+
+#chapter-list-container h3 {
+  color: #eb8317;
+  text-align: center;
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 25px;
+  user-select: none;
+}
+
+#chapter-list {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#chapter-list button {
+  display: flex;
+  flex-direction: raw;
+  align-items: center;
+  padding: 5px 15px;
+  background-color: #444;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.15s ease-out,
+    color 0.2s ease;
+}
+
+#chapter-list button:hover,
+#chapter-list button:focus {
+  transform: scale(1.02);
+}
+.dash,
+.chapter-number {
+  font-family: "Alexandria";
+  font-size: 17px;
+  color: #ccc;
+  transition: color 0.2s ease;
+  user-select: none;
+}
+.dash {
+  padding: 0px 10px 0px 10px;
+}
+
+.chapter-title-in-list {
+  font-family: "Ink";
+  font-size: 16px;
+  color: #ccc;
+}
+
+/* CARD */
+#chapter-list .card-img {
+  margin-bottom: 10px;
+}

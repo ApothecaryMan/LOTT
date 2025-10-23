@@ -1,37 +1,17 @@
-@media (max-width: 1080px) {
+@media (min-width: 1081px) {
   body {
-    margin: 2% 3% 0 3%;
-  }
-  .title {
-    font-size: 35px;
-    padding: 15px 0 0px 0;
-  }
-  .search-container {
-    gap: 1px;
-    margin: 0px 0 10px 0;
-  }
-  .search-btn {
-    height: 27px;
-  }
-  .search-bar {
-    height: 25px;
-    width: 200px;
-    font-size: 10px;
-  }
-  .search-bar::placeholder {
-    font-size: 10px;
-  }
-
-  li {
-    width: 60px;
-    font-size: 11px;
-    padding: 5px;
+    margin: 2% 15% 0 15%;
   }
   .chaper,
   .info,
   .support {
-    font-size: 18px;
+    font-size: 20px;
   }
+  .title {
+    font-size: 50px;
+    padding: 15px 0 15px 0;
+  }
+
   .pre-nex {
     width: 60px;
     font-size: 11px;

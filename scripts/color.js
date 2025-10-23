@@ -107,7 +107,34 @@ function changeTheme(event) {
             #gear:active{
                 background-color: ${newColor};
                 color: white;
-            
+            }
+
+            #list:hover,
+            #list:active{
+                background-color: ${newColor};
+            }
+
+            #list:hover svg,
+            #list:active svg{
+                fill: white;
+            }
+
+            #chapter-list-container h3{
+                color: ${newColor};
+            }
+
+            #chapter-list button:hover,
+            #chapter-list button:focus {
+                border-color: ${newColor};
+                color: white;
+            }  
+                
+            #chapter-list button:hover .chapter-number,
+            #chapter-list button:focus .chapter-number,
+            #chapter-list button:hover .chapter-title-in-list,
+            #chapter-list button:focus .chapter-title-in-list {
+               color: white;
+            }
         `;
 
   // Apply the new rules

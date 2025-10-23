@@ -1,37 +1,11 @@
-/* INK */
-@font-face {
-  font-family: "Ink";
-  src: url("fonts/ink.otf");
-  unicode-range: U+0621-064A, U+064B-065F, U+0670-06D3, U+06D5, U+06D6-06E8,
-    U+FB50-FDFF, U+FE70-FEFF;
-}
-@font-face {
-  font-family: "Ink";
-  src: url("fonts/Glaciels.otf");
-}
-
-/* INK-2 */
-@font-face {
-  font-family: "Ink-2";
-  src: url("fonts/ink-2.otf");
-}
-@font-face {
-  font-family: "Ink-2";
-  src: url("fonts/Glaciels.otf");
-}
-
-/* TEST */
-@font-face {
-  font-family: Naskh;
-  src: url("fonts/JH_Naskh_Expanded_Medium.otf");
-}
 body {
   position: relative;
   /* STYLING */
   background-color: black;
 
   /* MARGIN */
-  margin: 2% 12% 0 12%;
+  margin: 2% 3% 0 3%;
+
   padding: 0 0 0 0;
 
   /* prevent tap highlight */

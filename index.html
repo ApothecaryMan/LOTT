@@ -3,11 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="اقرأ الفصل 1766 – ازمة الجيش الاول من رواية Lord Of The Truth مترجمة"
-    />
-    <title>Lord Of The Truth - الفصل 1766</title>
+    <meta name="description" content="Lord Of The Truth" />
+
+    <title>Lord Of The Truth - custom</title>
 
     <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
 
@@ -24,20 +22,19 @@
     <link rel="stylesheet" href="css/aspect-ratio.css" />
     <link id="dynamic-theme-styles" rel="stylesheet" href="css/card.css" />
     <link id="dynamic-theme-styles" rel="stylesheet" href="css/carousel.css" />
-    <link
-      id="dynamic-theme-styles"
-      rel="stylesheet"
-      href="css/scroll-gear.css"
-    />
+    <link rel="stylesheet" href="css/scroll-gear.css" />
+    <link rel="stylesheet" href="css/font.css" />
+    <link rel="stylesheet" href="css/chapter-list.css" />
 
     <!-- SCRIPT -->
     <script src="scripts/content-loader.js" defer></script>
+    <script src="scripts/chapter-navigation.js" defer></script>
+    <script src="scripts/scroll-gear.js" defer></script>
+    <script src="scripts/list-loader.js" defer></script>
     <script src="scripts/script.js" defer></script>
     <script src="scripts/carousel.js" defer></script>
     <script src="scripts/font.js" defer></script>
     <script src="scripts/color.js" defer></script>
-    <script src="scripts/chapter-navigation.js" defer></script>
-    <script src="scripts/scroll-gear.js" defer></script>
   </head>
 
   <body>
@@ -95,7 +92,21 @@
               <h2 class="title" id="logo">Lord Of The Truth</h2>
             </div>
             <div class="carousel-item">
-              <button class="carousel-btn-middle" id="gear"></button>
+              <button class="carousel-btn-start" id="list">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="18px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#000000"
+                >
+                  <path
+                    d="M400-160q-33 0-56.5-23.5T320-240q0-33 23.5-56.5T400-320h400q33 0 56.5 23.5T880-240q0 33-23.5 56.5T800-160H400Zm0-240q-33 0-56.5-23.5T320-480q0-33 23.5-56.5T400-560h400q33 0 56.5 23.5T880-480q0 33-23.5 56.5T800-400H400Zm0-240q-33 0-56.5-23.5T320-720q0-33 23.5-56.5T400-800h400q33 0 56.5 23.5T880-720q0 33-23.5 56.5T800-640H400Zm-240 0q-33 0-56.5-23.5T80-720q0-33 23.5-56.5T160-800q33 0 56.5 23.5T240-720q0 33-23.5 56.5T160-640Zm0 240q-33 0-56.5-23.5T80-480q0-33 23.5-56.5T160-560q33 0 56.5 23.5T240-480q0 33-23.5 56.5T160-400Zm0 240q-33 0-56.5-23.5T80-240q0-33 23.5-56.5T160-320q33 0 56.5 23.5T240-240q0 33-23.5 56.5T160-160Z"
+                  />
+                </svg>
+              </button>
+
+              <button class="carousel-btn-end" id="gear"></button>
             </div>
             <div class="carousel-item">
               <button class="carousel-btn-start" id="increase-font-size">
@@ -195,6 +206,8 @@
         </div>
       </div>
     </div>
+
+    <div id="chapter-list-container"></div>
 
     <main class="main">
       <div class="main-header-container">

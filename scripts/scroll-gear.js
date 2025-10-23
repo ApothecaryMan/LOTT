@@ -197,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
       paragraphContainer.classList.add("is-loading");
       chapterTitle.classList.add("is-loading");
       // Scroll happens before loading now
-      chapterTitle.scrollIntoView({ behavior: "auto", block: "start" });
       await new Promise((resolve) => setTimeout(resolve, 300)); // Wait for fade
 
       const success = await window.loadChapter(chapterToLoad);

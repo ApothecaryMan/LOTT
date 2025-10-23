@@ -11,6 +11,11 @@
   opacity: 0;
   transform: translateY(20px);
 }
+.chaper,
+.info,
+.support {
+  font-size: 18px;
+}
 p {
   margin: 4px 0 7px 0;
 }
