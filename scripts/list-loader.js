@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const carouselHeight = carouselContainer
           ? carouselContainer.offsetHeight
           : 50; // Use a fallback height
-        const calculatedMaxHeight = window.innerHeight - carouselHeight - 28; // 20px for bottom padding
+        const calculatedMaxHeight = window.innerHeight - carouselHeight - 22; // 20px for bottom padding
         listContainer.style.maxHeight = `${calculatedMaxHeight}px`; // Triggers CSS transition to slide down
 
         // 5. Lock the main page scroll so only the list can be scrolled.
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const carouselHeight = carouselContainer
         ? carouselContainer.offsetHeight
         : 50;
-      const calculatedMaxHeight = window.innerHeight - carouselHeight - 28;
+      const calculatedMaxHeight = window.innerHeight - carouselHeight - 22;
       listContainer.style.maxHeight = `${calculatedMaxHeight}px`;
     }
   });

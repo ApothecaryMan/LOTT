@@ -103,7 +103,7 @@ function changeTheme(event) {
                 color: ${newColor};
             }
 
-            #gear:hover,
+            
             #gear:active{
                 background-color: ${newColor};
                 color: white;

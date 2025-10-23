@@ -108,10 +108,11 @@
 }
 #font-size {
   font-family: Alexandria;
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 400;
   cursor: default;
   width: 30px;
+  border-radius: 3px;
 }
 #font-naskh {
   font-size: 22px;
