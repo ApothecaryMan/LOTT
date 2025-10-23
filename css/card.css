@@ -1,58 +1,133 @@
-/* --- Main Container --- */
-.cards {
-  display: grid;
-  /* Using 1fr creates flexible columns that share space equally */
-  grid-template-columns: repeat(2, 1fr);
-  row-gap: 30px;
-  column-gap: 10px;
+/* --- START: Updated card.css content --- */
+
+/* --- Main Container for the Card Carousel --- */
+.card-carousel-container {
+  position: relative; /* This is crucial for positioning the buttons */
+  width: 100%;
+  margin: 20px 0;
+  /* We no longer need side padding */
+  /* padding: 0 40px; */
+  box-sizing: border-box;
 }
 
-/* --- Card Styling --- */
+/* --- The Carousel Itself (the moving part) --- */
+.cards {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 10px; /* Add some padding so cards don't touch the edges */
+  /* Clip the content to prevent scrollbars from showing outside rounded corners if any */
+  clip-path: inset(0 0 0 0);
+}
+
+.cards::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Card Styling (Individual Card) --- */
 .card {
-  border-radius: 15px; /* A single border-radius for the whole card */
-  display: flex; /* Use flex to structure content within the card */
+  flex: 0 0 48%;
+  min-width: 280px;
+  border-radius: 25px;
+  display: flex;
   flex-direction: column;
+  overflow: hidden;
+  position: relative; /* Needed for any potential future overlays */
 }
 
 /* --- Card Image --- */
 .card-img {
-  width: 100%; /* Makes the image fill the full width of the card */
-  display: block; /* Removes any extra space below the image */
-  border-radius: 25px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* --- Info Section --- */
 .card-info {
-  /* Use fixed padding for consistent spacing */
-  padding: 10px;
-  margin-top: -150px;
-  background: linear-gradient(to top, #eb8517, transparent);
+  padding: 10px 15px 15px 0px;
+  margin-top: -30px;
   border-radius: 0 0 25px 25px;
+  min-height: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* --- Author and Date Section --- */
-.info .date {
-  justify-content: right;
-}
-
-.date .zeus {
-  width: 25px; /* Make the author image smaller, like an icon */
-  height: 25px;
-  border-radius: 50%; /* Make it circular */
-}
-
-/* --- General Typography --- */
+/* --- Typography within the Card --- */
 .cards p {
   color: rgb(255, 255, 255);
   font-weight: 900;
+  margin: 2px 0;
 }
 .x {
-  padding-top: 50px;
   font-family: ink-2;
   font-size: 20px;
 }
-@media (max-width: 1080px) {
-  .cards {
-    grid-template-columns: repeat(1, 1fr);
+.date {
+  align-items: center;
+}
+.date .zeus {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+/* ============================================= */
+/* === THIS IS THE IMPORTANT CHANGE FOR BUTTONS === */
+/* ============================================= */
+
+/* --- Positioning Navigation Buttons OVER the Card Carousel --- */
+.card-carousel-container .carousel-nav-btn {
+  top: 50%;
+  /* Use transform to pull the button up by its full height + a margin */
+  transform: translateY(-calc(100% + 150px)); /* Adjust 150px as needed */
+
+  z-index: 10;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5); /* Slightly darker for better visibility */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  backdrop-filter: blur(2px); /* Frosted glass effect */
+}
+
+/* Position the previous button on the left */
+.card-carousel-container #card-prev-btn {
+  left: 0px; /* Add a small margin from the edge */
+}
+
+/* Position the next button on the right */
+.card-carousel-container #card-next-btn {
+  right: 0px; /* Add a small margin from the edge */
+}
+
+/* Hide button if it has the 'hidden' class */
+.card-carousel-container .carousel-nav-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 768px) {
+  .card {
+    flex-basis: 80%;
+  }
+
+  /* Adjust button vertical position on smaller screens if needed */
+  .card-carousel-container .carousel-nav-btn {
+    transform: translateY(-calc(100% + 130px)); /* Slightly less distance */
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further adjustment for very small screens */
+  .card-carousel-container .carousel-nav-btn {
+    transform: translateY(-calc(100% + 110px));
+    width: 35px;
+    height: 35px;
   }
 }

@@ -238,7 +238,7 @@
         </div>
         <div class="pre-nex">
           <button class="next">
-            <svg height="15px" viewBox="0 0 25 25" width="15px" fill="black">
+            <svg height="18px" viewBox="0 0 25 25" width=18px" fill="black">
               <g><path d="M0,0h24v24H0V0z" fill="none" /></g>
               <g>
                 <polygon
@@ -248,9 +248,9 @@
             </svg>
             التالي
           </button>
-          <button class="previous">
+          <button class="previous" id="previous-btn">
             السابق
-            <svg height="15px" viewBox="0 0 25 25" width="15px" fill="black">
+            <svg height="18px" viewBox="0 0 25 25" width="24px" fill="black">
               <path d="M0 0h24v24H0V0z" fill="none" opacity=".87" />
               <path
                 d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"
@@ -309,62 +309,76 @@
       </div>
     </div>
 
-    <div class="cards">
-      <div class="card">
-        <img class="card-img" src="img/card.jpg" />
-        <div class="card-info">
-          <p class="x">1767 - قرار صعب</p>
-          <div class="date">
-            <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-            <p>بواسطــــه زيـــوس</p>
-            <p>19 أكتوبر, 2025</p>
+    <div class="card-carousel-container">
+      <button id="card-prev-btn" class="carousel-nav-btn hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
+          <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+        </svg>
+      </button>
+
+      <div class="cards" id="card-carousel"> <!-- Notice the new ID -->
+        <div class="card">
+          <img class="card-img" src="img/card.jpg" />
+          <div class="card-info">
+            <p class="x">1767 - قرار صعب</p>
+            <div class="date">
+              <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
+              <p>بواسطــــه زيـــوس</p>
+              <p>19 أكتوبر, 2025</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img" src="img/card.jpg" />
+          <div class="card-info">
+            <p class="x">1768 -تطور معارك الجنوب-1</p>
+            <div class="date">
+              <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
+              <p>بواسطــــه زيـــوس</p>
+              <p>19 أكتوبر, 2025</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img" src="img/card.jpg" />
+          <div class="card-info">
+            <p class="x">1769 -تطور معارك الجنوب-2</p>
+            <div class="date">
+              <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
+              <p>بواسطــــه زيـــوس</p>
+              <p>19 أكتوبر, 2025</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img" src="img/card.jpg" />
+          <div class="card-info">
+            <p class="x">1770 -للمتجر مجدداً؟</p>
+            <div class="date">
+              <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
+              <p>بواسطــــه زيـــوس</p>
+              <p>19 أكتوبر, 2025</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img" src="img/card.jpg" />
+          <div class="card-info">
+            <p class="x">1771 -مجتمع الروح</p>
+            <div class="date">
+              <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
+              <p>بواسطه زيوس</p>
+              <p>19 أكتوبر, 2025</p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="card">
-        <img class="card-img" src="img/card.jpg" />
-        <div class="card-info">
-          <p class="x">1768 -تطور معارك الجنوب-1</p>
-          <div class="date">
-            <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-            <p>بواسطــــه زيـــوس</p>
-            <p>19 أكتوبر, 2025</p>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="img/card.jpg" />
-        <div class="card-info">
-          <p class="x">1769 -تطور معارك الجنوب-2</p>
-          <div class="date">
-            <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-            <p>بواسطــــه زيـــوس</p>
-            <p>19 أكتوبر, 2025</p>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="img/card.jpg" />
-        <div class="card-info">
-          <p class="x">1770 -للمتجر مجدداً؟</p>
-          <div class="date">
-            <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-            <p>بواسطــــه زيـــوس</p>
-            <p>19 أكتوبر, 2025</p>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="img/card.jpg" />
-        <div class="card-info">
-          <p class="x">1771 -مجتمع الروح</p>
-          <div class="date">
-            <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-            <p>بواسطه زيوس</p>
-            <p>19 أكتوبر, 2025</p>
-          </div>
-        </div>
-      </div>
+
+      <button id="card-next-btn" class="carousel-nav-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
+          <path d="M400-240 344-296l184-184-184-184 56-56 240 240-240 240Z" />
+        </svg>
+      </button>
     </div>
 
     <footer class="footer">

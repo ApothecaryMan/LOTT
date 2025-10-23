@@ -14,7 +14,6 @@ function changeTheme(event) {
   const themeStyleTag = document.getElementById("dynamic-theme-rules");
 
   // --- B. Update STRONG font color ---
-  // (هذا هو تعديلك الصحيح)
   const elementsToChange = document.querySelectorAll("strong");
   elementsToChange.forEach((element) => {
     element.style.color = newColor;
@@ -31,30 +30,27 @@ function changeTheme(event) {
   // --- D. Update hover/active for ALL other buttons ---
   // (لقد أخذت كل تعديلاتك وأصلحت خطأ "card-info" وأضفت "moz-selection")
   const dynamicCSS = `
-            /* Header Search Button */
-            .search-btn:hover,
-            .search-btn:active {
-                background-color: ${newColor};
-            }
-
-            /* Header Nav Buttons */
-            .main-nav li:hover,
-            .main-nav li:active {
-                background-color: ${newColor};
-            }
-
             /* Chapter Prev/Next Buttons */
             .next:hover,
             .next:active,
             .previous:hover,
-            .previous:active {
+            .previous:active,
+            body.light-theme .next:hover,
+            body.light-theme .next:active,
+            body.light-theme .previous:hover,
+            body.light-theme .previous:active {
                 background-color: ${newColor};
                 color: white;
             }
+
             .next:hover svg,
             .next:active svg,
             .previous:hover svg,
-            .previous:active svg {
+            .previous:active svg,
+            body.light-theme .next:hover svg,
+            body.light-theme .next:active svg,
+            body.light-theme .previous:hover svg,
+            body.light-theme .previous:active svg {
                 fill: white;
             }
 
@@ -77,7 +73,9 @@ function changeTheme(event) {
             
             /* (تم إصلاح هذا الخطأ - الكلاس هو "info" فقط) */
             .card .card-info {
-                background: linear-gradient(to top, ${newColor}, transparent);
+                /*background: linear-gradient(to top, ${newColor}, transparent);*/
+                background-color: ${newColor};
+            
             }
             
             /* Color Selector Active Button (the glowing ring) */
@@ -121,6 +119,7 @@ function changeTheme(event) {
                 fill: white;
             }
 
+            body.light-theme h3,
             #chapter-list-container h3{
                 color: ${newColor};
             }

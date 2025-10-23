@@ -72,19 +72,26 @@ strong {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 10px 6px 10px;
+  gap: 5px;
+  padding: 6px 12px;
   border: 0px;
-  /* background-color: silver; */
-  transition: border-radius 0.1s ease-out;
   cursor: pointer;
+
+  background-color: #f2f2f2;
+  color: #333;
+
+  transition: border-radius 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease;
 }
-/* .next:hover,
-.previous:hover {
-  color: rgb(226, 226, 226);
-  background-color: #eb8517;
-} */
+
+.next svg,
+.previous svg {
+  fill: #333;
+  transition: fill 0.2s ease;
+}
+
 .next {
-  border-radius: 3px 20px 20px 3px;
+  border-radius: 2px 25px 25px 3px;
 }
 .next:active {
   border-radius: 15px;
@@ -92,6 +99,7 @@ strong {
 .previous {
   border-radius: 20px 3px 3px 20px;
 }
+
 .previous:active {
   border-radius: 15px;
 }

@@ -231,7 +231,6 @@
   border-radius: 25px;
   width: 25px;
   padding: 0;
-  display: none;
 
   transition: transform 0.8s ease-in-out;
 }
