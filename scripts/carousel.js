@@ -57,17 +57,24 @@ function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
     }
   }
 
+  //Vibration
   function triggerBounce(button) {
+    // VIBRATION: Call the bounce vibration from the manager
+    if (window.vibrationManager) {
+      window.vibrationManager.bounce();
+    }
+
     clearTimeout(bounceTimeout);
-    button.classList.remove("is-shaking");
+    const carouselToShake = document.getElementById("carousel");
+    carouselToShake.classList.remove("is-shaking");
+
     requestAnimationFrame(() => {
-      button.classList.add("is-shaking");
+      carouselToShake.classList.add("is-shaking");
       bounceTimeout = setTimeout(() => {
-        button.classList.remove("is-shaking");
+        carouselToShake.classList.remove("is-shaking");
       }, 300);
     });
   }
-
   // Next Button Click
   nextBtn.addEventListener("click", () => {
     const isRTL = getComputedStyle(carousel).direction === "rtl";

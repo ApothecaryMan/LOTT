@@ -20,15 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Helper Functions ---
 
-  /** (NEW) Triggers a short vibration if the API is supported */
-  function triggerVibration() {
-    // Check if the Vibration API is supported by the browser
-    if ("vibrate" in navigator) {
-      // Vibrate for 15 milliseconds (a very short, crisp tick)
-      navigator.vibrate(15);
-    }
-  }
-
   function getMaxChapter() {
     return window.maxChapterNumber || window.totalChapters || 1767;
   }
@@ -110,13 +101,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentValue < maxChapter) {
         currentValue++;
         gear.textContent = currentValue;
-        triggerVibration(); // <-- VIBRATE HERE
+        if (window.vibrationManager) {
+          window.vibrationManager.gearTick();
+        } // <-- VIBRATE HERE
       }
     } else {
       if (currentValue > 1) {
         currentValue--;
         gear.textContent = currentValue;
-        triggerVibration(); // <-- VIBRATE HERE
+        if (window.vibrationManager) {
+          window.vibrationManager.gearTick();
+        } // <-- VIBRATE HERE
       }
     }
   }
@@ -146,7 +141,9 @@ document.addEventListener("DOMContentLoaded", () => {
         currentValue++;
         gear.textContent = currentValue;
         touchStartY = currentY;
-        triggerVibration(); // <-- VIBRATE HERE
+        if (window.vibrationManager) {
+          window.vibrationManager.gearTick();
+        } // <-- VIBRATE HERE
       }
     } else if (deltaY > 10) {
       // Swiping DOWN
@@ -154,7 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
         currentValue--;
         gear.textContent = currentValue;
         touchStartY = currentY;
-        triggerVibration(); // <-- VIBRATE HERE
+        if (window.vibrationManager) {
+          window.vibrationManager.gearTick();
+        } // <-- VIBRATE HERE
       }
     }
   }
