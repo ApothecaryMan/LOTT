@@ -41,6 +41,8 @@ strong {
   text-align: center;
   gap: 5px;
   margin: 5px 0 10px 0;
+
+  user-select: none;
 }
 .date p {
   margin: 0;

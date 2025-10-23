@@ -102,6 +102,12 @@ function changeTheme(event) {
             #chapter-title{
                 color: ${newColor};
             }
+
+            #gear:hover,
+            #gear:active{
+                background-color: ${newColor};
+                color: white;
+            
         `;
 
   // Apply the new rules

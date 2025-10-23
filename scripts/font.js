@@ -4,7 +4,6 @@ document.addEventListener("contentLoaded", () => {
   const chapterTitle = document.getElementById("chapter-title");
   const supportText = document.getElementById("support-wrapper");
   const infoText = document.getElementById("info-wrapper");
-
   const sizeDisplay = document.getElementById("font-size");
   const increaseFontSizeBtn = document.getElementById("increase-font-size");
   const decreaseFontSizeBtn = document.getElementById("decrease-font-size");

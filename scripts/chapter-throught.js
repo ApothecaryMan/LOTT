@@ -3,6 +3,69 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- 1. تعريف المتغيرات ---
   let currentChapterNumber = 1766; // رقم الفصل الحالي لهذه الصفحة
 
+  //////////////////GEAR/////////////////////////
+  const gear = document.getElementById("gear");
+  if (gear) {
+    // 1. اجعل القيمة الأولية تساوي رقم الفصل الحالي
+    let currentValue = currentChapterNumber;
+
+    // 2. تحديث النص الظاهر على الزر فوراً
+    gear.textContent = currentValue;
+
+    // 3. دالة التعامل مع السكرول
+    function handleGearScroll(event) {
+      event.preventDefault(); // منع سكرول الصفحة
+
+      if (event.deltaY < 0) {
+        // سكرول للأعلى
+        currentValue++;
+      } else {
+        // سكرول للأسفل
+        currentValue--;
+      }
+
+      gear.textContent = currentValue; // تحديث الرقم
+    }
+
+    // 4. (الجزء الجديد) دالة التعامل مع الضغط
+    async function handleGearClick() {
+      // 1. اقرأ الرقم الحالي من الزر
+      const chapterToLoad = parseInt(gear.textContent);
+
+      // 2. تحقق إذا كان رقماً صحيحاً
+      if (isNaN(chapterToLoad)) {
+        console.error("Invalid chapter number on gear:", gear.textContent);
+        return; // لا تفعل شيئاً إذا لم يكن رقماً
+      }
+
+      // --- كود التحميل (مشابه لأزرار التالي والسابق) ---
+      paragraphContainer.classList.add("is-loading");
+      chapterTitle.classList.add("is-loading");
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const success = await loadChapter(chapterToLoad); // تحميل الفصل المحدد
+
+      if (success) {
+        currentChapterNumber = chapterToLoad; // (هام) تحديث الرقم الحالي
+        paragraphContainer.classList.remove("is-loading");
+        chapterTitle.classList.remove("is-loading");
+        await updateButtonVisibility(); // تحديث أزرار التالي/السابق
+      } else {
+        // (اختياري) يمكنك إضافة رسالة خطأ هنا أو إعادة الرقم
+        console.error(`Failed to load chapter ${chapterToLoad}`);
+        gear.textContent = currentChapterNumber; // أعد الرقم للرقم الصحيح
+        paragraphContainer.classList.remove("is-loading");
+        chapterTitle.classList.remove("is-loading");
+      }
+      // --- نهاية كود التحميل ---
+    }
+
+    // 5. إضافة مستمعات الأحداث
+    gear.addEventListener("wheel", handleGearScroll);
+    gear.addEventListener("click", handleGearClick); // <-- إضافة مستمع الضغط
+  }
+  //////////////////GEAR/////////////////////////
+
   const nextBtn = document.querySelector(".next");
   const prevBtn = document.querySelector(".previous");
   const chapterTitle = document.getElementById("chapter-title");
