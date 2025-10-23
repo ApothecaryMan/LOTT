@@ -59,13 +59,17 @@ function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
 
   //Vibration
   function triggerBounce(button) {
-    // VIBRATION: Call the bounce vibration from the manager
+    // VIBRATION: Trigger the bounce haptic from the manager
     if (window.vibrationManager) {
       window.vibrationManager.bounce();
     }
 
     clearTimeout(bounceTimeout);
-    const carouselToShake = document.getElementById("carousel");
+
+    // BUG FIX: Target the correct carousel that is being interacted with, not always the top one.
+    // The 'carousel' variable is available from the parent function's scope.
+    const carouselToShake = carousel;
+
     carouselToShake.classList.remove("is-shaking");
 
     requestAnimationFrame(() => {

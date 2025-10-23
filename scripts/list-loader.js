@@ -103,17 +103,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isVisible) {
       // --- HIDE THE LIST ---
+      // VIBRATION: Trigger the "close" haptic
+      if (window.vibrationManager) {
+        window.vibrationManager.listClose();
+      }
+
       listToggleButton.classList.remove("active");
-      listContainer.style.maxHeight = "0"; // Triggers CSS transition to slide up
+      listContainer.style.maxHeight = "0";
       listContainer.classList.remove("visible");
-      body.classList.remove("list-is-open"); // Re-enables scrolling on the main page
+      body.classList.remove("list-is-open");
     } else {
       // --- SHOW THE LIST ---
+      // VIBRATION: Trigger the "open" haptic
+      if (window.vibrationManager) {
+        window.vibrationManager.listOpen();
+      }
+
       listToggleButton.classList.add("active");
       const carouselContainer = document.querySelector(".carousel-container");
 
-      // 1. Smoothly scroll the page so the control bar is at the top of the screen.
-      // This creates a consistent position regardless of where the user is on the page.
       if (carouselContainer) {
         carouselContainer.scrollIntoView({
           behavior: "smooth",
@@ -121,22 +129,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // 2. IMPORTANT: Use a short timeout. This allows the scroll animation to start
-      //    *before* we lock the body's scroll, preventing the animation from being cancelled.
       setTimeout(() => {
-        // 3. Make the list container visible.
         listContainer.classList.add("visible");
-
-        // 4. Calculate the maximum height for the list so it fits on the screen and becomes scrollable.
         const carouselHeight = carouselContainer
           ? carouselContainer.offsetHeight
-          : 50; // Use a fallback height
-        const calculatedMaxHeight = window.innerHeight - carouselHeight - 22; // 20px for bottom padding
-        listContainer.style.maxHeight = `${calculatedMaxHeight}px`; // Triggers CSS transition to slide down
-
-        // 5. Lock the main page scroll so only the list can be scrolled.
+          : 50;
+        const calculatedMaxHeight = window.innerHeight - carouselHeight - 22;
+        listContainer.style.maxHeight = `${calculatedMaxHeight}px`;
         body.classList.add("list-is-open");
-      }, 150); // 150ms delay is usually sufficient for the scroll to begin.
+      }, 150);
     }
   });
 
