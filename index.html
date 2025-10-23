@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="css/scroll-gear.css" />
     <link rel="stylesheet" href="css/font.css" />
     <link rel="stylesheet" href="css/chapter-list.css" />
+    <link rel="stylesheet" href="css/theme.css" />
 
     <!-- SCRIPT -->
     <script src="scripts/content-loader.js" defer></script>
@@ -35,6 +36,7 @@
     <script src="scripts/carousel.js" defer></script>
     <script src="scripts/font.js" defer></script>
     <script src="scripts/color.js" defer></script>
+    <script src="scripts/theme.js" defer></script>
   </head>
 
   <body>
@@ -189,6 +191,21 @@
             <div class="carousel-item" id="font-selector">
               <button class="carousel-btn-middle" id="word-count"></button>
             </div>
+            <div class="carousel-item" id="mode-selector">
+              <button class="carousel-btn-middle" id="toggle-theme-btn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="18px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#000000"
+                >
+                  <path
+                    d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm40-83q119-15 199.5-104.5T800-480q0-123-80.5-212.5T520-797v634Z"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
           <button id="next-btn" class="carousel-nav-btn">
             <svg
@@ -205,9 +222,8 @@
           </button>
         </div>
       </div>
+      <div id="chapter-list-container"></div>
     </div>
-
-    <div id="chapter-list-container"></div>
 
     <main class="main">
       <div class="main-header-container">

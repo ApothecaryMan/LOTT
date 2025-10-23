@@ -1,16 +1,11 @@
-/* --- تصميم قائمة الفصول --- */
-
 #chapter-list-container {
-  background-color: rgb(36, 36, 36);
-  border-radius: 25px;
-  padding: 20px;
-  margin: 0 0 3px 0;
-  max-width: 100%;
-
+  position: relative;
+  overflow: hidden;
+  /* position: sticky; */
+  top: 10px;
   /* --- Default State: Hidden --- */
   max-height: 0; /* Collapse it vertically */
   opacity: 0; /* Make it transparent */
-  overflow: hidden; /* Hide content during collapse */
   margin-top: 0; /* Remove top margin when hidden */
   margin-bottom: 0; /* Remove bottom margin when hidden */
   padding-top: 0; /* Remove padding when hidden */
@@ -20,32 +15,54 @@
   /* --- Transition --- */
   /* Animate max-height, opacity, margins, padding, border */
   transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out,
-    margin 0.5s ease-in-out, padding 0.5s ease-in-out,
-    border-width 0.4s ease-in-out;
+    margin 0.5s ease-in-out, border-width 0.4s ease-in-out,
+    padding 0.5s ease-in-out, visibility 0s linear 0s;
 
   /* --- Keep your existing styles --- */
   background-color: rgb(36, 36, 36);
-  border-radius: 15px;
-  /* padding: 20px; <-- We moved padding control to .visible */
-  /* margin: 30px 0; <-- We moved margin control to .visible */
-  max-width: 800px;
+  border-radius: 25px;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid #555; /* Base border color */
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
-/* --- Visible State --- */
+#chapter-list-container::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar */
+}
+
 #chapter-list-container.visible {
-  /* Values to animate back to */
+  /* --- Visible State (Slide Down) --- */
   opacity: 1;
-  border-radius: 25px;
+  padding: 20px;
 
-  margin-bottom: 3px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-width: 1px;
+  /* margin-bottom: 6px; */
+  border-width: 2px;
+}
 
-  /* max-height will be set by JavaScript */
+/* --- Add Smooth Transition to Main Content Elements --- */
+main.main,
+.cards,
+.footer,
+.support-container, /* Added */
+.info-container    /* Added */ {
+  transition: opacity 0.4s ease-in-out, visibility 0s linear 0.4s,
+    max-height 0.5s ease-in-out;
+}
+
+/* --- Rule to Hide Content When List is Open --- */
+body.list-is-open main.main,
+body.list-is-open .cards,
+body.list-is-open .footer,
+body.list-is-open .support-container, /* Added */
+body.list-is-open .info-container    /* Added */ {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease-in-out, visibility 0s linear 0s; /* Hide immediately */
+}
+body.list-is-open {
+  overflow: hidden; /* Hide the main page scrollbar */
 }
 
 #chapter-list-container h3 {
@@ -81,6 +98,7 @@
 #chapter-list button:focus {
   transform: scale(1.02);
 }
+
 .dash,
 .chapter-number {
   font-family: "Alexandria";

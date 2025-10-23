@@ -110,11 +110,13 @@ function changeTheme(event) {
             }
 
             #list:hover,
+            #list.active,
             #list:active{
                 background-color: ${newColor};
             }
 
             #list:hover svg,
+            #list.active svg,
             #list:active svg{
                 fill: white;
             }

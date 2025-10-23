@@ -1,8 +1,7 @@
+// This part handles fetching the list content and loading chapters when an item is clicked.
 document.addEventListener("DOMContentLoaded", async () => {
-  // The main container where the list will be loaded
+  // The container where the list will be injected
   const listContainer = document.getElementById("chapter-list-container");
-  // The div where individual chapter buttons will reside (loaded externally)
-  const chapterListDivId = "chapter-list";
 
   if (!listContainer) {
     console.error(
@@ -12,109 +11,145 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    // 1. Fetch the chapter list HTML content
+    // 1. Fetch the chapter list HTML content from the external file.
+    // Make sure 'chapter-list.html' is in the correct path relative to index.html.
     const response = await fetch("partials/chapter-list.html");
     if (!response.ok) {
       throw new Error(`Failed to load chapter list: ${response.status}`);
     }
     const listHtml = await response.text();
 
-    // 2. Inject the HTML into the main container
+    // 2. Inject the fetched HTML into its container.
     listContainer.innerHTML = listHtml;
 
-    // --- UPDATED EVENT LISTENER ---
-    // 3. Add a single event listener to the list container
-    //    (We listen on the outer container in case the inner div isn't loaded yet)
+    // 3. Use event delegation to handle clicks on any chapter button inside the list.
+    // This is more efficient than adding a listener to every single button.
     listContainer.addEventListener("click", async (event) => {
-      // Find the closest BUTTON with the class 'list-item' that was clicked
+      // Find the button that was clicked, even if the user clicked a span inside it.
       const button = event.target.closest("button.list-item");
 
-      // If the click wasn't on a chapter button, do nothing
+      // If the click wasn't on a chapter button, do nothing.
       if (!button) {
         return;
       }
 
-      // Get the chapter number from the BUTTON's ID
-      const chapterToLoad = button.id;
+      const listContainer = document.getElementById("chapter-list-container");
+      const body = document.body;
+      const listToggleButton = document.getElementById("list");
+      if (listContainer && body) {
+        listContainer.style.maxHeight = "0";
+        listContainer.classList.remove("visible");
+        body.classList.remove("list-is-open");
+        if (listToggleButton) listToggleButton.classList.remove("active");
+      }
 
-      // --- Chapter Loading Logic (Remains mostly the same) ---
+      // --- Chapter Loading Logic ---
+      const chapterToLoad = button.id; // Get the chapter number from the button's ID
       const paragraphContainer = document.getElementById("chapter-text");
       const chapterTitle = document.getElementById("chapter-title");
 
       if (!paragraphContainer || !chapterTitle) return;
 
-      // Fade out current content
+      // Fade out current content for a smooth transition
       paragraphContainer.classList.add("is-loading");
       chapterTitle.classList.add("is-loading");
-      await new Promise((resolve) => setTimeout(resolve, 300)); // Wait for fade
+      await new Promise((resolve) => setTimeout(resolve, 300)); // Wait for fade animation
 
-      // Load the new chapter using the global function
+      // Use the global function to load the new chapter content
       const success = await window.loadChapter(chapterToLoad);
 
       if (success) {
-        window.currentChapterNumber = parseInt(chapterToLoad); // Update global number
+        window.currentChapterNumber = parseInt(chapterToLoad, 10); // Update global chapter number
+
         // Fade in new content
         paragraphContainer.classList.remove("is-loading");
         chapterTitle.classList.remove("is-loading");
-        // Update next/prev buttons and gear display using global function
+
+        // Update the visibility of next/previous buttons if the function exists
         if (typeof window.updateButtonVisibility === "function") {
           await window.updateButtonVisibility();
         }
       } else {
         console.error(`Failed to load chapter ${chapterToLoad} from list.`);
-        // Revert loading state if failed
+        // Revert loading state if the chapter failed to load
         paragraphContainer.classList.remove("is-loading");
         chapterTitle.classList.remove("is-loading");
       }
-      // --- End Chapter Loading Logic ---
     });
   } catch (error) {
     console.error("Error loading or setting up chapter list:", error);
     if (listContainer) {
-      // Check again in case it failed before injection
-      listContainer.innerHTML = "<p>خطأ في تحميل قائمة الفصول.</p>";
+      listContainer.innerHTML =
+        '<p style="color: white; text-align: center;">خطأ في تحميل قائمة الفصول.</p>';
     }
   }
 });
 
-//CHAPTER LIST BUTTON
+// This part handles the UI for opening and closing the chapter list container.
 document.addEventListener("DOMContentLoaded", () => {
   const listToggleButton = document.getElementById("list");
   const listContainer = document.getElementById("chapter-list-container");
+  const body = document.body;
 
-  if (listToggleButton && listContainer) {
-    listToggleButton.addEventListener("click", () => {
-      // Check if the container is currently visible (has the class)
-      const isVisible = listContainer.classList.contains("visible");
-
-      if (isVisible) {
-        // --- Hide it ---
-        // 1. Set max-height to 0 to start animation
-        listContainer.style.maxHeight = "0";
-        // 2. Remove the class (triggers opacity/margin/padding transitions)
-        listContainer.classList.remove("visible");
-      } else {
-        // --- Show it ---
-        // 1. Add the class first (sets opacity/margin/padding targets)
-        listContainer.classList.add("visible");
-        // 2. Set max-height to the actual content height to trigger slide animation
-        listContainer.style.maxHeight = listContainer.scrollHeight + "px";
-      }
-    });
-
-    // Optional: Recalculate max-height if window resizes while list is open
-    // This prevents content from being cut off if height changes
-    window.addEventListener("resize", () => {
-      if (listContainer.classList.contains("visible")) {
-        listContainer.style.maxHeight = listContainer.scrollHeight + "px";
-      }
-    });
-  } else {
-    if (!listToggleButton)
-      console.error("List toggle button (#list) not found.");
-    if (!listContainer)
-      console.error(
-        "Chapter list container (#chapter-list-container) not found."
-      );
+  if (!listToggleButton || !listContainer) {
+    console.error(
+      "List toggle button (#list) or container (#chapter-list-container) not found."
+    );
+    return;
   }
+
+  listToggleButton.addEventListener("click", () => {
+    const isVisible = listContainer.classList.contains("visible");
+
+    if (isVisible) {
+      // --- HIDE THE LIST ---
+      listToggleButton.classList.remove("active");
+      listContainer.style.maxHeight = "0"; // Triggers CSS transition to slide up
+      listContainer.classList.remove("visible");
+      body.classList.remove("list-is-open"); // Re-enables scrolling on the main page
+    } else {
+      // --- SHOW THE LIST ---
+      listToggleButton.classList.add("active");
+      const carouselContainer = document.querySelector(".carousel-container");
+
+      // 1. Smoothly scroll the page so the control bar is at the top of the screen.
+      // This creates a consistent position regardless of where the user is on the page.
+      if (carouselContainer) {
+        carouselContainer.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+
+      // 2. IMPORTANT: Use a short timeout. This allows the scroll animation to start
+      //    *before* we lock the body's scroll, preventing the animation from being cancelled.
+      setTimeout(() => {
+        // 3. Make the list container visible.
+        listContainer.classList.add("visible");
+
+        // 4. Calculate the maximum height for the list so it fits on the screen and becomes scrollable.
+        const carouselHeight = carouselContainer
+          ? carouselContainer.offsetHeight
+          : 50; // Use a fallback height
+        const calculatedMaxHeight = window.innerHeight - carouselHeight - 28; // 20px for bottom padding
+        listContainer.style.maxHeight = `${calculatedMaxHeight}px`; // Triggers CSS transition to slide down
+
+        // 5. Lock the main page scroll so only the list can be scrolled.
+        body.classList.add("list-is-open");
+      }, 150); // 150ms delay is usually sufficient for the scroll to begin.
+    }
+  });
+
+  // Add a listener to recalculate the list's height if the browser window is resized.
+  // This ensures the list doesn't get cut off or have too much empty space.
+  window.addEventListener("resize", () => {
+    if (listContainer.classList.contains("visible")) {
+      const carouselContainer = document.querySelector(".carousel-container");
+      const carouselHeight = carouselContainer
+        ? carouselContainer.offsetHeight
+        : 50;
+      const calculatedMaxHeight = window.innerHeight - carouselHeight - 28;
+      listContainer.style.maxHeight = `${calculatedMaxHeight}px`;
+    }
+  });
 });

@@ -58,6 +58,7 @@ strong {
   border-radius: 50%;
   /* outline: 1px solid #eb8517; */
   outline-offset: 2px;
+  margin-left: 10px;
 }
 .pre-nex {
   display: flex;

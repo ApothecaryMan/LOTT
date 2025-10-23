@@ -1,0 +1,176 @@
+/* ========================================= */
+/* --- Comprehensive Light Theme Styles --- */
+/* ========================================= */
+
+/* 1. Body & General Defaults */
+/* ----------------------------------------- */
+body.light-mode {
+  background-color: #f4f4f4; /* رمادي فاتح جدًا للجسم */
+  color: #212529; /* أسود ناعم للنص الافتراضي */
+}
+
+/* 2. Header & Top Image */
+/* ----------------------------------------- */
+body.light-mode .header-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); /* طبقة بيضاء شفافة لتفتيح الصورة */
+  z-index: 0;
+}
+body.light-mode .header {
+  position: relative;
+  z-index: 1;
+}
+
+body.light-mode .header .title,
+body.light-mode .header .main-nav li {
+  color: #1a1a1a;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8); /* ظل أبيض لجعل النص مقروءًا */
+}
+
+body.light-mode .search-bar {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #212529;
+  border: 1px solid #ced4da;
+}
+body.light-mode .search-bar::placeholder {
+  color: #6c757d;
+}
+body.light-mode .search-btn svg {
+  fill: #343a40;
+}
+
+/* 3. Carousel (Control Bar) */
+/* ----------------------------------------- */
+body.light-mode .carousel-container {
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+}
+body.light-mode .carousel-nav-btn svg {
+  fill: #495057;
+}
+
+body.light-mode .carousel-btn-start,
+body.light-mode .carousel-btn-middle,
+body.light-mode .carousel-btn-end {
+  background-color: #e9ecef;
+  color: #212529;
+  border: 1px solid #dee2e6;
+}
+body.light-mode .carousel-btn-start:hover,
+body.light-mode .carousel-btn-middle:hover,
+body.light-mode .carousel-btn-end:hover {
+  background-color: #ced4da;
+}
+
+body.light-mode .carousel-btn-start svg,
+body.light-mode .carousel-btn-middle svg,
+body.light-mode .carousel-btn-end svg {
+  fill: #212529;
+}
+
+/* Specific Active States for Carousel Buttons */
+body.light-mode #list.active {
+  background-color: #eb8317;
+  border-color: #c86f12;
+}
+body.light-mode #list.active svg {
+  fill: #ffffff; /* أيقونة القائمة بيضاء عند التفعيل */
+}
+
+body.light-mode #font-selector .active {
+  color: #eb8317;
+  border-color: #eb8317;
+  background-color: #fdf0e4;
+}
+
+body.light-mode .title#logo {
+  color: #212529;
+}
+
+/* 4. Main Content Area */
+/* ----------------------------------------- */
+body.light-mode .main,
+body.light-mode .support-container,
+body.light-mode .info-container,
+body.light-mode .footer,
+body.light-mode .card {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+body.light-mode .main-header {
+  border-bottom: 1px solid #e9ecef;
+}
+body.light-mode .chapter-title,
+body.light-mode .card .x,
+body.light-mode .date p,
+body.light-mode .support-container p,
+body.light-mode .info-container p {
+  color: #212529;
+}
+
+body.light-mode .chaper {
+  color: #343a40;
+}
+
+body.light-mode .pre-nex button {
+  background-color: #e9ecef;
+  color: #212529;
+  border: 1px solid #dee2e6;
+}
+body.light-mode .pre-nex button:hover {
+  background-color: #ced4da;
+}
+body.light-mode .pre-nex button svg {
+  fill: #212529;
+}
+
+/* 5. Chapter List Dropdown */
+/* ----------------------------------------- */
+body.light-mode #chapter-list-container {
+  background-color: #ffffff;
+  border-color: #ced4da;
+}
+body.light-mode #chapter-list-container h3 {
+  color: #eb8317;
+}
+body.light-mode #chapter-list button {
+  background-color: #f8f9fa;
+  border: 1px solid #f8f9fa; /* Hide border initially */
+}
+body.light-mode #chapter-list .chapter-number,
+body.light-mode #chapter-list .dash,
+body.light-mode #chapter-list .chapter-title-in-list {
+  color: #495057;
+}
+body.light-mode #chapter-list button:hover {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  transform: scale(1.02);
+}
+
+/* 6. Scrollbar */
+/* ----------------------------------------- */
+body.light-mode::-webkit-scrollbar {
+  width: 10px;
+}
+body.light-mode::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+body.light-mode::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 5px;
+}
+body.light-mode::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
