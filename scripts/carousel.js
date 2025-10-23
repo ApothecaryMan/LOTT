@@ -3,8 +3,8 @@
 // This function can initialize any carousel on the page
 function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
   const carousel = document.getElementById(carouselId);
-  const prevBtn = document.getElementById(prevBtnId);
-  const nextBtn = document.getElementById(nextBtnId);
+  const nextBtn = document.getElementById(prevBtnId);
+  const prevBtn = document.getElementById(nextBtnId);
 
   if (!carousel || !prevBtn || !nextBtn) {
     // It's okay if a carousel doesn't exist, just log a note and exit.

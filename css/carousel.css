@@ -143,7 +143,8 @@
   transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
     transform 0.2s var(--bounce-timing);
 }
-#color-selector button:active {
+#color-selector button:active,
+#color-selector button.active {
   width: 60px;
 
   /* 3. Add "scale" to make the button "pop" when pressed */
