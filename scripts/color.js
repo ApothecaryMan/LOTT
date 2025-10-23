@@ -65,11 +65,14 @@ function changeTheme(event) {
     body.light-theme #increase-font-size:hover, body.light-theme #increase-font-size:active,
     body.light-theme #decrease-font-size:hover, body.light-theme #decrease-font-size:active,
     #font-selector button:hover, body.light-theme #font-selector button:hover,
+    #align-formate button:hover, body.light-theme #align-formate button:hover,
     #list:hover, #list:active, body.light-theme #list:hover, body.light-theme #list:active {
         background-color: ${newColor};
     }
     .carousel-item#font-selector button.active,
     body.light-theme .carousel-item#font-selector button.active,
+    .carousel-item#align-formate button.active,
+    body.light-theme .carousel-item#align-formate button.active,
     .carousel-item button#list.active,
     body.light-theme .carousel-item button#list.active {
         background-color: ${newColor};
@@ -82,9 +85,12 @@ function changeTheme(event) {
     body.light-theme #increase-font-size:hover, body.light-theme #increase-font-size:active,
     body.light-theme #decrease-font-size:hover, body.light-theme #decrease-font-size:active,
     #font-selector button:hover, body.light-theme #font-selector button:hover,
+    #align-formate button:hover, body.light-theme #align-formate button:hover,
     #list:hover, #list:active, body.light-theme #list:hover, body.light-theme #list:active,
     .carousel-item#font-selector button.active,
     body.light-theme .carousel-item#font-selector button.active,
+    .carousel-item#align-formate button.active,
+    body.light-theme .carousel-item#align-formate button.active,
     .carousel-item button#list.active,
     body.light-theme .carousel-item button#list.active {
         color: white;
@@ -97,6 +103,9 @@ function changeTheme(event) {
     body.light-theme #increase-font-size:hover svg, body.light-theme #increase-font-size:active svg,
     body.light-theme #decrease-font-size:hover svg, body.light-theme #decrease-font-size:active svg,
     #list:hover svg, #list:active svg, body.light-theme #list:hover svg, body.light-theme #list:active svg,
+    #align-formate button:hover svg, body.light-theme #align-formate button:hover svg,
+    .carousel-item#align-formate button.active svg,
+    body.light-theme .carousel-item#align-formate button.active svg,
     .carousel-item button#list.active svg,
     body.light-theme .carousel-item button#list.active svg {
         fill: white;
@@ -126,7 +135,8 @@ function changeTheme(event) {
             body.light-theme .body { background-color: ${bodyBgColor}; box-shadow: none; }
             body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
             body.light-theme .chaper, body.light-theme .support, body.light-theme .info,
-            body.light-theme .main-header-container, body.light-theme #chapter-list-container {
+            body.light-theme .main-header-container, body.light-theme #chapter-list-container,
+            body.light-theme .info-container .info {
                 background-color: ${containerBgColor};
             }
             body.light-theme .carousel-item button {

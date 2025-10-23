@@ -108,12 +108,101 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- 4. Initialization ---
+  // --- 4. Text Alignment ---
+  const alignContainer = document.getElementById("align-formate");
+  const ltrBtn = document.getElementById("ltr-btn");
+  const middleBtn = document.getElementById("middle-btn");
+  const rtlBtn = document.getElementById("rtl-btn");
+
+  const TEXT_ALIGN_KEY = "userTextAlign";
+  let currentTextAlign = "right"; // Default
+
+  function applyTextAlign() {
+    const elementsToAlign = [paragraph, chapterTitle, supportText, infoText];
+
+    elementsToAlign.forEach((el) => {
+      if (el) {
+        el.style.textAlign = currentTextAlign;
+      }
+    });
+
+    const dateContainer = document.querySelector(
+      ".main-header-container .date"
+    );
+    if (dateContainer) {
+      if (currentTextAlign === "left") {
+        dateContainer.style.justifyContent = "flex-end"; // flex-end is left in RTL
+      } else if (currentTextAlign === "center") {
+        dateContainer.style.justifyContent = "center";
+      } else {
+        // right
+        dateContainer.style.justifyContent = "flex-start"; // flex-start is right in RTL
+      }
+    }
+
+    const preNexContainer = document.querySelector(".pre-nex");
+    if (preNexContainer) {
+      if (currentTextAlign === "left") {
+        preNexContainer.style.justifyContent = "flex-end"; // flex-end is left in RTL
+      } else if (currentTextAlign === "center") {
+        preNexContainer.style.justifyContent = "center";
+      } else { // right
+        preNexContainer.style.justifyContent = "flex-start"; // flex-start is right in RTL
+      }
+    }
+
+    if (alignContainer) {
+      const allAlignButtons = alignContainer.querySelectorAll("button");
+      allAlignButtons.forEach((btn) => btn.classList.remove("active"));
+
+      if (currentTextAlign === "left") {
+        ltrBtn.classList.add("active");
+      } else if (currentTextAlign === "center") {
+        middleBtn.classList.add("active");
+      } else {
+        rtlBtn.classList.add("active");
+      }
+    }
+  }
+
+  function saveTextAlign() {
+    localStorage.setItem(TEXT_ALIGN_KEY, currentTextAlign);
+  }
+
+  function loadTextAlign() {
+    const savedAlign = localStorage.getItem(TEXT_ALIGN_KEY);
+    if (savedAlign) {
+      currentTextAlign = savedAlign;
+    }
+  }
+
+  function setupAlignmentSelection() {
+    if (alignContainer) {
+      alignContainer.addEventListener("click", (event) => {
+        const clickedButton = event.target.closest("button");
+        if (!clickedButton) return;
+
+        if (clickedButton.id === "ltr-btn") {
+          currentTextAlign = "left";
+        } else if (clickedButton.id === "middle-btn") {
+          currentTextAlign = "center";
+        } else {
+          currentTextAlign = "right";
+        }
+        applyTextAlign();
+        saveTextAlign();
+      });
+    }
+  }
+
+  // --- 5. Initialization ---
   loadFontSettings(); // Load saved settings first
+  loadTextAlign();
 
   // The contentLoaded event will trigger the initial application of styles
   document.addEventListener("contentLoaded", () => {
     applyFontFamily(); // Apply loaded settings when content is ready
+    applyTextAlign();
   });
 
   // Attach other listeners
@@ -122,6 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (decreaseFontSizeBtn)
     decreaseFontSizeBtn.addEventListener("click", decreaseFontSize);
   setupFontSelection();
+  setupAlignmentSelection();
 });
 
 // document.addEventListener("contentLoaded", () => {

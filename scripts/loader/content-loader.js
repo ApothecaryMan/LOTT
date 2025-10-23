@@ -42,6 +42,13 @@ async function loadChapter(chapterNumber) {
 
     // 6. حقن العناصر في الصفحة
     titleElement.textContent = newTitleText; // حقن العنوان الجديد
+
+    let chapterNameOnly = newTitleText;
+    if (newTitleText.includes(" – ")) {
+      chapterNameOnly = newTitleText.split(" – ")[1];
+    }
+    document.getElementById("title-btn").textContent = chapterNameOnly;
+
     paragraphContainer.innerHTML = tempDiv.innerHTML; // حقن باقي المحتوى
 
     // 7. إعلان أن المحتوى قد اكتمل تحميله

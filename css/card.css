@@ -29,28 +29,27 @@
 
 /* --- Card Styling (Individual Card) --- */
 .card {
-  flex: 0 0 48%;
-  min-width: 280px;
-  border-radius: 25px;
+  width: 100px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  position: relative; /* Needed for any potential future overlays */
+  position: relative;
+  flex-shrink: 0;
 }
 
 /* --- Card Image --- */
 .card-img {
   width: 100%;
-  height: 100%;
   object-fit: cover;
   display: block;
 }
 
 /* --- Info Section --- */
 .card-info {
-  padding: 10px 15px 15px 0px;
-  margin-top: -30px;
-  border-radius: 0 0 25px 25px;
+  padding: 8px 10px 10px 10px;
+  margin-top: -20px;
+  border-radius: 0 0 15px 15px;
   min-height: 10px;
   display: flex;
   flex-direction: column;
@@ -60,18 +59,33 @@
 .cards p {
   color: rgb(255, 255, 255);
   font-weight: 900;
-  margin: 2px 0;
+  margin: 1px 0;
 }
 .x {
   font-family: ink-2;
-  font-size: 20px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.date {
-  align-items: center;
+.card .date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
-.date .zeus {
-  width: 25px;
-  height: 25px;
+
+.card .date p {
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.card .date .zeus {
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
 }
 
@@ -113,10 +127,6 @@
 
 /* --- Responsive adjustments --- */
 @media (max-width: 768px) {
-  .card {
-    flex-basis: 80%;
-  }
-
   /* Adjust button vertical position on smaller screens if needed */
   .card-carousel-container .carousel-nav-btn {
     transform: translateY(-calc(100% + 130px)); /* Slightly less distance */

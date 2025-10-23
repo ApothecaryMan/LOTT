@@ -118,4 +118,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Start the Reader ---
   initializeReader();
-}); // End DOMContentLoaded for chapter-navigation.js
+});
+// End DOMContentLoaded for chapter-navigation.js

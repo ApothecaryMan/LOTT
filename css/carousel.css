@@ -232,17 +232,41 @@
   border-radius: 25px;
   width: 25px;
   padding: 0;
-
-  transition: transform 0.8s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
-#toggle-theme-btn:hover svg {
+
+#toggle-theme-btn:hover,
+#toggle-theme-btn.active {
   transform: rotate(180deg);
 }
-/* #toggle-theme-btn:hover {
-  background-color: black;
-  border: 2px solid white;
+
+/* --- Styling for the new Title Button --- */
+
+#title-btn {
+  /* Core layout */
+  width: auto; /* Allow the button to resize based on content */
+  max-width: 250px; /* Prevent it from getting excessively long */
+  min-width: 0px; /* Give it a minimum width even if the title is short */
+  padding: 0 15px;
+
+  /* Text styling */
+  font-family: "Ink", serif; /* Use a stylish font */
+  font-size: 14px;
+  white-space: nowrap; /* Prevent text from wrapping to a new line */
+  overflow: hidden; /* Hide any text that overflows */
+  text-overflow: ellipsis; /* Add "..." if the text is too long */
+
+  /* Make it non-interactive visually */
+  cursor: default;
 }
 
-#toggle-theme-btn:active {
-  
-} */
+/* Ensure it doesn't get the hover effect of other buttons */
+#title-btn:hover,
+#title-btn:active {
+  transform: none; /* Disable the pop effect */
+  border-radius: 3px; /* Keep its original shape */
+}
+
+#align-formate button {
+  transition: border-radius 0.2s ease-in-out;
+}
