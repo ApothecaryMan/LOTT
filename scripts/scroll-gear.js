@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const longPressDuration = 2000;
   let isLongPress = false;
   let gearInput = null;
-
+  let tapTimer = null;
   // --- Touch/Mouse Handling Variables ---
   let touchStartY = 0;
   let moved = false;
@@ -173,35 +173,49 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /** Handles click or tap end */
+  /** Handles click or tap end, clears timers, triggers load if not long press/swipe */
   async function handleTapOrClickEnd() {
-    clearTimeout(longPressTimer);
+    clearTimeout(longPressTimer); // Clear long press timer
 
+    // If it was a long press or a swipe, do nothing more
     if (isLongPress || moved) {
       moved = false;
       isLongPress = false;
       return;
     }
 
-    const chapterToLoad = parseInt(gear.textContent);
-    if (isNaN(chapterToLoad)) return;
+    // --- ADD DELAY FOR TAP ---
+    clearTimeout(tapTimer); // Clear previous tap timer if any
+    tapTimer = setTimeout(async () => {
+      // Start a short timer (e.g., 200ms)
+      // This code runs ONLY if no other action (like scroll) cancels it
 
-    paragraphContainer.classList.add("is-loading");
-    chapterTitle.classList.add("is-loading");
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    const success = await window.loadChapter(chapterToLoad);
-    if (success) {
-      window.currentChapterNumber = chapterToLoad;
-      paragraphContainer.classList.remove("is-loading");
-      chapterTitle.classList.remove("is-loading");
-      await window.updateButtonVisibility();
-    } else {
-      console.error(`Failed to load chapter ${chapterToLoad}`);
-      currentValue = window.currentChapterNumber;
-      gear.textContent = window.currentChapterNumber;
-      paragraphContainer.classList.remove("is-loading");
-      chapterTitle.classList.remove("is-loading");
-    }
+      const chapterToLoad = parseInt(gear.textContent);
+      if (isNaN(chapterToLoad)) return;
+
+      // --- Chapter Loading Logic ---
+      paragraphContainer.classList.add("is-loading");
+      chapterTitle.classList.add("is-loading");
+      // Scroll happens before loading now
+      chapterTitle.scrollIntoView({ behavior: "auto", block: "start" });
+      await new Promise((resolve) => setTimeout(resolve, 300)); // Wait for fade
+
+      const success = await window.loadChapter(chapterToLoad);
+      if (success) {
+        window.currentChapterNumber = chapterToLoad;
+        paragraphContainer.classList.remove("is-loading");
+        chapterTitle.classList.remove("is-loading");
+        await window.updateButtonVisibility();
+      } else {
+        console.error(`Failed to load chapter ${chapterToLoad}`);
+        currentValue = window.currentChapterNumber;
+        gear.textContent = window.currentChapterNumber;
+        paragraphContainer.classList.remove("is-loading");
+        chapterTitle.classList.remove("is-loading");
+        await window.updateButtonVisibility();
+      }
+    }, 200); // <-- مدة الانتظار (150ms), يمكنك تعديلها
+    // --- END TAP DELAY ---
   }
 
   /** Clears timer if mouse leaves the button */
