@@ -17,35 +17,34 @@
     />
 
     <!-- STYLE -->
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/general.css" />
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/header.css" />
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/general.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/aspect-ratio.css" />
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/card.css" />
-  <!-- Carousel partial styles -->
-  <link rel="stylesheet" href="css/carousel/00-base.css" />
-  <link rel="stylesheet" href="css/carousel/10-items.css" />
-  <link rel="stylesheet" href="css/carousel/20-fonts.css" />
-  <link rel="stylesheet" href="css/carousel/30-colors.css" />
-  <link rel="stylesheet" href="css/carousel/40-nav.css" />
-    <link rel="stylesheet" href="css/scroll-gear.css" />
-    <link rel="stylesheet" href="css/font.css" />
-    <link rel="stylesheet" href="css/chapter-list.css" />
-    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/card.css" />
+    <!-- Carousel partial styles -->
+    <link rel="stylesheet" href="css/carousel/00-base.css" />
+    <link rel="stylesheet" href="css/carousel/01-items.css" />
+    <link rel="stylesheet" href="css/carousel/02-fonts.css" />
+    <link rel="stylesheet" href="css/carousel/03-colors.css" />
+    <link rel="stylesheet" href="css/carousel/04-nav.css" />
+    <link rel="stylesheet" href="css/carouselscroll-gear.css" />
+    <link rel="stylesheet" href="css/carousel/font.css" />
+    <link rel="stylesheet" href="css/carousel/chapter-list.css" />
+    <link rel="stylesheet" href="css/carousel/theme.css" />
 
-
-     <!--LOADER FIRST-->
+    <!--LOADER FIRST-->
     <script src="scripts/loader/content-loader.js" defer></script>
-  <script src="scripts/loader/list-loader.js" defer></script>
-  <script src="scripts/loader/carousel-loader.js" defer></script>
+    <script src="scripts/loader/list-loader.js" defer></script>
+    <script src="scripts/loader/carousel-loader.js" defer></script>
     <!-- SCRIPT -->
     <script src="scripts/vibration/vibration-manager.js" defer></script>
     <script src="scripts/chapter-navigation.js" defer></script>
     <script src="scripts/scroll-gear.js" defer></script>
     <script src="scripts/script.js" defer></script>
-  <script src="scripts/carousel/init.js" defer></script>
-  <script src="scripts/carousel/bootstrap.js" defer></script>
-  <script src="scripts/carousel/wordcount.js" defer></script>
+    <script src="scripts/carousel/init.js" defer></script>
+    <script src="scripts/carousel/bootstrap.js" defer></script>
+    <script src="scripts/carousel/wordcount.js" defer></script>
     <script src="scripts/font.js" defer></script>
     <script src="scripts/color.js" defer></script>
     <script src="scripts/theme.js" defer></script>
@@ -105,24 +104,33 @@
         </div>
         <div class="pre-nex">
           <button class="next">
-            <svg height="18px" viewBox="0 0 25 25" width=18px" fill="black">
-              <g><path d="M0,0h24v24H0V0z" fill="none" /></g>
-              <g>
-                <polygon
-                  points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"
-                />
-              </g>
-            </svg>
             التالي
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="18px"
+              width="18px"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12" />
+            </svg>
           </button>
+
           <button class="previous" id="previous-btn">
-            السابق
-            <svg height="18px" viewBox="0 0 25 25" width="24px" fill="black">
-              <path d="M0 0h24v24H0V0z" fill="none" opacity=".87" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="18px"
+              width="18px"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
               <path
                 d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"
               />
             </svg>
+            السابق
           </button>
         </div>
       </div>
@@ -178,13 +186,18 @@
 
     <div class="card-carousel-container">
       <button id="card-prev-btn" class="carousel-nav-btn hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="white"
+        >
           <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
         </svg>
       </button>
 
-      <div class="cards" id="card-carousel"> 
-    
+      <div class="cards" id="card-carousel">
         <div class="card">
           <img class="card-img" src="img/card.jpg" />
           <div class="card-info">
@@ -199,7 +212,13 @@
       </div>
 
       <button id="card-next-btn" class="carousel-nav-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="white"
+        >
           <path d="M400-240 344-296l184-184-184-184 56-56 240 240-240 240Z" />
         </svg>
       </button>
