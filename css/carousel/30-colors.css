@@ -1,0 +1,37 @@
+/* Color selector */
+#color-selector {
+  gap: 4px;
+}
+#color-selector button {
+  width: 25px;
+  --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
+    transform 0.2s var(--bounce-timing);
+}
+#color-selector button:active,
+#color-selector button.active {
+  width: 60px;
+  transform: scale(1.01);
+  transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
+    transform 0.2s var(--bounce-timing);
+}
+
+#color-selector #default {
+  background-color: rgb(166, 166, 166);
+}
+#orange {
+  background-color: #eb8317;
+}
+#red {
+  background-color: rgb(219, 62, 62);
+}
+#blue {
+  background-color: rgb(18, 108, 211);
+}
+#green {
+  background-color: rgb(0, 195, 68);
+}
+#pink {
+  background-color: rgb(196, 64, 189);
+}

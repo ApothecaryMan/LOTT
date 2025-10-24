@@ -1,0 +1,53 @@
+/* Item & button basics */
+.carousel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 1px;
+
+  padding: 0 5px 0 5px;
+}
+
+.carousel-item button {
+  padding: 7px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  height: 25px;
+  border: 0px;
+}
+
+.carousel-btn-start {
+  border-radius: 3px 20px 20px 3px;
+}
+.carousel-btn-middle {
+  border-radius: 3px;
+}
+.carousel-btn-end {
+  border-radius: 20px 3px 3px 20px;
+}
+.carousel-btn-start,
+.carousel-btn-middle,
+.carousel-btn-end {
+  background-color: #f2f2f2;
+}
+
+.carousel-btn-start:hover,
+.carousel-btn-end:hover {
+  transition: border-radius 0.2s ease-in-out;
+}
+
+.carousel-btn-start:active,
+.carousel-btn-middle:active,
+.carousel-btn-end:active {
+  border-radius: 30px;
+}
+
+.carousel-item .active {
+  border-radius: 50px;
+}
+
+#align-formate button {
+  transition: border-radius 0.2s ease-in-out;
+}

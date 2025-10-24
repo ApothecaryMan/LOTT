@@ -1,3 +1,14 @@
+/* Aggregate carousel stylesheet
+   This file imports the split carousel partials so tools or consumers
+   that expect `css/carousel.css` still work.
+*/
+@import url("carousel/00-base.css");
+@import url("carousel/10-items.css");
+@import url("carousel/20-fonts.css");
+@import url("carousel/30-colors.css");
+@import url("carousel/40-nav.css");
+
+/* End of aggregate file */
 .body {
   display: flex;
   justify-content: center;

@@ -1,0 +1,32 @@
+/* Font selector and related controls */
+#font-selector button {
+  display: flex;
+  padding: 0 10px 0 10px;
+  --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  transition: border-radius 0.2s ease-in-out, padding 0.5s var(--bounce-timing),
+    transform 0.5s var(--bounce-timing);
+}
+
+#font-selector button:active {
+  padding: 0 25px 0 25px;
+  transform: scale(1.01);
+  transition: border-radius 0.2s ease-in-out, padding 0.5s var(--bounce-timing),
+    transform 0.5s var(--bounce-timing);
+}
+
+#font-size {
+  font-family: Alexandria;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: default;
+  width: 30px;
+  border-radius: 3px;
+}
+
+#font-naskh {
+  font-size: 22px;
+}
+#font-alexandria {
+  font-size: 13px;
+}
