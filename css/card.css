@@ -1,5 +1,3 @@
-/* --- START: Updated card.css content --- */
-
 /* --- Main Container for the Card Carousel --- */
 .card-carousel-container {
   position: relative; /* This is crucial for positioning the buttons */
@@ -8,6 +6,7 @@
   /* We no longer need side padding */
   /* padding: 0 40px; */
   box-sizing: border-box;
+  display: none;
 }
 
 /* --- The Carousel Itself (the moving part) --- */
@@ -17,10 +16,7 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  -ms-overflow-style: none;
   padding: 10px; /* Add some padding so cards don't touch the edges */
-  /* Clip the content to prevent scrollbars from showing outside rounded corners if any */
-  clip-path: inset(0 0 0 0);
 }
 
 .cards::-webkit-scrollbar {
@@ -29,7 +25,7 @@
 
 /* --- Card Styling (Individual Card) --- */
 .card {
-  width: 100px;
+  width: 100%;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -42,11 +38,9 @@
 .card-img {
   width: 100%;
   object-fit: cover;
-  display: block;
 }
 
-/* --- Info Section --- */
-.card-info {
+--- Info Section --- */ .card-info {
   padding: 8px 10px 10px 10px;
   margin-top: -20px;
   border-radius: 0 0 15px 15px;
@@ -62,7 +56,7 @@
   margin: 1px 0;
 }
 .x {
-  font-family: ink-2;
+  font-family: ink;
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
@@ -85,7 +79,6 @@
 
 .card .date .zeus {
   width: 20px;
-  height: 20px;
   border-radius: 50%;
 }
 
@@ -123,21 +116,4 @@
 .card-carousel-container .carousel-nav-btn.hidden {
   opacity: 0;
   pointer-events: none;
-}
-
-/* --- Responsive adjustments --- */
-@media (max-width: 768px) {
-  /* Adjust button vertical position on smaller screens if needed */
-  .card-carousel-container .carousel-nav-btn {
-    transform: translateY(-calc(100% + 130px)); /* Slightly less distance */
-  }
-}
-
-@media (max-width: 480px) {
-  /* Further adjustment for very small screens */
-  .card-carousel-container .carousel-nav-btn {
-    transform: translateY(-calc(100% + 110px));
-    width: 35px;
-    height: 35px;
-  }
 }
