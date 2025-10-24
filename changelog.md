@@ -61,3 +61,13 @@
 
 - **File Modified:** `css/card.css`
 - **Change:** Corrected a layout issue in the small chapter cards where the author and date text would wrap incorrectly. The `.date` element is now a vertical flex container, and its text content is properly truncated.
+
+### Feature: Enhanced "Super Move" Title Animation
+
+- **Files Modified:** `css/carousel.css`, `scripts/title-animation.js`
+- **Change:** The "Super Move" title animation has been significantly enhanced. It now features a "flying" title effect created by animating a clone of the title element. Also fixed a bug where the title button would not expand correctly by using a more reliable `max-width` animation.
+
+### Enhancement: Simplified Gear Button Interaction
+
+- **Files Modified:** `scripts/scroll-gear.js`, `css/scroll-gear.css`
+- **Change:** The gear button's functionality has been completely overhauled. All previous features (scrolling, swiping, transforming into an input) have been removed. The button now displays the current chapter number and features a new animation: it expands on press, and a long press activates the search bar. On release, it returns to its normal size with a bouncy animation. This simplifies the UI and improves swipe performance in the carousel.

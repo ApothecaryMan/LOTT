@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- State Variables ---
   let currentValue = 1;
   let longPressTimer = null;
-  const longPressDuration = 2000;
+  const longPressDuration = 1000;
   let isLongPress = false;
   let gearInput = null;
   let tapTimer = null;
@@ -94,28 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Gear Event Handlers (with Vibration added) ---
 
-  function handleGearScroll(event) {
-    event.preventDefault();
-    const maxChapter = getMaxChapter();
-    if (event.deltaY < 0) {
-      if (currentValue < maxChapter) {
-        currentValue++;
-        gear.textContent = currentValue;
-        if (window.vibrationManager) {
-          window.vibrationManager.gearTick();
-        } // <-- VIBRATE HERE
-      }
-    } else {
-      if (currentValue > 1) {
-        currentValue--;
-        gear.textContent = currentValue;
-        if (window.vibrationManager) {
-          window.vibrationManager.gearTick();
-        } // <-- VIBRATE HERE
-      }
-    }
-  }
-
   function handleTouchStart(event) {
     touchStartY =
       event.touches && event.touches.length > 0
@@ -125,37 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
     isLongPress = false;
     clearTimeout(longPressTimer);
     longPressTimer = setTimeout(transformToInput, longPressDuration);
-  }
-
-  function handleTouchMove(event) {
-    event.preventDefault();
-    clearTimeout(longPressTimer);
-    const currentY = event.touches[0].clientY;
-    const deltaY = currentY - touchStartY;
-    const maxChapter = getMaxChapter();
-    if (Math.abs(deltaY) > 5) moved = true;
-
-    if (deltaY < -10) {
-      // Swiping UP
-      if (currentValue < maxChapter) {
-        currentValue++;
-        gear.textContent = currentValue;
-        touchStartY = currentY;
-        if (window.vibrationManager) {
-          window.vibrationManager.gearTick();
-        } // <-- VIBRATE HERE
-      }
-    } else if (deltaY > 10) {
-      // Swiping DOWN
-      if (currentValue > 1) {
-        currentValue--;
-        gear.textContent = currentValue;
-        touchStartY = currentY;
-        if (window.vibrationManager) {
-          window.vibrationManager.gearTick();
-        } // <-- VIBRATE HERE
-      }
-    }
   }
 
   async function handleTapOrClickEnd() {
@@ -194,12 +141,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Add Event Listeners ---
-  gear.addEventListener("wheel", handleGearScroll);
   gear.addEventListener("mousedown", handleTouchStart);
   gear.addEventListener("mouseup", handleTapOrClickEnd);
   gear.addEventListener("mouseleave", handleMouseLeave);
   gear.addEventListener("touchstart", handleTouchStart, { passive: false });
-  gear.addEventListener("touchmove", handleTouchMove, { passive: false });
   gear.addEventListener("touchend", handleTapOrClickEnd);
   gear.addEventListener("touchcancel", handleMouseLeave);
 

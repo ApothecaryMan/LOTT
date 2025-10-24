@@ -232,7 +232,7 @@
   border-radius: 25px;
   width: 25px;
   padding: 0;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.6s ease-in-out;
 }
 
 #toggle-theme-btn:hover,
@@ -243,21 +243,22 @@
 /* --- Styling for the new Title Button --- */
 
 #title-btn {
-  /* Core layout */
-  width: auto; /* Allow the button to resize based on content */
-  max-width: 250px; /* Prevent it from getting excessively long */
-  min-width: 0px; /* Give it a minimum width even if the title is short */
-  padding: 0 15px;
-
-  /* Text styling */
-  font-family: "Ink", serif; /* Use a stylish font */
+  max-width: 0;
+  padding: 0;
+  border-radius: 3px;
+  font-family: "Ink", serif;
   font-size: 14px;
-  white-space: nowrap; /* Prevent text from wrapping to a new line */
-  overflow: hidden; /* Hide any text that overflows */
-  text-overflow: ellipsis; /* Add "..." if the text is too long */
-
-  /* Make it non-interactive visually */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: default;
+  transition: max-width 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    padding 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#title-btn.visible {
+  max-width: 250px;
+  padding: 0 10px;
 }
 
 /* Ensure it doesn't get the hover effect of other buttons */

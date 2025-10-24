@@ -12,19 +12,17 @@
   border-radius: 25px 3px 3px 25px;
 
   user-select: none;
-
-  cursor: none; /* سهم أعلى وأسفل */
-
+  cursor: pointer;
   --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
   transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
     transform 0.2s var(--bounce-timing);
 }
 
 #gear:active {
-  width: 80px;
+  width: 70px;
 
   /* 3. Add "scale" to make the button "pop" when pressed */
-  transform: scale(1.01);
+  transform: scale(1);
 
   transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
     transform 0.2s var(--bounce-timing);

@@ -36,7 +36,8 @@ strong {
   font-size: 30px;
   transition: opacity 0.3s ease-in-out;
 }
-#chapter-title.is-loading {
+#chapter-title.is-loading,
+#chapter-title.hidden {
   opacity: 0;
 }
 
