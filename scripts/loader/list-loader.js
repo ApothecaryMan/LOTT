@@ -86,16 +86,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // This part handles the UI for opening and closing the chapter list container.
-document.addEventListener("DOMContentLoaded", () => {
+function setupListToggle() {
   const listToggleButton = document.getElementById("list");
   const listContainer = document.getElementById("chapter-list-container");
   const body = document.body;
 
   if (!listToggleButton || !listContainer) {
-    console.error(
-      "List toggle button (#list) or container (#chapter-list-container) not found."
-    );
-    return;
+    // Not an error here — carousel may not have been injected yet. Return false
+    // so the caller can decide to wait for `carouselLoaded`.
+    return false;
   }
 
   listToggleButton.addEventListener("click", () => {
@@ -103,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isVisible) {
       // --- HIDE THE LIST ---
-      // VIBRATION: Trigger the "close" haptic
       if (window.vibrationManager) {
         window.vibrationManager.listClose();
       }
@@ -114,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
       body.classList.remove("list-is-open");
     } else {
       // --- SHOW THE LIST ---
-      // VIBRATION: Trigger the "open" haptic
       if (window.vibrationManager) {
         window.vibrationManager.listOpen();
       }
@@ -141,8 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Add a listener to recalculate the list's height if the browser window is resized.
-  // This ensures the list doesn't get cut off or have too much empty space.
+  // Recalculate height on resize when visible
   window.addEventListener("resize", () => {
     if (listContainer.classList.contains("visible")) {
       const carouselContainer = document.querySelector(".carousel-container");
@@ -153,4 +149,20 @@ document.addEventListener("DOMContentLoaded", () => {
       listContainer.style.maxHeight = `${calculatedMaxHeight}px`;
     }
   });
+
+  return true;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Try to set up the list toggle immediately. If the carousel partials
+  // haven't been injected yet (so `#list` is missing), wait for
+  // `carouselLoaded` which is dispatched by `carousel-loader.js`.
+  const ok = setupListToggle();
+  if (!ok) {
+    const onCarouselLoaded = () => {
+      setupListToggle();
+      document.removeEventListener("carouselLoaded", onCarouselLoaded);
+    };
+    document.addEventListener("carouselLoaded", onCarouselLoaded);
+  }
 });
