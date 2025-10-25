@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const chapterTitle = document.getElementById("chapter-title");
-  const titleBtn = document.getElementById("title-btn");
+  const titleBtn = document.getElementById("title-btn"); //title-btn
 
   if (!chapterTitle || !titleBtn) {
     return;
@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     (entries) => {
       entries.forEach((entry) => {
         // Check if the title is leaving the screen at the top
-        const isLeavingScreen = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        const isLeavingScreen =
+          !entry.isIntersecting && entry.boundingClientRect.top < 0;
 
         if (isLeavingScreen) {
           if (!isAnimating && !titleBtn.classList.contains("visible")) {
@@ -59,11 +60,18 @@ document.addEventListener("DOMContentLoaded", () => {
     chapterTitle.classList.add("hidden");
     titleBtn.classList.add("visible");
 
-    const deltaX = destRect.left + destRect.width / 2 - (sourceRect.left + sourceRect.width / 2);
-    const deltaY = destRect.top + destRect.height / 2 - (sourceRect.top + sourceRect.height / 2);
-    
+    const deltaX =
+      destRect.left +
+      destRect.width / 2 -
+      (sourceRect.left + sourceRect.width / 2);
+    const deltaY =
+      destRect.top +
+      destRect.height / 2 -
+      (sourceRect.top + sourceRect.height / 2);
+
     // Ensure we don't divide by zero if the source width is 0
-    const scale = sourceRect.width > 0 ? titleBtn.offsetWidth / sourceRect.width : 0;
+    const scale =
+      sourceRect.width > 0 ? titleBtn.offsetWidth / sourceRect.width : 0;
 
     const animation = clone.animate(
       [

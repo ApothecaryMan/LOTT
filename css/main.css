@@ -74,7 +74,7 @@ strong {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  padding: 6px 12px;
+  padding: 6px 25px;
   border: 0px;
   cursor: pointer;
 
@@ -92,10 +92,10 @@ strong {
 }
 
 .next {
-  border-radius: 2px 25px 25px 3px;
+  border-radius: 3px 25px 25px 3px;
 }
 .next:active {
-  border-radius: 15px;
+  border-radius: 25px;
 }
 .previous {
   border-radius: 20px 3px 3px 20px;
@@ -161,7 +161,8 @@ strong {
 
 /* إخفاء زر "التالي" عند إضافة هذا الكلاس */
 .pre-nex.next-hidden .next {
-  display: none;
+  width: 0;
+  padding: 0;
 }
 /* جعل زر "السابق" مدوراً بالكامل */
 .pre-nex.next-hidden .previous {
@@ -170,7 +171,8 @@ strong {
 
 /* إخفاء زر "السابق" عند إضافة هذا الكلاس */
 .pre-nex.prev-hidden .previous {
-  display: none;
+  width: 0;
+  padding: 0;
 }
 /* جعل زر "التالي" مدوراً بالكامل */
 .pre-nex.prev-hidden .next {

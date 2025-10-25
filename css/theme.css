@@ -50,7 +50,7 @@ body.light-theme .body {
 /* عنوان الرواية الرئيسي في الهيدر */
 body.light-theme .header {
   color: #222;
-  text-shadow: none; /* إزالة ظل النص ليكون أوضح */
+  text-shadow: none;
 }
 
 /* نصوص الفوتر */
@@ -66,28 +66,22 @@ body.light-theme .card p {
 /* ========== 4. الأزرار والعناصر ========= */
 /* ======================================== */
 
-/* أزرار الكاروسيل (التالي/السابق) */
 body.light-theme .carousel-nav-btn {
   background-color: #e9e9e9;
 }
 body.light-theme .carousel-nav-btn svg {
-  fill: #333; /* تغيير لون السهم للأسود */
+  fill: #333;
 }
 
-/* أزرار التحكم بالفصول (التالي/السابق) تحت العنوان */
-/* body.light-theme .next,
-body.light-theme .previous {
-  background-color: silver;
-  color: #333;
-} */
 body.light-theme .next svg,
 body.light-theme .previous svg {
   fill: #333;
 }
+*/
 
 /* قائمة الفصول الداخلية */
 
-body.light-theme #chapter-list button {
+ body.light-theme #chapter-list button {
   background-color: #e5e5e5;
   color: #222;
 }
@@ -101,7 +95,6 @@ body.light-theme .dash {
   color: #444;
 }
 
-/* تعديل لون الخط والخلفيه داخل الزراير */
 body.light-theme .next,
 body.light-theme .previous {
   background-color: #e5e5e5;
@@ -112,7 +105,6 @@ body.light-theme .body {
   background-color: #e9e9e9;
   box-shadow: none;
 }
-/* تغيير لون أيقونة زيادة/نقصان الخط */
 body.light-theme #increase-font-size svg,
 body.light-theme #decrease-font-size svg {
   fill: #222;
@@ -125,4 +117,8 @@ body.light-theme .card-carousel-container #card-prev-btn,
 body.light-theme .card-carousel-container #card-next-btn {
   background-color: #f0f0f070;
   border: 2px solid #000000;
+}
+
+body.light-theme .reply-textarea {
+  color: #333;
 }

@@ -8,6 +8,8 @@
   /* We no longer need side padding */
   /* padding: 0 40px; */
   box-sizing: border-box;
+
+  display: none;
 }
 
 /* --- The Carousel Itself (the moving part) --- */
@@ -29,7 +31,7 @@
 
 /* --- Card Styling (Individual Card) --- */
 .card {
-  width: 100px;
+  width: 100%;
   border-radius: 15px;
   display: flex;
   flex-direction: column;

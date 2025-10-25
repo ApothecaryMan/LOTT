@@ -1,0 +1,129 @@
+/* --- تنسيقات نموذج الرد المحسّن --- */
+
+.reply-form-container {
+  /* استخدام متغيرات CSS لتسهيل التعديل على الألوان والتنسيقات */
+  --primary-color: #0d6efd; /* لون أساسي (أزرق) */
+  --primary-color-hover: #0b5ed7; /* لون عند التمرير */
+  --primary-color-focus: rgba(13, 110, 253, 0.4); /* لون للتركيز (focus) */
+  --bg-main: #202124; /* خلفية رئيسية داكنة */
+  --bg-form: rgba(240, 242, 245, 0.05); /* خلفية النموذج */
+  --bg-input: #2c2c2c; /* خلفية حقل الإدخال */
+  --border-color: #444; /* لون الحدود */
+  --text-color: #e0e0e0; /* لون النص الأساسي */
+  --text-color-light: #888; /* لون نص باهت (placeholder) */
+  --border-radius-main: 15px;
+  --border-radius-small: 8px;
+  --form-indentation: 45px; /* مسافة البادئة للرد */
+
+  /* لعمل مسافة بادئة تظهر أنه رد (باستخدام خاصية تدعم اللغتين) */
+  margin-block-start: 15px; /* بديل لـ margin-top */
+  margin-inline-start: var(
+    --form-indentation
+  ); /* بديل لـ margin-right/left لدعم RTL/LTR */
+
+  padding: 15px;
+  background-color: var(--bg-form);
+  border-radius: var(--border-radius-main);
+  border: 1px solid var(--border-color);
+  animation: fadeIn 0.3s ease-out;
+  box-sizing: border-box; /* لضمان حساب العرض والارتفاع بشكل صحيح */
+}
+
+.reply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* زيادة المسافة قليلاً بين العناصر */
+}
+
+.reply-textarea {
+  width: 100%; /* أفضل من 92%، ليتناسب مع padding الأب */
+  min-height: 50px; /* يمكن تقليل الارتفاع المبدئي لأن الحجم سيزيد تلقائياً */
+  max-height: 1000px; /* وضع حد أقصى للارتفاع */
+  padding: 12px; /* زيادة الـ padding لراحة العين */
+  border-radius: var(--border-radius-small);
+  border: 1px solid var(--border-color);
+  font-family: inherit; /* يرث الخط من العنصر الأب */
+  font-size: 14px; /* تكبير الخط قليلاً */
+  background-color: var(--bg-input);
+  color: rgb(166, 166, 166);
+  box-sizing: border-box; /* مهم جداً عند استخدام width: 100% مع padding */
+
+  /* --- لإلغاء المقبض اليدوي وتفعيل التمدد التلقائي --- */
+  resize: none;
+  overflow-y: hidden; /* لإخفاء شريط التمرير الذي يظهر للحظة */
+  /* transition: border-color 0.2s ease, box-shadow 0.2s ease; */
+}
+
+.reply-textarea::placeholder {
+  color: var(--text-color-light);
+}
+
+/* تحسين مهم للـ focus state من أجل سهولة الوصول (Accessibility) */
+.reply-textarea:focus {
+  outline: none;
+  /* border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-color-focus); */
+}
+
+.reply-form-actions {
+  display: flex;
+  justify-content: flex-start; /* الأزرار على اليمين (نهاية السطر) وهو الشائع */
+  gap: 2px; /* زيادة المسافة بين الأزرار */
+}
+
+/* التنسيقات المشتركة للأزرار */
+.reply-submit-btn,
+.reply-cancel-btn {
+  padding: 8px 16px; /* زيادة الـ padding لتسهيل الضغط */
+  border: none;
+  font-size: 13px; /* تكبير الخط قليلاً */
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.reply-cancel-btn {
+  border-radius: 20px 3px 3px 20px;
+}
+.reply-submit-btn {
+  border-radius: 3px 20px 20px 3px;
+}
+.reply-submit-btn:active,
+.reply-cancel-btn:active {
+  transform: scale(0.97); /* تأثير عند الضغط */
+}
+
+/* زر الإرسال */
+.reply-submit-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.reply-submit-btn:disabled {
+  background-color: #555;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* زر الإلغاء */
+.reply-cancel-btn {
+  background-color: #4f4f4f;
+  color: var(--text-color);
+}
+
+/* تأثير ظهور لطيف للنموذج (لا تغيير هنا) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+reply-form svg {
+  width: 25px;
+  height: 25px;
+}

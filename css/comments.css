@@ -1,0 +1,91 @@
+.comments-container {
+  /* BORDER */
+  margin-bottom: 15px;
+  border-radius: 25px;
+  padding: 0 40px 10px 30px;
+  background-color: rgb(36, 36, 36);
+}
+.comment-section {
+  padding-top: 10px;
+  margin-bottom: 0px;
+  background-color: transparent;
+  color: rgb(166, 166, 166);
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: right;
+  line-height: 16px;
+
+  /* LINE */
+}
+
+.comment-section + .comment-section {
+  border-top: 1px solid #e0e0e0;
+}
+
+.comment-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+  gap: 15px;
+
+  font-size: 14px;
+  font-weight: bold;
+}
+.comment-body {
+  /* padding: 5px 50px 0 5px; */
+}
+.comment-time {
+  font-size: 10px;
+}
+
+.comment-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-items: center;
+  gap: 30px;
+}
+.heart,
+.reply {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bolder;
+}
+
+/* GAP */
+.comment-footer,
+.comment-time,
+.comment-header {
+  padding: 5px 0;
+}
+
+.auther-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  outline: 2px solid;
+  outline-offset: 2px;
+}
+
+.comment-footer svg {
+  /* اجعل الانتقال يطبق على كل الخصائص (transform, fill, opacity, etc.) */
+  transition: all 0.2s ease-out; /* استخدام ease-out يجعل الحركة سريعة في البداية، مما يعطي إحساساً بالاستجابة الفورية */
+  cursor: pointer; /* لا تنسَ تغيير شكل المؤشر */
+  fill: #888; /* لون مبدئي باهت قليلاً (اختياري) */
+}
+
+/* حالة مرور الماوس: الأيقونة تكبر قليلاً وترتفع */
+.comment-footer svg:hover {
+  transform: scale(1.15) translateY(-2px); /* تكبير + إزاحة للأعلى */
+  fill: #e0e0e0; /* تغيير اللون ليصبح أوضح (اختياري) */
+}
+
+/* حالة الضغط: الأيقونة "تنغمس" للأسفل قليلاً */
+.comment-footer svg:active {
+  transform: scale(1.05); /* حجم أصغر من الـ hover لكن أكبر من الطبيعي */
+  transition-duration: 0.05s; /* اجعل حركة الضغط سريعة جداً لتعطي إحساساً واقعياً */
+}

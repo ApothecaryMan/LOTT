@@ -66,7 +66,7 @@ function changeTheme(event) {
     body.light-theme #decrease-font-size:hover, body.light-theme #decrease-font-size:active,
     #font-selector button:hover, body.light-theme #font-selector button:hover,
     #align-formate button:hover, body.light-theme #align-formate button:hover,
-    #list:hover, #list:active, body.light-theme #list:hover, body.light-theme #list:active {
+    #list:hover, #list:active, body.light-theme #list:hover, body.light-theme #list:active, #comments-btn:hover, #comments-btn:active {
         background-color: ${newColor};
     }
     .carousel-item#font-selector button.active,
@@ -74,7 +74,7 @@ function changeTheme(event) {
     .carousel-item#align-formate button.active,
     body.light-theme .carousel-item#align-formate button.active,
     .carousel-item button#list.active,
-    body.light-theme .carousel-item button#list.active {
+    body.light-theme .carousel-item button#list.active,body.light-theme #comments-btn:hover, .reply-submit-btn {
         background-color: ${newColor};
     }
     .next:hover, .next:active, .previous:hover, .previous:active,
@@ -92,7 +92,8 @@ function changeTheme(event) {
     .carousel-item#align-formate button.active,
     body.light-theme .carousel-item#align-formate button.active,
     .carousel-item button#list.active,
-    body.light-theme .carousel-item button#list.active {
+    body.light-theme .carousel-item button#list.active 
+    {
         color: white;
     }
     .next:hover svg, .next:active svg, .previous:hover svg, .previous:active svg,
@@ -107,7 +108,8 @@ function changeTheme(event) {
     .carousel-item#align-formate button.active svg,
     body.light-theme .carousel-item#align-formate button.active svg,
     .carousel-item button#list.active svg,
-    body.light-theme .carousel-item button#list.active svg {
+    body.light-theme .carousel-item button#list.active svg,body.light-theme #comments-btn.active svg, #comments-btn:hover svg
+    {
         fill: white;
     }
     .card .card-info { background: ${newColor} }
@@ -120,9 +122,15 @@ function changeTheme(event) {
     #chapter-list button:hover .chapter-number,
     #chapter-list button:focus .chapter-number,
     #chapter-list button:hover .chapter-title-in-list,
-    #chapter-list button:focus .chapter-title-in-list {
+    #chapter-list button:focus .chapter-title-in-list, .comment-auther{
        color: ${newColor};
     }
+       .comment-footer svg{
+        fill: ${newColor};}
+       
+       .auther-image{
+        outline: 2px solid ${newColor}; 
+       }
     `;
 
   if (isLightTheme) {
@@ -131,12 +139,12 @@ function changeTheme(event) {
       const bodyBgColor = `hsl(${h}, 50%, 88%)`;
       const containerBgColor = `hsl(${h}, 45%, 97%)`;
       dynamicCSS += `
-            body.light-theme { background-color: ${bodyBgColor}; }
+            body.light-theme, body.light-theme .reply-form-container { background-color: ${bodyBgColor}; }
             body.light-theme .body { background-color: ${bodyBgColor}; box-shadow: none; }
             body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
             body.light-theme .chaper, body.light-theme .support, body.light-theme .info,
             body.light-theme .main-header-container, body.light-theme #chapter-list-container,
-            body.light-theme .info-container .info {
+            body.light-theme .info-container .info,  body.light-theme .comments-container, body.light-theme .reply-textarea{
                 background-color: ${containerBgColor};
             }
             body.light-theme .carousel-item button {
@@ -145,6 +153,14 @@ function changeTheme(event) {
             body.light-theme .next, body.light-theme .previous {
                 background-color: ${bodyBgColor};
             }
+            body.light-theme .comment-footer svg {
+                fill: ${newColor};
+            }
+                body.light-theme .reply-textarea::placeholder {
+                color: ${newColor};
+            }
+
+            
             `;
     }
   }

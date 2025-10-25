@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function applyFontFamily() {
     if (paragraph) paragraph.style.fontFamily = currentActiveFontFamily;
     if (chapterTitle) chapterTitle.style.fontFamily = currentActiveFontFamily;
+
     applyFontSize();
   }
 
@@ -76,13 +77,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function increaseFontSize() {
     currentBaseSize += 1;
+    if (currentBaseSize > 25) currentBaseSize = 25;
     applyFontSize();
     saveFontSettings();
   }
 
   function decreaseFontSize() {
     currentBaseSize -= 1;
-    if (currentBaseSize < 8) currentBaseSize = 8;
+    if (currentBaseSize < 15) currentBaseSize = 15;
     applyFontSize();
     saveFontSettings();
   }
@@ -146,7 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
         preNexContainer.style.justifyContent = "flex-end"; // flex-end is left in RTL
       } else if (currentTextAlign === "center") {
         preNexContainer.style.justifyContent = "center";
-      } else { // right
+      } else {
+        // right
         preNexContainer.style.justifyContent = "flex-start"; // flex-start is right in RTL
       }
     }
