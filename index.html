@@ -16,28 +16,21 @@
       rel="stylesheet"
     />
 
-    <!-- STYLE -->
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/general.css" />
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/header.css" />
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/general.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/aspect-ratio.css" />
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/card.css" />
-    <link id="dynamic-theme-styles" rel="stylesheet" href="css/carousel.css" />
+    <link rel="stylesheet" href="css/card.css" />
+    <link rel="stylesheet" href="css/carousel.css" />
     <link rel="stylesheet" href="css/scroll-gear.css" />
     <link rel="stylesheet" href="css/font.css" />
     <link rel="stylesheet" href="css/chapter-list.css" />
     <link rel="stylesheet" href="css/theme.css" />
     <link rel="stylesheet" href="css/comments.css" />
-    <link rel="stylesheet" href="css/reply-form.css" />
 
-    <!--LOADER FIRST-->
     <script src="scripts/loader/content-loader.js" defer></script>
     <script src="scripts/loader/list-loader.js" defer></script>
-        <!-- <script src="scripts/loader/comments-loader.js" defer></script> -->
 
-
-    <!-- SCRIPT -->
-    
     <script src="scripts/vibration/vibration-manager.js" defer></script>
     <script src="scripts/chapter-navigation.js" defer></script>
     <script src="scripts/scroll-gear.js" defer></script>
@@ -48,7 +41,7 @@
     <script src="scripts/theme.js" defer></script>
     <script src="scripts/title-animation.js" defer></script>
     <script src="scripts/comments.js" defer></script>
-    <script src="scripts/reply-handler.js" defer></script>
+    <script src="scripts/custom-color-picker.js" defer></script>
   </head>
 
   <body>
@@ -80,9 +73,9 @@
               <button class="carousel-btn-start" id="list">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="20px"
+                  height="18px"
                   viewBox="0 -960 960 960"
-                  width="20px"
+                  width="18px"
                   fill="#000000"
                 >
                   <path
@@ -93,9 +86,9 @@
               <button class="carousel-btn-middle" id="comments-btn">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="20px"
+                  height="18px"
                   viewBox="0 -960 960 960"
-                  width="20px"
+                  width="18px"
                   fill="#000000"
                 >
                   <path
@@ -212,18 +205,16 @@
               >
                 نسخ
               </button>
-              <!-- <button class="carousel-btn-end"  ">
-                العربي
-              </button> -->
             </div>
 
             <div class="carousel-item" id="color-selector">
-              <button class="carousel-btn-start" id="default"></button>
-              <button class="carousel-btn-middle active" id="orange"></button>
+              <button class="carousel-btn-start" id="gray"></button>
+              <button class="carousel-btn-middle" id="orange"></button>
               <button class="carousel-btn-middle" id="red"></button>
               <button class="carousel-btn-middle" id="blue"></button>
               <button class="carousel-btn-middle" id="green"></button>
-              <button class="carousel-btn-end" id="pink"></button>
+              <button class="carousel-btn-middle" id="pink"></button>
+              <button class="carousel-btn-end" id="custom-color-btn"></button>
             </div>
             <div class="carousel-item" id="font-selector">
               <button class="carousel-btn-middle" id="word-count"></button>
@@ -261,97 +252,109 @@
       </div>
       <div id="chapter-list-container"></div>
     </div>
-
     <div class="main-content-area">
-          <div id="comments-section-wrapper">
-      <div class="comments-container">
-        <!-- سيتم إضافة التعليقات هنا... -->
-      </div>
-    </div>
-
-      <main class="main">
-        <div class="main-header-container">
-          <div class="main-header">
-            <p class="chapter-title" id="chapter-title"></p>
-            <div class="date">
-              <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-              <p>بواسطــــه زيـــوس</p>
-              <p>&hearts;</p>
-              <p>19 أكتوبر, 2025</p>
+      <div class="main-body">
+        <main class="main">
+          <div class="main-header-container">
+            <div class="main-header">
+              <p class="chapter-title" id="chapter-title"></p>
+              <div class="date">
+                <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
+                <p>بواسطــــه زيـــوس</p>
+                <p>&hearts;</p>
+                <p>19 أكتوبر, 2025</p>
+              </div>
+            </div>
+            <div class="pre-nex">
+              <button class="next">
+                <svg
+                  height="18px"
+                  viewBox="0 0 25 25"
+                  width="18px"
+                  fill="black"
+                >
+                  <g><path d="M0,0h24v24H0V0z" fill="none" /></g>
+                  <g>
+                    <polygon
+                      points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"
+                    />
+                  </g>
+                </svg>
+              </button>
+              <button class="previous" id="previous-btn">
+                <svg
+                  height="18px"
+                  viewBox="0 0 25 25"
+                  width="24px"
+                  fill="black"
+                >
+                  <path d="M0 0h24v24H0V0z" fill="none" opacity=".87" />
+                  <path
+                    d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
-          <div class="pre-nex">
-            <button class="next">
-              <svg height="18px" viewBox="0 0 25 25" width="18px" fill="black">
-              <g><path d="M0,0h24v24H0V0z" fill="none" /></g>
-              <g>
-                <polygon
-                  points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"
-                />
-              </g>
-            </button>
-            <button class="previous" id="previous-btn">
-              <svg height="18px" viewBox="0 0 25 25" width="24px" fill="black">
-                <path d="M0 0h24v24H0V0z" fill="none" opacity=".87" />
-                <path
-                  d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"
-                />
-              </svg>
-            </button>
+
+          <div class="chaper" id="chapter-text"></div>
+        </main>
+        <div class="support-container">
+          <div class="support" id="support-wrapper">
+            <p id="expand-support">لدعم هذا العمل مادياً:</p>
+            <p>باي بال: paypal.me/eslam997</p>
+            <p>تحويل فيزا مباشر بنك الراجحي داخل السعودية:</p>
+            <p>https://olympustaff.com/bank.html</p>
+            <p>دفع فيزا مباشر:</p>
+            <p>https://www.patreon.com/truth_teller/shop</p>
+            <p>اي محفظة كاش مصر: 01020451397</p>
+            <p>بايير: P1017229514</p>
+            <p>بينانس أي دي : 39853995</p>
+            <p>سعر الفصل الطبيعي 5$</p>
+            <p>سعر الفصل بعد يوم 20 فصل هيكون 10$</p>
+            <p>سعر الفصل بعد الوصول لـ 60 فصل هيكون 10$</p>
+            <p>سعر الفصل بعد الوصول لـ 90 فصل هيكون 15$</p>
+            <p>سعر الفصل بعد الوصول لـ 120 فصل هيكون 20$</p>
+            <p>لدعم هذا العمل معنوياً لا تنس التعليق و الدعاء</p>
           </div>
         </div>
-
-        <div class="chaper" id="chapter-text"></div>
-      </main>
-
-      <!-- هذا هو العنصر الذي سيستقبل محتوى التعليقات -->
-    </div>
-    <div class="support-container">
-      <div class="support" id="support-wrapper">
-        <p id="expand-support">لدعم هذا العمل مادياً:</p>
-        <p>باي بال: paypal.me/eslam997</p>
-        <p>تحويل فيزا مباشر بنك الراجحي داخل السعودية:</p>
-        <p>https://olympustaff.com/bank.html</p>
-        <p>دفع فيزا مباشر:</p>
-        <p>https://www.patreon.com/truth_teller/shop</p>
-        <p>اي محفظة كاش مصر: 01020451397</p>
-        <p>بايير: P1017229514</p>
-        <p>بينانس أي دي : 39853995</p>
-        <p>سعر الفصل الطبيعي 5$</p>
-        <p>سعر الفصل بعد يوم 20 فصل هيكون 10$</p>
-        <p>سعر الفصل بعد الوصول لـ 60 فصل هيكون 10$</p>
-        <p>سعر الفصل بعد الوصول لـ 90 فصل هيكون 15$</p>
-        <p>سعر الفصل بعد الوصول لـ 120 فصل هيكون 20$</p>
-        <p>لدعم هذا العمل معنوياً لا تنس التعليق و الدعاء</p>
+        <div class="info-container">
+          <div class="info" id="info-wrapper">
+            <p id="expand-info">فصول الشهر 97 /38</p>
+            <p>سيرفر ديسكورد لمـتابعة مواعيد نزول الفصل:</p>
+            <p>https://discord.com/invite/lott</p>
+            <p>او</p>
+            <p>https://discord.gg/AxDFN6uVTE</p>
+            <p>تدقيق/ زولان</p>
+            <p>داعمي الشهر:</p>
+            <p>محول:10</p>
+            <p>Weed :5chXX</p>
+            <p>Stealpro :20</p>
+            <p>سنكر: 20</p>
+            <p>Ronin: 2ch</p>
+            <p>Ronin: 2chX</p>
+            <p>Leman: 19chX</p>
+            <p>سارق قلوب الميمات: 6</p>
+            <p>المهمهم: 1</p>
+            <p>العظمة بذاتها: 1</p>
+            <p>الشيخ الكوني زولان: 2×</p>
+            <p>Chef: 2chX</p>
+            <p>Hamdan: 7chXx</p>
+            <p>لا تنسوا المساهمة بالاحجار اليومية، المسابقة رجعت!</p>
+            <p>https://www.webnovel.com/book/p></p>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="info-container">
-      <div class="info" id="info-wrapper">
-        <p id="expand-info">فصول الشهر 97 /38</p>
-        <p>سيرفر ديسكورد لمـتابعة مواعيد نزول الفصل:</p>
-        <p>https://discord.com/invite/lott</p>
-        <p>او</p>
-        <p>https://discord.gg/AxDFN6uVTE</p>
-        <p>تدقيق/ زولان</p>
-        <p>داعمي الشهر:</p>
-        <p>محول:10</p>
-        <p>Weed :5chXX</p>
-        <p>Stealpro :20</p>
-        <p>سنكر: 20</p>
-        <p>Ronin: 2ch</p>
-        <p>Ronin: 2chX</p>
-        <p>Leman: 19chX</p>
-        <p>سارق قلوب الميمات: 6</p>
-        <p>المهمهم: 1</p>
-        <p>العظمة بذاتها: 1</p>
-        <p>الشيخ الكوني زولان: 2×</p>
-        <p>Chef: 2chX</p>
-        <p>Hamdan: 7chXx</p>
-        <p>لا تنسوا المساهمة بالاحجار اليومية، المسابقة رجعت!</p>
-        <p>https://www.webnovel.com/book/p></p>
+
+      <div id="comments-section-wrapper">
+        <div class="comments-container"></div>
       </div>
     </div>
 
+    <footer class="footer">
+      <p>&copy; 2025 Lord Of The Truth. جميع الحقوق محفوظة.</p>
+      <p>ترجمة وتدقيق بواسطة فريق زيوس.</p>
+    </footer>
     <div class="card-carousel-container">
       <button id="card-prev-btn" class="carousel-nav-btn hidden">
         <svg
@@ -366,7 +369,6 @@
       </button>
 
       <div class="cards" id="card-carousel">
-        <!-- Notice the new ID -->
         <div class="card">
           <img class="card-img" src="img/card.jpg" />
           <div class="card-info">
@@ -436,10 +438,5 @@
         </svg>
       </button>
     </div>
-
-    <footer class="footer">
-      <p>&copy; 2025 Lord Of The Truth. جميع الحقوق محفوظة.</p>
-      <p>ترجمة وتدقيق بواسطة فريق زيوس.</p>
-    </footer>
   </body>
 </html>

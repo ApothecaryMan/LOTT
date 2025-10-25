@@ -154,8 +154,8 @@
     transform 0.2s var(--bounce-timing);
 }
 
-#color-selector #default {
-  background-color: rgb(166, 166, 166);
+#gray {
+  background-color: rgb(70, 70, 70);
 }
 #orange {
   background-color: #eb8317;
@@ -171,6 +171,9 @@
 }
 #pink {
   background-color: rgb(196, 64, 189);
+}
+#custom-color-btn {
+  background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
 }
 
 /* NEXT PREV */
@@ -294,4 +297,25 @@
 #comments-btn:active {
   border-radius: 25px;
   transition: border-radius 0.5s ease-in-out;
+}
+/* --- Comments Section Toggle Animation --- */
+#comments-section-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s ease-in-out;
+}
+
+#comments-section-wrapper.expanded {
+  grid-template-rows: 1fr;
+}
+
+.comments-container {
+  overflow: hidden;
+}
+#list {
+  padding: 6px 5px 6px 5px;
+
+  --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition: border-radius 0.2s ease-in-out, padding 0.4s var(--bounce-timing),
+    transform 0.2s var(--bounce-timing);
 }

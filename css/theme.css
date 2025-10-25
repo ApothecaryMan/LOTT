@@ -22,7 +22,9 @@ body.light-theme .carousel-item .title {
 body.light-theme #list:hover svg {
   fill: white;
 }
-
+body.light-theme #gray {
+  background-color: #333;
+}
 /* ======================================== */
 /* ======== 2. الحاويات الرئيسية ========= */
 /* ======================================== */

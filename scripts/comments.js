@@ -1,133 +1,255 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const commentsContainer = document.querySelector(".comments-container");
+// Author: -REPLACE WITH YOUR NAME-
+// OS support: -REPLACE WITH YOUR OS SUPPORT-
+// Description: Manages fetching, displaying, and interacting with a nested comment section.
 
-  /**
-   * دالة لإنشاء HTML لتعليق واحد بناءً على البيانات
-   * @param {object} comment - كائن يحتوي على بيانات التعليق
-   * @returns {string} - سلسلة HTML للتعليق
-   */
-  const createCommentHTML = (comment) => {
-    // تم تحديث هذا الجزء ليحتوي على عدد الإعجابات والردود
-    return `
-      <div class="comment-section">
-        <div class="comment-header">
-          <img src="${comment.imageSrc}" class="auther-image" alt="Author Image" />
-          <div class="comment-auther">${comment.author}</div>
-          <div class="comment-time">${comment.time}</div>
-        </div>
-        <p class="comment-body">${comment.body}</p>
-        <div class="comment-footer">
-          <div class="heart">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368">
-              <path d="M0 0h24v24H0V0z" fill="none" />
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-            </svg>
-            <p>${comment.likes}</p>
+(function () {
+  "use strict";
+
+  const state = {
+    comments: [],
+    currentUser: {
+      author: "المستخدم الحالي",
+      imageSrc: "https://i.pravatar.cc/50?u=current_user",
+    },
+  };
+
+  const commentsContainer = document.querySelector(".comments-container");
+  if (!commentsContainer) {
+    console.error("Comments container not found!");
+    return;
+  }
+
+  function createCommentElement(comment, isReply = false) {
+    const commentElement = document.createElement("div");
+    commentElement.className = `comment-section ${isReply ? "is-reply" : ""}`;
+    commentElement.dataset.commentId = comment.id;
+
+    const repliesCount = comment.replies ? comment.replies.length : 0;
+    const toggleRepliesButtonHTML =
+      repliesCount > 0
+        ? `<div class="replies-toggle">
+         <button class="toggle-replies-btn">
+           <svg viewBox="0 0 24 24"><path d="M12 16.42L6.29 10.71L7.71 9.29L12 13.59L16.29 9.29L17.71 10.71L12 16.42Z"></path></svg>
+           ${repliesCount} ${
+            repliesCount === 1 ? "رد" : repliesCount === 2 ? "ردان" : "ردود"
+          }
+         </button>
+       </div>`
+        : "";
+
+    commentElement.innerHTML = `
+      <div class="comment-main-content">
+        <img src="${comment.imageSrc}" class="auther-image" alt="Author Image" />
+        <div class="comment-details">
+          <div class="comment-header">
+            <div class="comment-auther">${comment.author}</div>
+            <div class="comment-time">${comment.time}</div>
           </div>
-          <div class="reply">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-              <path d="M276-384h408q15.3 0 25.65-10.29Q720-404.58 720-419.79t-10.35-25.71Q699.3-456 684-456H276q-15.3 0-25.65 10.29Q240-435.42 240-420.21t10.35 25.71Q260.7-384 276-384Zm0-132h408q15.3 0 25.65-10.29Q720-536.58 720-551.79t-10.35-25.71Q699.3-588 684-588H276q-15.3 0-25.65 10.29Q240-567.42 240-552.21t10.35 25.71Q260.7-516 276-516Zm0-132h408q15.3 0 25.65-10.29Q720-668.58 720-683.79t-10.35-25.71Q699.3-720 684-720H276q-15.3 0-25.65 10.29Q240-699.42 240-684.21t10.35 25.71Q260.7-648 276-648ZM168-240q-29.7 0-50.85-21.15Q96-282.3 96-312v-480q0-29.7 21.15-50.85Q138.3-864 168-864h624q29.7 0 50.85 21.15Q864-821.7 864-792v609q0 24.19-22 33.59-22 9.41-39.12-7.71L720-240H168Z" />
-            </svg>
-            <p>${comment.replies}</p>
+          <p class="comment-body">${comment.body}</p>
+          <div class="comment-footer">
+            <div class="heart">
+              <button>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
+              </button>
+              <p>${comment.likes}</p>
+            </div>
+            <div class="reply">
+              <button class="reply-btn">رد</button>
+            </div>
           </div>
         </div>
       </div>
+      ${toggleRepliesButtonHTML}
+      <div class="replies-container" data-is-loaded="false"></div>
     `;
-  };
-
-  /////////////////////////////////////////////////////////////////////
-  // ... (دالة createCommentHTML تبقى كما هي) ...
-
-  //   document.addEventListener("DOMContentLoaded", function () {
-  //     const commentsContainer = document.querySelector(".comments-container");
-
-  //     // دالة إنشاء HTML للتعليق
-  //     const createCommentHTML = (comment) => {
-  //       return `
-  //       <div class="comment-section" data-comment-id="${comment.id}">
-  //         <!-- ... نفس كود HTML للتعليق ... -->
-  //       </div>
-  //     `;
-  //     };
-
-  //     // ✨ دالة جديدة لإضافة تعليق جديد للصفحة فوراً
-  //     window.renderNewComment = (commentData) => {
-  //       const commentHTML = createCommentHTML(commentData);
-  //       commentsContainer.insertAdjacentHTML("beforeend", commentHTML);
-  //     };
-
-  //     // ✨ تعديل منطق تحميل التعليقات
-  //     const loadComments = () => {
-  //       if (!commentsContainer) return;
-
-  //       // محاولة جلب التعليقات من localStorage أولاً
-  //       const savedComments = localStorage.getItem("comments");
-
-  //       if (savedComments) {
-  //         // إذا وجدت تعليقات محفوظة، اعرضها
-  //         const comments = JSON.parse(savedComments);
-  //         commentsContainer.innerHTML = comments.map(createCommentHTML).join("");
-  //         console.log(
-  //           `%c✅ تم تحميل ${comments.length} تعليقات من localStorage بنجاح!`,
-  //           "color: green; font-weight: bold;"
-  //         );
-  //       } else {
-  //         // إذا لم توجد، اجلبها من الملف كمرة أولى فقط
-  //         fetch("comments.json")
-  //           .then((response) =>
-  //             response.ok ? response.json() : Promise.reject(response.statusText)
-  //           )
-  //           .then((comments) => {
-  //             commentsContainer.innerHTML = comments
-  //               .map(createCommentHTML)
-  //               .join("");
-  //             // احفظها في localStorage للمرة القادمة
-  //             localStorage.setItem("comments", JSON.stringify(comments));
-  //             console.log(
-  //               `%c✅ تم تحميل التعليقات من comments.json وحفظها.`,
-  //               "color: orange; font-weight: bold;"
-  //             );
-  //           })
-  //           .catch((error) => {
-  //             console.error("خطأ أثناء تحميل التعليقات:", error);
-  //             commentsContainer.innerHTML =
-  //               "<p>عفواً، حدث خطأ أثناء تحميل التعليقات.</p>";
-  //           });
-  //       }
-  //     };
-
-  //     loadComments();
-  //   });
-
-  // ملاحظة: لقد أزلنا مستمعي الأحداث من هنا لأن reply-handler.js سيهتم بهم.
-
-  // باقي الكود يبقى كما هو بدون تغيير
-  if (commentsContainer) {
-    fetch("comments.json")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-        return response.json();
-      })
-      .then((comments) => {
-        if (comments.length === 0) {
-          commentsContainer.innerHTML = "<p>لا توجد تعليقات لعرضها.</p>";
-          return;
-        }
-
-        const allCommentsHTML = comments.map(createCommentHTML).join("");
-        commentsContainer.innerHTML = allCommentsHTML;
-
-        console.log(
-          `%c✅ تم تحميل وعرض ${comments.length} تعليقات بنجاح!`,
-          "color: green; font-weight: bold;"
-        );
-      })
-      .catch((error) => {
-        console.error("❌ حدث خطأ أثناء تحميل بيانات التعليقات:", error);
-        commentsContainer.innerHTML =
-          "<p>عفواً، حدث خطأ أثناء تحميل التعليقات.</p>";
-      });
+    return commentElement;
   }
-});
+
+  function displayComments(comments, container) {
+    container.innerHTML = "";
+    comments.forEach((comment) => {
+      const commentElement = createCommentElement(comment);
+      container.appendChild(commentElement);
+    });
+  }
+
+  function displayReplies(repliesData, container) {
+    container.innerHTML = "";
+    repliesData.forEach((reply) => {
+      const replyElement = createCommentElement(reply, true);
+      container.appendChild(replyElement);
+    });
+    container.dataset.isLoaded = "true";
+  }
+
+  function showReplyForm(targetElement, commentId) {
+    const existingForm = document.querySelector(".reply-form-container");
+    if (existingForm) {
+      existingForm.remove();
+    }
+
+    const formContainer = document.createElement("div");
+    formContainer.className = "reply-form-container";
+    formContainer.innerHTML = `
+      <img src="${state.currentUser.imageSrc}" class="current-user-avatar" alt="Your Avatar">
+      <form class="reply-form" data-reply-to-id="${commentId}">
+        <div class="textarea-wrapper">
+          <textarea class="reply-textarea" placeholder="إضافة رد..." required></textarea>
+        </div>
+        <div class="reply-form-actions">
+          <button type="button" class="reply-cancel-btn">إلغاء</button>
+          <button type="submit" class="reply-submit-btn" disabled>رد</button>
+        </div>
+      </form>
+    `;
+
+    targetElement.insertAdjacentElement("afterend", formContainer);
+    formContainer.querySelector(".reply-textarea").focus();
+  }
+
+  function findCommentById(commentsArray, id) {
+    for (const comment of commentsArray) {
+      if (comment.id === id) return comment;
+      if (comment.replies && comment.replies.length > 0) {
+        const found = findCommentById(comment.replies, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
+  function findAndAddReply(commentsArray, parentId, newReply) {
+    for (const comment of commentsArray) {
+      if (comment.id === parentId) {
+        if (!comment.replies) {
+          comment.replies = [];
+        }
+        comment.replies.unshift(newReply);
+        return true;
+      }
+      if (comment.replies && comment.replies.length > 0) {
+        if (findAndAddReply(comment.replies, parentId, newReply)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function handleDocumentClick(event) {
+    const replyBtn = event.target.closest(".reply-btn");
+    if (replyBtn) {
+      const commentElement = replyBtn.closest(".comment-section");
+      const commentId = commentElement.dataset.commentId;
+      showReplyForm(commentElement, commentId);
+      return;
+    }
+
+    const cancelBtn = event.target.closest(".reply-cancel-btn");
+    if (cancelBtn) {
+      cancelBtn.closest(".reply-form-container").remove();
+      return;
+    }
+
+    const toggleBtn = event.target.closest(".toggle-replies-btn");
+    if (toggleBtn) {
+      const commentId = toggleBtn.closest(".comment-section").dataset.commentId;
+      const repliesContainer =
+        toggleBtn.closest(".replies-toggle").nextElementSibling;
+
+      toggleBtn.classList.toggle("open");
+      repliesContainer.classList.toggle("open");
+
+      const isLoaded = repliesContainer.dataset.isLoaded === "true";
+      if (repliesContainer.classList.contains("open") && !isLoaded) {
+        const commentData = findCommentById(
+          state.comments,
+          parseInt(commentId)
+        );
+        if (commentData && commentData.replies) {
+          displayReplies(commentData.replies, repliesContainer);
+        }
+      }
+    }
+  }
+
+  function handleFormSubmit(event) {
+    if (!event.target.matches(".reply-form")) return;
+
+    event.preventDefault();
+    const form = event.target;
+    const replyToId = parseInt(form.dataset.replyToId);
+    const textarea = form.querySelector(".reply-textarea");
+    const body = textarea.value.trim();
+
+    if (body) {
+      const newReply = {
+        id: Date.now(),
+        author: state.currentUser.author,
+        imageSrc: state.currentUser.imageSrc,
+        time: "الآن",
+        body: body,
+        likes: 0,
+        replies: [],
+      };
+
+      if (findAndAddReply(state.comments, replyToId, newReply)) {
+        const scrollPosition = window.scrollY;
+        displayComments(state.comments, commentsContainer);
+        window.scrollTo(0, scrollPosition);
+      }
+      form.closest(".reply-form-container").remove();
+    }
+  }
+
+  function handleTextareaInput(event) {
+    if (!event.target.matches(".reply-textarea")) return;
+    const textarea = event.target;
+
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+
+    const form = textarea.closest(".reply-form");
+    const submitButton = form.querySelector(".reply-submit-btn");
+    submitButton.disabled = textarea.value.trim().length === 0;
+  }
+
+  async function init() {
+    try {
+      const response = await fetch("comments.json");
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+      state.comments = await response.json();
+      displayComments(state.comments, commentsContainer);
+
+      document.addEventListener("click", handleDocumentClick);
+      document.addEventListener("submit", handleFormSubmit);
+      document.addEventListener("input", handleTextareaInput);
+
+      const commentsBtn = document.getElementById("comments-btn");
+      const commentsWrapper = document.getElementById(
+        "comments-section-wrapper"
+      );
+
+      if (commentsBtn && commentsWrapper) {
+        commentsBtn.addEventListener("click", () => {
+          commentsBtn.classList.toggle("active");
+          commentsWrapper.classList.toggle("expanded");
+        });
+      }
+
+      console.log(
+        `%c✅ تم تحميل وعرض ${state.comments.length} تعليقات بنجاح!`,
+        "color: green; font-weight: bold;"
+      );
+    } catch (error) {
+      console.error("حدث خطأ أثناء تحميل بيانات التعليقات:", error);
+      commentsContainer.innerHTML =
+        "<p>عفواً، حدث خطأ أثناء تحميل التعليقات.</p>";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+
+// BUTTON FUNCTION

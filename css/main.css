@@ -178,3 +178,10 @@ strong {
 .pre-nex.prev-hidden .next {
   border-radius: 25px;
 }
+
+/* //////////////////////////////////// */
+.main-content-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

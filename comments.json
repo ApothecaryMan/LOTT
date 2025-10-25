@@ -1,92 +1,58 @@
 [
   {
     "id": 1,
-    "author": "علي محمد",
-    "imageSrc": "https://i.pravatar.cc/50?u=ali",
-    "time": "منذ 5 دقائق",
-    "body": "هذا تعليق تجريبي رائع! شكراً على الشرح الوافي.",
-    "likes": 15,
-    "replies": 3
+    "author": "@Shadow_benefit0",
+    "imageSrc": "https://i.pravatar.cc/50?u=user123",
+    "time": "منذ 22 ساعة",
+    "body": "معلومة: اخواننا في الفاشر في السودان تحت الحصار والتجويع. اللهم انصر اخواننا المسلمين في سائر بلاد المسلمين.",
+    "likes": 787,
+    "replies": [
+      {
+        "id": 101,
+        "author": "@MinasAhraf",
+        "imageSrc": "https://i.pravatar.cc/50?u=user123",
+        "time": "منذ 21 ساعة",
+        "body": "اللهم آمين يارب ❤️😢",
+        "likes": 5,
+        "replies": []
+      },
+      {
+        "id": 102,
+        "author": "@user-123",
+        "imageSrc": "https://i.pravatar.cc/50?u=user123",
+        "time": "منذ 15 ساعة",
+        "body": "قلوبنا معكم يا أهل السودان.",
+        "likes": 12,
+        "replies": []
+      }
+    ]
   },
   {
     "id": 2,
     "author": "فاطمة الزهراء",
     "imageSrc": "https://i.pravatar.cc/50?u=fatima",
-    "time": "منذ 15 دقيقة",
+    "time": "منذ يوم",
     "body": "محتوى ممتاز ومفيد جداً. استمروا في هذا العمل الرائع.",
     "likes": 42,
-    "replies": 7
+    "replies": []
   },
   {
     "id": 3,
     "author": "خالد أحمد",
     "imageSrc": "https://i.pravatar.cc/50?u=khaled",
-    "time": "منذ ساعة",
-    "body": "هل يمكن إضافة ميزة الرد على التعليقات؟ سيكون ذلك إضافة قوية.",
-    "likes": 8,
-    "replies": 0
-  },
-  {
-    "id": 4,
-    "author": "سارة عبد الرحمن",
-    "imageSrc": "https://i.pravatar.cc/50?u=sara",
-    "time": "منذ ساعتين",
-    "body": "التصميم جميل وسهل القراءة 👏",
-    "likes": 27,
-    "replies": 5
-  },
-  {
-    "id": 5,
-    "author": "أحمد يوسف",
-    "imageSrc": "https://i.pravatar.cc/50?u=ahmed",
-    "time": "منذ 3 ساعات",
-    "body": "شرحك بسيط وواضح، شكراً لك!",
-    "likes": 33,
-    "replies": 1
-  },
-  {
-    "id": 6,
-    "author": "نور الدين",
-    "imageSrc": "https://i.pravatar.cc/50?u=nour",
-    "time": "منذ 5 ساعات",
-    "body": "مقال ممتاز، استفدت كثيراً من الأمثلة.",
-    "likes": 19,
-    "replies": 2
-  },
-  {
-    "id": 7,
-    "author": "مريم علي",
-    "imageSrc": "https://i.pravatar.cc/50?u=mariam",
-    "time": "منذ 8 ساعات",
-    "body": "هل يمكن تطبيق هذه الطريقة في مشروع React؟",
-    "likes": 7,
-    "replies": 4
-  },
-  {
-    "id": 8,
-    "author": "عمر إبراهيم",
-    "imageSrc": "https://i.pravatar.cc/50?u=omar",
-    "time": "منذ يوم",
-    "body": "تجربة جميلة جداً 👌",
-    "likes": 12,
-    "replies": 0
-  },
-  {
-    "id": 9,
-    "author": "ليلى حسن",
-    "imageSrc": "https://i.pravatar.cc/50?u=laila",
     "time": "منذ يومين",
-    "body": "أحببت طريقة العرض، أنيقة ومريحة للعين.",
-    "likes": 25,
-    "replies": 2
-  },
-  {
-    "id": 10,
-    "author": "يوسف عبد العزيز",
-    "imageSrc": "https://i.pravatar.cc/50?u=yousef",
-    "time": "منذ 3 أيام",
-    "body": "أحسنت! أتمنى إضافة زر للإعجاب يعمل فعلياً.",
-    "likes": 18,
-    "replies": 1
+    "body": "التصميم الجديد رائع جداً، يشبه يوتيوب تماماً!",
+    "likes": 8,
+    "replies": [
+      {
+        "id": 301,
+        "author": "المطور",
+        "imageSrc": "https://i.pravatar.cc/50?u=dev",
+        "time": "منذ يومين",
+        "body": "شكراً لك! يسعدني أنه أعجبك.",
+        "likes": 2,
+        "replies": []
+      }
+    ]
   }
 ]

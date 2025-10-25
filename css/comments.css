@@ -1,9 +1,13 @@
+/* Author: -REPLACE WITH YOUR NAME- */
+/* OS support: -REPLACE WITH YOUR OS SUPPORT- */
+/* Description: Styles for the nested comment section and reply form. */
+
 .comments-container {
-  /* BORDER */
   margin-bottom: 15px;
   border-radius: 25px;
-  padding: 0 40px 10px 30px;
+  padding: 5px 20px 10px 30px;
   background-color: rgb(36, 36, 36);
+  transition: padding 0.4s ease-out, margin-bottom 0.4s ease-out;
 }
 .comment-section {
   padding-top: 10px;
@@ -11,17 +15,21 @@
   background-color: transparent;
   color: rgb(166, 166, 166);
   font-size: 12px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  text-align: right;
   line-height: 16px;
-
-  /* LINE */
 }
 
-.comment-section + .comment-section {
-  border-top: 1px solid #e0e0e0;
+/* .comment-section + .comment-section {
+  border-top: 1px solid #3f3f3f;
+} */
+
+.comment-main-content {
+  display: flex;
+  gap: 15px;
+  text-align: right;
+}
+
+.comment-details {
+  width: 100%;
 }
 
 .comment-header {
@@ -30,62 +38,229 @@
   align-items: center;
   justify-content: right;
   gap: 15px;
-
   font-size: 14px;
   font-weight: bold;
 }
 .comment-body {
-  /* padding: 5px 50px 0 5px; */
+  padding: 5px 0;
 }
 .comment-time {
   font-size: 10px;
+  font-weight: normal;
+  color: #aaa;
 }
 
 .comment-footer {
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
-  justify-items: center;
-  gap: 30px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 5px 0;
 }
 .heart,
 .reply {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-weight: bolder;
 }
 
-/* GAP */
-.comment-footer,
-.comment-time,
-.comment-header {
-  padding: 5px 0;
+.reply-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.reply-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .auther-image {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  outline: 2px solid;
-  outline-offset: 2px;
+  margin-top: 5px;
 }
 
 .comment-footer svg {
-  /* اجعل الانتقال يطبق على كل الخصائص (transform, fill, opacity, etc.) */
-  transition: all 0.2s ease-out; /* استخدام ease-out يجعل الحركة سريعة في البداية، مما يعطي إحساساً بالاستجابة الفورية */
-  cursor: pointer; /* لا تنسَ تغيير شكل المؤشر */
-  fill: #888; /* لون مبدئي باهت قليلاً (اختياري) */
+  transition: all 0.2s ease-out;
+  cursor: pointer;
+  fill: #888;
 }
 
-/* حالة مرور الماوس: الأيقونة تكبر قليلاً وترتفع */
 .comment-footer svg:hover {
-  transform: scale(1.15) translateY(-2px); /* تكبير + إزاحة للأعلى */
-  fill: #e0e0e0; /* تغيير اللون ليصبح أوضح (اختياري) */
+  transform: scale(1.15) translateY(-2px);
+  fill: #e0e0e0;
 }
 
-/* حالة الضغط: الأيقونة "تنغمس" للأسفل قليلاً */
 .comment-footer svg:active {
-  transform: scale(1.05); /* حجم أصغر من الـ hover لكن أكبر من الطبيعي */
-  transition-duration: 0.05s; /* اجعل حركة الضغط سريعة جداً لتعطي إحساساً واقعياً */
+  transform: scale(1.05);
+  transition-duration: 0.05s;
+}
+
+.comment-footer .heart button,
+.comment-footer .reply button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* --- تنسيقات الردود المتداخلة --- */
+.is-reply {
+  margin-right: 55px;
+}
+
+.replies-toggle {
+  margin-right: 55px;
+  margin-top: 10px;
+}
+
+.toggle-replies-btn {
+  background: none;
+  border: none;
+  color: #3ea6ff;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 4px;
+  font-size: 14px;
+}
+.toggle-replies-btn:hover {
+  background-color: rgba(62, 166, 255, 0.1);
+}
+.toggle-replies-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: #3ea6ff;
+  transition: transform 0.2s ease-out;
+}
+.toggle-replies-btn.open svg {
+  transform: rotate(180deg);
+}
+
+.replies-container {
+  display: none;
+}
+.replies-container.open {
+  display: block;
+}
+
+/* --- تنسيقات نموذج الرد بأسلوب يوتيوب --- */
+.reply-form-container {
+  display: flex;
+  gap: 16px;
+  margin-top: 15px;
+  margin-right: 55px;
+}
+
+.current-user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+.reply-form {
+  width: 100%;
+}
+
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.reply-textarea {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #3f3f3f;
+  color: #f1f1f1;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 8px 0;
+  outline: none;
+  resize: none;
+  overflow-y: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.reply-textarea::placeholder {
+  color: #aaa;
+}
+
+.reply-textarea:focus {
+  border-bottom: 2px solid #f1f1f1;
+}
+
+.reply-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.reply-cancel-btn,
+.reply-submit-btn {
+  background-color: transparent;
+  border: none;
+  border-radius: 18px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.reply-cancel-btn {
+  color: #aaa;
+}
+.reply-cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.reply-submit-btn {
+  background-color: #3ea6ff;
+  color: #0f0f0f;
+}
+
+.reply-submit-btn:disabled {
+  background-color: #272727;
+  color: #717171;
+  cursor: not-allowed;
+}
+.reply-submit-btn:not(:disabled):hover {
+  filter: brightness(0.9);
+}
+
+/* --- End of comments.css --- */
+#comments-section-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+  transition: max-height 0.4s ease-out;
+  display: none;
+}
+
+#comments-section-wrapper.expanded {
+  max-height: 5000px;
+  transition: max-height 0.4s ease-in;
+  display: block;
+}
+
+#comments-section-wrapper:not(.expanded) .comments-container {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
