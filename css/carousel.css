@@ -37,7 +37,6 @@
   scroll-behavior: smooth;
   overflow-x: auto;
   scrollbar-width: none;
-  scroll-behavior: smooth;
   -ms-overflow-style: none;
 }
 
@@ -57,8 +56,6 @@
 
 .carousel-item button {
   padding: 7px;
-  /* background: #f2f2f2; */
-  /* color: #030303; */
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -159,9 +156,6 @@
 }
 #orange {
   background-color: #eb8317;
-}
-#red {
-  background-color: rgb(219, 62, 62);
 }
 #blue {
   background-color: rgb(18, 108, 211);
