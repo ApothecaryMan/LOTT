@@ -154,7 +154,7 @@ function changeTheme(event) {
             body.light-theme{ background-color: ${bodyBgColor}; }
             body.light-theme .body { background-color: ${bodyBgColor}; box-shadow: none; }
             body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
-            body.light-theme .chaper, body.light-theme .support, body.light-theme .info,
+            body.light-theme .chapter, body.light-theme .support, body.light-theme .info,
             body.light-theme .main-header-container, body.light-theme #chapter-list-container,
             body.light-theme .info-container .info,  body.light-theme .comments-container, body.light-theme .reply-textarea{
                 background-color: ${containerBgColor};

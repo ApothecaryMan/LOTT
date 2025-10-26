@@ -1,4 +1,4 @@
-.chaper {
+.chapter {
   font-size: 20px;
   display: flex;
   flex-direction: column;
@@ -7,11 +7,11 @@
   transform: translateY(0);
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
-.chaper.is-loading {
+.chapter.is-loading {
   opacity: 0;
   transform: translateY(20px);
 }
-.chaper,
+.chapter,
 .info {
   font-size: 18px;
 }

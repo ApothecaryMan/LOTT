@@ -1,0 +1,794 @@
+/* ========================================================================== */
+/* == AUTHENTICATION MODAL & ADDITIONAL COMMENT STYLES                    == */
+/* ========================================================================== */
+
+/* تصميم نافذة تسجيل الدخول المنبثقة (Modal) */
+.auth-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* خلفية معتمة */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* محتوى النافذة المنبثقة (المربع الأبيض/الداكن) */
+.auth-modal-content {
+  background-color: rgb(24, 24, 24);
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* زر إغلاق النافذة (X) */
+.auth-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: color 0.2s ease;
+}
+
+.auth-modal-close:hover {
+  color: #fff;
+}
+
+/* تصميم ألسنة التبويب (تسجيل دخول / حساب جديد) */
+.auth-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #3f3f3f;
+}
+
+/* زر التبويب الفردي */
+.auth-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #aaa;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.auth-tab:hover {
+  color: #f1f1f1;
+}
+
+/* حالة زر التبويب النشط (الذي تم اختياره) */
+.auth-tab.active {
+  color: #3ea6ff;
+}
+
+/* الخط الأزرق أسفل التبويب النشط */
+.auth-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #3ea6ff;
+}
+
+/* تصميم نماذج (فورم) تسجيل الدخول */
+.auth-form {
+  display: none;
+}
+
+/* إظهار الفورم النشط فقط */
+.auth-form.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+/* عنوان الفورم (مثل "تسجيل الدخول") */
+.auth-form h3 {
+  color: #f1f1f1;
+  margin: 0 0 20px 0;
+  font-size: 20px;
+}
+
+/* مجموعة حقول الإدخال (Label + Input) */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* حقول الإدخال (الايميل، كلمة السر) */
+.form-group input {
+  width: 100%;
+  background-color: #0f0f0f;
+  border: 1px solid #3f3f3f;
+  border-radius: 8px;
+  padding: 12px 15px;
+  color: #f1f1f1;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+/* حالة الفوكس (عند الضغط) على حقل الإدخال */
+.form-group input:focus {
+  outline: none;
+  border-color: #3ea6ff;
+}
+
+.form-group input::placeholder {
+  color: #717171;
+}
+
+/* نص خطأ التحقق (مثل "كلمة السر قصيرة") */
+.form-error {
+  color: #ff4444;
+  font-size: 13px;
+  margin: 10px 0;
+  min-height: 18px;
+}
+
+/* زر الإرسال الرئيسي (مثل "تسجيل") */
+.auth-submit-btn {
+  width: 100%;
+  background-color: #3ea6ff;
+  color: #0f0f0f;
+  border: none;
+  border-radius: 18px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.auth-submit-btn:hover {
+  filter: brightness(0.9);
+}
+
+.auth-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* تصميم مؤشر التحميل (الدائرة الدوارة) */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #aaa;
+}
+
+/* الدائرة الدوارة */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #3f3f3f;
+  border-top-color: #3ea6ff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* رسالة الخطأ العامة (مثل "فشل الاتصال") */
+.error-message {
+  padding: 40px 20px;
+  text-align: center;
+  color: #ff4444;
+}
+
+/* حالة "لا توجد تعليقات" */
+.no-comments {
+  padding: 40px 20px;
+  text-align: center;
+  color: #717171;
+}
+
+.no-comments p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* أزرار الإجراءات (تعديل/حذف) على التعليق */
+.comment-actions {
+  display: flex;
+  gap: 8px;
+  margin-right: auto;
+}
+
+/* زر تعديل التعليق */
+.edit-comment-btn,
+.delete-comment-btn {
+  /* زر الحذف */
+  background: none;
+  border: none;
+  color: #717171;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.edit-comment-btn:hover {
+  background-color: rgba(62, 166, 255, 0.1);
+  color: #3ea6ff;
+}
+
+.delete-comment-btn:hover {
+  background-color: rgba(255, 68, 68, 0.1);
+  color: #ff4444;
+}
+
+/* علامة "تم التعديل" بجوار التعليق */
+.edited-badge {
+  font-size: 11px;
+  color: #717171;
+  font-weight: normal;
+  margin-right: 5px;
+}
+
+/* حالات زر الإعجاب (القلب) */
+.like-btn.liked svg {
+  fill: #ff4444; /* لون القلب عند الإعجاب */
+}
+
+.like-btn svg {
+  transition: fill 0.2s ease, transform 0.2s ease;
+}
+
+.like-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.like-btn:active svg {
+  transform: scale(0.95);
+}
+
+/* تصميم نموذج تعديل التعليق */
+.edit-form {
+  margin-top: 10px;
+}
+
+/* صندوق نص التعديل */
+.edit-textarea {
+  width: 100%;
+  background-color: #0f0f0f;
+  border: 1px solid #3ea6ff;
+  border-radius: 8px;
+  color: #f1f1f1;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px;
+  outline: none;
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* أزرار نموذج التعديل (حفظ / إلغاء) */
+.edit-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* زر إلغاء التعديل */
+.edit-cancel-btn,
+.edit-submit-btn {
+  /* زر حفظ التعديل */
+  background-color: transparent;
+  border: none;
+  border-radius: 18px;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.edit-cancel-btn {
+  color: #aaa;
+}
+
+.edit-cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.edit-submit-btn {
+  background-color: #3ea6ff;
+  color: #0f0f0f;
+}
+
+.edit-submit-btn:hover {
+  filter: brightness(0.9);
+}
+
+/* تصميم متجاوب للشاشات الصغيرة (الموبايل) */
+@media (max-width: 480px) {
+  .auth-modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .auth-form h3 {
+    font-size: 18px;
+  }
+
+  .form-group input {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .auth-submit-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Desktop Split Layout Support */
+@media (min-width: 1081px) {
+  .auth-modal-content {
+    border-radius: 0;
+  }
+}
+
+/* تحسينات إمكانية الوصول (للفوكس) */
+.auth-form input:focus,
+.edit-textarea:focus,
+.reply-textarea:focus {
+  box-shadow: 0 0 0 3px rgba(62, 166, 255, 0.2);
+}
+
+button:focus-visible {
+  outline: 2px solid #3ea6ff;
+  outline-offset: 2px;
+}
+
+/* تأثيرات حركة ناعمة */
+.comment-section {
+  transition: opacity 0.2s ease;
+}
+
+/* تأثير عند حذف تعليق (يصبح شفافاً) */
+.comment-section.deleting {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* حاوية الردود (عندما تكون فارغة) */
+.replies-container.empty {
+  display: none;
+}
+
+/* حاوية الردود (عند فتحها) */
+.replies-container.open:not(.empty) {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 2000px;
+  }
+}
+
+/* ================================================================== */
+/* == بدء الكود المدمج من comments.css == */
+/* ================================================================== */
+
+/* Author: -REPLACE WITH YOUR NAME- */
+/* OS support: -REPLACE WITH YOUR OS SUPPORT- */
+/* Description: Styles for the nested comment section and reply form. */
+
+/* .comments-container {
+  margin-bottom: 15px;
+  border-radius: 25px;
+  padding: 5px 20px 10px 30px;
+  background-color: rgb(36, 36, 36);
+  transition: padding 0.4s ease-out, margin-bottom 0.4s ease-out;
+} */
+
+/* حاوية التعليقات الرئيسية (التي تحتوي كل التعليقات) */
+.comments-container {
+  flex-grow: 1; /* تجعلها تملأ المساحة المتاحة عمودياً */
+  overflow-y: auto; /* تضيف شريط تمرير عند الحاجة */
+  padding: 15px 20px;
+  background-color: transparent;
+}
+
+/* قسم التعليق الواحد */
+.comment-section {
+  padding-top: 10px;
+  margin-bottom: 0px;
+  background-color: transparent;
+  color: rgb(166, 166, 166);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* .comment-section + .comment-section {
+  border-top: 1px solid #3f3f3f;
+} */
+
+/* المحتوى الرئيسي للتعليق (الصورة + التفاصيل) */
+.comment-main-content {
+  display: flex;
+  gap: 15px;
+  text-align: right;
+}
+
+/* تفاصيل التعليق (الاسم والنص والأزرار) */
+.comment-details {
+  width: 100%;
+}
+
+/* رأس التعليق (الاسم والوقت) */
+.comment-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+  gap: 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* نص التعليق (المحتوى) */
+.comment-body {
+  padding: 5px 0;
+}
+
+/* وقت التعليق (مثل "منذ 5 دقائق") */
+.comment-time {
+  font-size: 10px;
+  font-weight: normal;
+  color: #aaa;
+}
+
+/* ذيل التعليق (أزرار الإعجاب والرد) */
+.comment-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 5px 0;
+}
+
+/* تصميم زر القلب وزر الرد */
+.heart,
+.reply {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bolder;
+}
+
+/* زر "رد" النصي */
+.reply-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.reply-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* صورة المستخدم صاحب التعليق */
+.auther-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-top: 5px;
+}
+
+.comment-footer svg {
+  transition: all 0.2s ease-out;
+  cursor: pointer;
+  fill: #888;
+}
+
+.comment-footer svg:hover {
+  transform: scale(1.15) translateY(-2px);
+  fill: #e0e0e0;
+}
+
+.comment-footer svg:active {
+  transform: scale(1.05);
+  transition-duration: 0.05s;
+}
+
+.comment-footer .heart button,
+.comment-footer .reply button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* --- تنسيقات الردود المتداخلة --- */
+
+/* تصميم الرد (لإعطاء مسافة بادئة لليمين) */
+.is-reply {
+  margin-right: 55px;
+}
+
+/* زر "عرض/إخفاء الردود" */
+.replies-toggle {
+  margin-right: 55px;
+  margin-top: 10px;
+}
+
+.toggle-replies-btn {
+  background: none;
+  border: none;
+  color: #3ea6ff;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 4px;
+  font-size: 14px;
+}
+.toggle-replies-btn:hover {
+  background-color: rgba(62, 166, 255, 0.1);
+}
+
+/* أيقونة السهم في زر عرض الردود */
+.toggle-replies-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: #3ea6ff;
+  transition: transform 0.2s ease-out;
+}
+
+/* تدوير السهم عند الفتح */
+.toggle-replies-btn.open svg {
+  transform: rotate(180deg);
+}
+
+/* حاوية الردود (مخفية افتراضيًا) */
+.replies-container {
+  display: none;
+}
+.replies-container.open {
+  display: block;
+}
+
+/* --- تنسيقات نموذج الرد بأسلوب يوتيوب --- */
+
+/* حاوية فورم الرد (الصورة + الصندوق) */
+.reply-form-container {
+  display: flex;
+  gap: 16px;
+  margin-top: 15px;
+  margin-right: 55px;
+}
+
+/* صورة المستخدم الحالي في فورم الرد (صورة مصغرة) */
+.current-user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+/* فورم الرد نفسه */
+.reply-form {
+  width: 100%;
+}
+
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* صندوق كتابة الرد (Textarea) */
+.reply-textarea {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #3f3f3f; /* خط سفلي خفيف */
+  color: #f1f1f1;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 8px 0;
+  outline: none;
+  resize: none;
+  overflow-y: hidden; /* لإخفاء شريط التمرير الداخلي */
+  transition: border-color 0.3s ease;
+}
+
+.reply-textarea::placeholder {
+  color: #aaa;
+}
+
+/* تكثيف الخط السفلي عند التركيز (Focus) */
+.reply-textarea:focus {
+  border-bottom: 2px solid #f1f1f1;
+}
+
+/* أزرار فورم الرد (إرسال / إلغاء) */
+.reply-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* زر إلغاء الرد */
+.reply-cancel-btn,
+.reply-submit-btn {
+  /* زر إرسال الرد */
+  background-color: transparent;
+  border: none;
+  border-radius: 18px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.reply-cancel-btn {
+  color: #aaa;
+}
+.reply-cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.reply-submit-btn {
+  background-color: #3ea6ff;
+  color: #0f0f0f;
+}
+
+/* حالة زر الإرسال (عندما يكون معطلاً/فارغاً) */
+.reply-submit-btn:disabled {
+  background-color: #272727;
+  color: #717171;
+  cursor: not-allowed;
+}
+.reply-submit-btn:not(:disabled):hover {
+  filter: brightness(0.9);
+}
+
+/* --- End of comments.css --- */
+
+/* يمنع الصفحة الرئيسية من التمرير عند فتح التعليقات */
+body.comments-open {
+  overflow: hidden;
+}
+
+/* الخلفية المعتمة (Overlay) خلف لوحة التعليقات */
+#comments-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* حالة ظهور الخلفية المعتمة */
+#comments-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* لوحة التعليقات الجانبية المنزلقة */
+#comments-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 450px;
+  max-width: 90vw; /* أقصى عرض 90% للشاشات الصغيرة */
+  height: 100%;
+  background-color: rgb(24, 24, 24);
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  z-index: 1002;
+  transform: translateX(100%); /* إخفاء اللوحة خارج الشاشة يميناً */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  flex-direction: column;
+}
+
+/* حالة فتح اللوحة (عندما تنزلق للداخل) */
+#comments-panel.open {
+  transform: translateX(0);
+}
+
+/* رأس لوحة التعليقات (العنوان وزر الإغلاق) */
+.comments-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #3f3f3f;
+  color: #f1f1f1;
+  flex-shrink: 0; /* يمنع الرأس من الانكماش */
+}
+
+/* عنوان "التعليقات" */
+.comments-panel-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* زر إغلاق اللوحة (X) */
+.comments-panel-close {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.comments-panel-close:hover {
+  color: #fff;
+}

@@ -1,66 +1,56 @@
+// --- START OF FILE content-loader.js (Corrected) ---
+
 /**
  * يقوم بجلب محتوى فصل معين من ملف HTML خارجي وحقنه في الصفحة.
  * كما يقوم بتحديث العنوان الرئيسي.
  * @param {string | number} chapterNumber - رقم الفصل المراد تحميله (مثل "1766").
  */
 async function loadChapter(chapterNumber) {
-  // 1. جلب العناصر الأساسية من الصفحة
+  // ... (your existing code is fine)
   const paragraphContainer = document.getElementById("chapter-text");
   const titleElement = document.getElementById("chapter-title");
 
-  if (!paragraphContainer || !titleElement) {
-    console.error("Chapter containers not found!");
-    return;
-  }
+  // ... (your existing code is fine)
 
   try {
-    // 2. جلب المحتوى (أصبح الآن ديناميكياً)
+    // ... (your existing code is fine)
     const response = await fetch(`chapters/${chapterNumber}.html`);
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to load chapter ${chapterNumber}: ${response.status}`
-      );
-    }
-
-    // 3. الحصول على النص كـ HTML
+    // ... (your existing code is fine)
     const chapterHtml = await response.text();
-
-    // 4. --- (الجزء الذكي) ---
-    // إنشاء حاوية وهمية (غير مرئية) في الذاكرة
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = chapterHtml;
-
-    // 5. البحث عن العنوان الجديد داخل الحاوية الوهمية
+    // ... (your existing code is fine)
     const newTitleElement = tempDiv.querySelector("#chapter-title-data");
-    let newTitleText = `الفصل ${chapterNumber}`; // عنوان افتراضي
-
+    let newTitleText = `الفصل ${chapterNumber}`;
     if (newTitleElement) {
-      newTitleText = newTitleElement.textContent; // استخراج نص العنوان
-      newTitleElement.remove(); // (هام) حذف العنوان من المحتوى
+      newTitleText = newTitleElement.textContent;
+      newTitleElement.remove();
     }
+    titleElement.textContent = newTitleText;
+    // ... (your existing code is fine)
+    paragraphContainer.innerHTML = tempDiv.innerHTML;
 
-    // 6. حقن العناصر في الصفحة
-    titleElement.textContent = newTitleText; // حقن العنوان الجديد
-
-    let chapterNameOnly = newTitleText;
-    if (newTitleText.includes(" – ")) {
-      chapterNameOnly = newTitleText.split(" – ")[1];
+    // =================================================================
+    //  ✅ THE MISSING LINK - ADD THIS CODE!
+    // =================================================================
+    // Notify the comments system that a new chapter has loaded.
+    // We use a "chapter-" prefix to create a unique ID.
+    if (
+      window.CommentsSystem &&
+      typeof window.CommentsSystem.setChapter === "function"
+    ) {
+      const chapterId = `chapter-${chapterNumber}`;
+      window.CommentsSystem.setChapter(chapterId);
+      console.log(`🚀 Comments system updated for chapter: ${chapterId}`);
     }
-    document.getElementById("title-btn").textContent = chapterNameOnly;
+    // =================================================================
 
-    paragraphContainer.innerHTML = tempDiv.innerHTML; // حقن باقي المحتوى
-
-    // 7. إعلان أن المحتوى قد اكتمل تحميله
-    // هذا "يوقظ" السكربتات الأخرى (مثل font.js و script.js)
+    // ... (your existing code is fine)
     const event = new CustomEvent("contentLoaded");
     document.dispatchEvent(event);
 
     return true;
   } catch (error) {
-    console.error(error);
-    paragraphContainer.innerHTML = `<p>خطأ في تحميل الفصل ${chapterNumber}. المرجو تحديث الصفحة.</p>`;
-    titleElement.textContent = "خطأ";
-    return false;
+    // ... (your existing code is fine)
   }
 }

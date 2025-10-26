@@ -26,11 +26,11 @@
     <link rel="stylesheet" href="css/font.css" />
     <link rel="stylesheet" href="css/chapter-list.css" />
     <link rel="stylesheet" href="css/theme.css" />
-    <link rel="stylesheet" href="css/comments.css" />
+    <!-- <link rel="stylesheet" href="css/comments.css" /> -->
+    <link rel="stylesheet" href="css/comments-auth.css" />
 
     <script src="scripts/loader/content-loader.js" defer></script>
     <script src="scripts/loader/list-loader.js" defer></script>
-
     <script src="scripts/vibration/vibration-manager.js" defer></script>
     <script src="scripts/chapter-navigation.js" defer></script>
     <script src="scripts/scroll-gear.js" defer></script>
@@ -40,8 +40,8 @@
     <script src="scripts/font.js" defer></script>
     <script src="scripts/theme.js" defer></script>
     <script src="scripts/title-animation.js" defer></script>
-    <script src="scripts/comments.js" defer></script>
     <script src="scripts/custom-color-picker.js" defer></script>
+    <script src="scripts/real-comments.js" defer></script>
   </head>
 
   <body>
@@ -215,7 +215,7 @@
               <button class="carousel-btn-middle" id="pink"></button>
               <button class="carousel-btn-end" id="custom-color-btn"></button>
             </div>
-            <div class="carousel-item" id="font-selector">
+            <div class="carousel-item" id="word-count-item">
               <button class="carousel-btn-middle" id="word-count"></button>
             </div>
             <div class="carousel-item" id="mode-selector">
@@ -251,6 +251,7 @@
       </div>
       <div id="chapter-list-container"></div>
     </div>
+
     <div class="main-content-area">
       <div class="main-body">
         <main class="main">
@@ -296,7 +297,7 @@
             </div>
           </div>
 
-          <div class="chaper" id="chapter-text"></div>
+          <div class="chapter" id="chapter-text"></div>
         </main>
         <div class="info-container">
           <div class="info" id="info-wrapper">
@@ -321,24 +322,37 @@
             <p>Chef: 2chX</p>
             <p>Hamdan: 7chXx</p>
             <p>لا تنسوا المساهمة بالاحجار اليومية، المسابقة رجعت!</p>
-            <p>https://www.webnovel.com/book/p></p>
+            <p>
+              <a href="https://www.webnovel.com/book/"
+                >https://www.webnovel.com/book/</a
+              >
+            </p>
           </div>
         </div>
       </div>
+    </div>
 
-     <div id="comments-overlay"></div>
-      <div id="comments-panel">
-        <div class="comments-panel-header">
-            <h4 class="comments-panel-title">التعليقات</h4>
-            <button id="close-comments-btn" class="comments-panel-close" title="Close">&times;</button>
-        </div>
-        <div class="comments-container"></div>
+    <div id="comments-panel">
+      <div class="comments-panel-header">
+        <h4 class="comments-panel-title">التعليقات</h4>
+        <button
+          id="close-comments-btn"
+          class="comments-panel-close"
+          title="Close"
+        >
+          &times;
+        </button>
       </div>
+      <div class="comments-container"></div>
+    </div>
+
+    <div id="comments-overlay"></div>
 
     <footer class="footer">
       <p>&copy; 2025 Lord Of The Truth. جميع الحقوق محفوظة.</p>
       <p>ترجمة وتدقيق بواسطة فريق زيوس.</p>
     </footer>
+
     <div class="card-carousel-container">
       <button id="card-prev-btn" class="carousel-nav-btn hidden">
         <svg
@@ -354,7 +368,7 @@
 
       <div class="cards" id="card-carousel">
         <div class="card">
-          <img class="card-img" src="img/card.jpg" />
+          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
           <div class="card-info">
             <p class="x">1767 - قرار صعب</p>
             <div class="date">
@@ -365,7 +379,7 @@
           </div>
         </div>
         <div class="card">
-          <img class="card-img" src="img/card.jpg" />
+          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
           <div class="card-info">
             <p class="x">1768 -تطور معارك الجنوب-1</p>
             <div class="date">
@@ -376,7 +390,7 @@
           </div>
         </div>
         <div class="card">
-          <img class="card-img" src="img/card.jpg" />
+          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
           <div class="card-info">
             <p class="x">1769 -تطور معارك الجنوب-2</p>
             <div class="date">
@@ -387,7 +401,7 @@
           </div>
         </div>
         <div class="card">
-          <img class="card-img" src="img/card.jpg" />
+          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
           <div class="card-info">
             <p class="x">1770 -للمتجر مجدداً؟</p>
             <div class="date">
@@ -398,7 +412,7 @@
           </div>
         </div>
         <div class="card">
-          <img class="card-img" src="img/card.jpg" />
+          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
           <div class="card-info">
             <p class="x">1771 -مجتمع الروح</p>
             <div class="date">
