@@ -4,7 +4,7 @@
   align-items: center;
   flex-direction: column;
   /* padding: 10px 5px 10px 1px; */
-  padding: 10px 5px 10px 0;
+  padding: 5px 5px 5px 0;
   user-select: none;
 
   /* STICK CAROUSEL */
@@ -13,7 +13,47 @@
   z-index: 1000;
   background-color: black;
 }
+/* ========================================================================== */
+/* == AUTO-HIDE CAROUSEL ANIMATION                                        == */
+/* ========================================================================== */
 
+.body {
+  /* Ensure smooth transitions */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Performance optimization */
+  will-change: transform, opacity;
+}
+
+.body.carousel-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none; /* Prevent interaction when hidden */
+}
+
+/* Prevent layout shift */
+.body.carousel-hidden + * {
+  scroll-margin-top: 0;
+}
+
+/* Optional: Add backdrop blur when showing */
+.body::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.body:not(.carousel-hidden)::before {
+  opacity: 1;
+}
+/* ///////////////////////////////////////////// */
 .carousel-container {
   width: 100%;
   max-width: 1150px;
@@ -104,9 +144,6 @@
     transform 0.5s var(--bounce-timing);
 }
 #font-size {
-  font-family: Alexandria;
-  font-size: 12px;
-  font-weight: 400;
   cursor: default;
   width: 30px;
   border-radius: 3px;
@@ -208,9 +245,6 @@
 }
 
 #word-count {
-  font-family: Alexandria;
-  font-size: 12px;
-  font-weight: 400;
   border-radius: 25px;
 }
 
@@ -243,8 +277,6 @@
   max-width: 0;
   padding: 0;
   border-radius: 3px;
-  font-family: "Ink", serif;
-  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

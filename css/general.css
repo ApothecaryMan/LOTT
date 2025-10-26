@@ -65,11 +65,7 @@ button {
 
 /* FONTS */
 .chaper,
-.support,
 .info-container .info {
-  font-family: "Playpen Sans Arabic", cursive;
-  font-style: normal;
-
   margin: 1px 0 2px 0;
   background-color: rgb(36, 36, 36);
   border-radius: 5px 5px 5px 5px;

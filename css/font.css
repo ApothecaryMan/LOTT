@@ -40,3 +40,60 @@
   font-family: GunshipC;
   src: url("fonts/gun4fc.ttf");
 }
+
+/* -------------------------------
+   1. عناصر بخط "Ink"
+--------------------------------*/
+.title {
+  font-family: "Ink";
+  color: #ffffff;
+  font-weight: bolder;
+  font-size: 35px;
+  /* text-shadow: 2px 5px 10px #000000; */
+}
+
+.chapter-title-in-list {
+  font-family: "Ink";
+  font-size: 16px;
+  color: #ccc;
+}
+
+#title-btn {
+  font-family: "Ink";
+  font-size: 14px;
+}
+
+/* -------------------------------
+   2. عناصر بخط "ink-2"
+--------------------------------*/
+.x {
+  font-family: "ink-2";
+  font-size: 14px;
+}
+
+/* -------------------------------
+   3. عناصر بخط "Playpen Sans Arabic"
+--------------------------------*/
+.chaper,
+.info-container .info {
+  font-family: "Playpen Sans Arabic", cursive;
+  font-style: normal;
+}
+
+/* -------------------------------
+   4. عناصر بخط "Alexandria"
+--------------------------------*/
+.dash,
+.chapter-number {
+  font-family: "Alexandria";
+  font-size: 17px;
+  color: #ccc;
+}
+
+#word-count,
+#font-size,
+#gear {
+  font-family: "Alexandria";
+  font-size: 12px;
+  font-weight: 400;
+}

@@ -23,7 +23,7 @@ body.light-theme #list:hover svg {
   fill: white;
 }
 body.light-theme #gray {
-  background-color: #333;
+  background-color: #434343;
 }
 /* ======================================== */
 /* ======== 2. الحاويات الرئيسية ========= */
@@ -31,7 +31,6 @@ body.light-theme #gray {
 
 /* هذه هي "الحاويات" التي طلبت جعلها بيضاء */
 body.light-theme .chaper,
-body.light-theme .support,
 body.light-theme .info-container .info,
 body.light-theme .main-header-container,
 body.light-theme #chapter-list-container {

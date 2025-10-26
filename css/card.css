@@ -64,8 +64,6 @@
   margin: 1px 0;
 }
 .x {
-  font-family: ink-2;
-  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

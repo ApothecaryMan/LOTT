@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!paragraph) return;
     if (currentActiveFontFamily.includes("Naskh")) {
       paragraph.style.fontSize = "30px";
-      supportText.style.fontSize = "17px";
       infoText.style.fontSize = "17px";
       chapterTitle.style.fontSize = "50px";
       if (sizeDisplay) sizeDisplay.innerText = "ثابت";
@@ -32,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       const newSize = currentBaseSize + "px";
       paragraph.style.fontSize = newSize;
-      supportText.style.fontSize = newSize;
       infoText.style.fontSize = newSize;
       chapterTitle.style.fontSize = "";
       if (sizeDisplay) sizeDisplay.innerText = currentBaseSize;

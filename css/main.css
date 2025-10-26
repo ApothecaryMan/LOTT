@@ -12,8 +12,7 @@
   transform: translateY(20px);
 }
 .chaper,
-.info,
-.support {
+.info {
   font-size: 18px;
 }
 p {
@@ -134,12 +133,6 @@ strong {
   position: relative;
 }
 
-.support-container {
-  overflow: hidden;
-  position: relative;
-  display: grid;
-}
-.support,
 .info-container .info {
   max-height: 40px;
 
@@ -153,8 +146,7 @@ strong {
   margin-bottom: 20px;
 }
 
-#expand-info,
-#expand-support {
+#expand-info {
   user-select: none;
   cursor: pointer;
 }

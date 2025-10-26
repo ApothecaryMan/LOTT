@@ -1,14 +1,7 @@
 .title {
-  color: #ffffff;
-  /* font-family: Arizonia; */
-  font-family: Ink;
-  font-weight: bolder;
-  text-shadow: 2px 5px 10px #000000;
   margin: 0px 0px 0px 0px;
   user-select: none;
   height: 40px;
-
-  font-size: 35px;
   padding: 10px 0;
 }
 .header-container {
