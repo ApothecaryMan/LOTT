@@ -87,154 +87,38 @@ document.addEventListener("contentLoaded", () => {
 });
 
 /* ========================================================================== */
-/* == AUTO-HIDE STICKY CAROUSEL ON SCROLL                                 == */
+/* == Auto-hide Sticky Carousel on Scroll == */
 /* ========================================================================== */
-/**
- * Implements auto-hide behavior for the sticky carousel based on scroll direction.
- *
- * Features:
- * - Hides carousel when scrolling down
- * - Shows carousel when scrolling up
- * - Remains visible at page top
- * - Debounced for performance optimization
- *
- * @module CarouselAutoHide
- * @requires DOM: .body (carousel container)
- */
-
-(function initCarouselAutoHide() {
-  "use strict";
-
-  // ========================================================================
-  // Configuration
-  // ========================================================================
-  const CONFIG = {
-    carouselSelector: ".body",
-    hiddenClass: "carousel-hidden",
-    scrollThreshold: 0,
-    debounceDelay: 10, // ms - balance between smoothness and performance
-  };
-
-  // ========================================================================
-  // State Management
-  // ========================================================================
-  const state = {
-    lastScrollY: window.scrollY,
-    isHidden: false,
-    ticking: false,
-  };
-
-  // ========================================================================
-  // DOM References
-  // ========================================================================
-  const elements = {
-    carousel: null,
-  };
-
-  // ========================================================================
-  // Core Functions
-  // ========================================================================
-
-  /**
-   * Initializes the carousel auto-hide feature
-   * @returns {boolean} Success status
-   */
-  function init() {
-    // Cache DOM element
-    elements.carousel = document.querySelector(CONFIG.carouselSelector);
-
-    // Validate carousel element exists
-    if (!elements.carousel) {
-      console.error(
-        `[CarouselAutoHide] Initialization failed: Element "${CONFIG.carouselSelector}" not found.`
-      );
-      return false;
-    }
-
-    // Attach scroll listener
-    attachScrollListener();
-
-    console.info("[CarouselAutoHide] Initialized successfully.");
-    return true;
+document.addEventListener("DOMContentLoaded", () => {
+  const carouselContainer = document.querySelector(".body");
+  if (!carouselContainer) {
+    console.error(
+      "Carousel container (.body) not found for auto-hide feature."
+    );
+    return;
   }
 
-  /**
-   * Attaches optimized scroll event listener using requestAnimationFrame
-   */
-  function attachScrollListener() {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-  }
+  let lastScrollY = window.scrollY;
 
-  /**
-   * Handles scroll events with RAF optimization
-   */
-  function handleScroll() {
-    if (!state.ticking) {
-      window.requestAnimationFrame(updateCarouselVisibility);
-      state.ticking = true;
-    }
-  }
-
-  /**
-   * Updates carousel visibility based on scroll direction
-   */
-  function updateCarouselVisibility() {
+  window.addEventListener("scroll", () => {
     const currentScrollY = window.scrollY;
-    const scrollDelta = currentScrollY - state.lastScrollY;
 
-    // At page top - always show
-    if (currentScrollY <= CONFIG.scrollThreshold) {
-      showCarousel();
-    }
-    // Scrolling down - hide
-    else if (scrollDelta > 0 && !state.isHidden) {
-      hideCarousel();
-    }
-    // Scrolling up - show
-    else if (scrollDelta < 0 && state.isHidden) {
-      showCarousel();
+    // Don't hide if we are at the very top of the page
+    if (currentScrollY <= 0) {
+      carouselContainer.classList.remove("carousel-hidden");
+      return;
     }
 
-    // Update state
-    state.lastScrollY = currentScrollY;
-    state.ticking = false;
-  }
-
-  /**
-   * Hides the carousel with proper state management
-   */
-  function hideCarousel() {
-    if (!state.isHidden) {
-      elements.carousel.classList.add(CONFIG.hiddenClass);
-      state.isHidden = true;
+    // Hide if scrolling down
+    if (currentScrollY > lastScrollY) {
+      carouselContainer.classList.add("carousel-hidden");
     }
-  }
-
-  /**
-   * Shows the carousel with proper state management
-   */
-  function showCarousel() {
-    if (state.isHidden) {
-      elements.carousel.classList.remove(CONFIG.hiddenClass);
-      state.isHidden = false;
+    // Show if scrolling up
+    else {
+      carouselContainer.classList.remove("carousel-hidden");
     }
-  }
 
-  // ========================================================================
-  // Public API (optional - if you need external control)
-  // ========================================================================
-  window.CarouselAutoHide = {
-    show: showCarousel,
-    hide: hideCarousel,
-    getState: () => ({ ...state }),
-  };
-
-  // ========================================================================
-  // Initialization
-  // ========================================================================
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-})();
+    // Update last scroll position for the next event
+    lastScrollY = currentScrollY;
+  });
+});
