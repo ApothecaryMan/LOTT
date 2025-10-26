@@ -172,7 +172,7 @@ function changeTheme(event) {
                 color: ${newColor};
             }
             body.light-theme .reply-form-container { background-color: ${containerBgColor}; }
-            .reply-submit-btn {
+            .reply-submit-btn,body.light-theme #comments-panel {
                 background-color: ${newColor};
                 color: ${bodyBgColor};
             }

@@ -194,9 +194,9 @@
       };
 
       if (findAndAddReply(state.comments, replyToId, newReply)) {
-        const scrollPosition = window.scrollY;
+        const scrollPosition = commentsContainer.scrollTop;
         displayComments(state.comments, commentsContainer);
-        window.scrollTo(0, scrollPosition);
+        commentsContainer.scrollTop = scrollPosition;
       }
       form.closest(".reply-form-container").remove();
     }
@@ -227,15 +227,34 @@
       document.addEventListener("input", handleTextareaInput);
 
       const commentsBtn = document.getElementById("comments-btn");
-      const commentsWrapper = document.getElementById(
-        "comments-section-wrapper"
-      );
+      const commentsPanel = document.getElementById("comments-panel");
+      const closeCommentsBtn = document.getElementById("close-comments-btn");
+      const commentsOverlay = document.getElementById("comments-overlay");
 
-      if (commentsBtn && commentsWrapper) {
+      const openCommentsPanel = () => {
+        document.body.classList.add("comments-open");
+        commentsPanel.classList.add("open");
+        commentsOverlay.classList.add("visible");
+        commentsBtn.classList.add("active");
+      };
+
+      const closeCommentsPanel = () => {
+        document.body.classList.remove("comments-open");
+        commentsPanel.classList.remove("open");
+        commentsOverlay.classList.remove("visible");
+        commentsBtn.classList.remove("active");
+      };
+
+      if (commentsBtn && commentsPanel && closeCommentsBtn && commentsOverlay) {
         commentsBtn.addEventListener("click", () => {
-          commentsBtn.classList.toggle("active");
-          commentsWrapper.classList.toggle("expanded");
+          if (commentsPanel.classList.contains("open")) {
+            closeCommentsPanel();
+          } else {
+            openCommentsPanel();
+          }
         });
+        closeCommentsBtn.addEventListener("click", closeCommentsPanel);
+        commentsOverlay.addEventListener("click", closeCommentsPanel);
       }
 
       console.log(
