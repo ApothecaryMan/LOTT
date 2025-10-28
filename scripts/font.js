@@ -1,4 +1,4 @@
-// --- START: Updated font.js with localStorage ---
+// --- START: Updated font.js with Integrated Discrete Slider ---
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- 1. Get Elements ---
@@ -6,22 +6,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const chapterTitle = document.getElementById("chapter-title");
   const supportText = document.getElementById("support-wrapper");
   const infoText = document.getElementById("info-wrapper");
-  const sizeDisplay = document.getElementById("font-size");
-  const increaseFontSizeBtn = document.getElementById("increase-font-size");
-  const decreaseFontSizeBtn = document.getElementById("decrease-font-size");
   const fontContainer = document.getElementById("font-selector");
+
+  // *** عناصر التحكم الجديدة بالحجم ***
+  const sizeToggleBtn = document.getElementById("size-toggle-btn");
+  const sizeSlider = document.getElementById("size-slider");
+  const collapsedText = sizeToggleBtn
+    ? sizeToggleBtn.querySelector(".collapsed-text")
+    : null;
 
   // --- 2. State Variables & Storage Keys ---
   const FONT_SETTINGS_KEY = "userFontSettings";
   const TEXT_ALIGN_KEY = "userTextAlign";
 
+  // نقاط التوقف الثابتة (0=Small, 3=XL)
+  const SIZE_MAP = {
+    0: 15, // S
+    1: 18, // M
+    2: 22, // L
+    3: 25, // XL
+  };
+
   let currentBaseSize = 16;
   let currentActiveFontFamily = "Alexandria, sans-serif";
-  let currentActiveFontId = "font-alexandria"; // Default active font button ID
+  let currentActiveFontId = "font-alexandria";
   let TitleFont = "Lalezar";
-  let currentTextAlign = "right"; // Default alignment
+  let currentTextAlign = "right";
 
   // --- 3. Core Functions ---
+
+  // تحويل حجم الخط (بالبكسل) إلى مؤشر السلايدر (0-3)
+  function sizeToSliderIndex(size) {
+    let index = 1; // Default to M (index 1 = 18px, closest to 16px default)
+
+    // البحث عن أقرب نقطة توقف
+    let minDiff = Infinity;
+    for (const key in SIZE_MAP) {
+      const diff = Math.abs(SIZE_MAP[key] - size);
+      if (diff < minDiff) {
+        minDiff = diff;
+        index = parseInt(key);
+      }
+    }
+    return index;
+  }
 
   function applyFontSize() {
     if (!paragraph) return;
@@ -31,21 +59,29 @@ document.addEventListener("DOMContentLoaded", () => {
       paragraph.style.fontSize = "30px";
       if (infoText) infoText.style.fontSize = "17px";
 
-      if (sizeDisplay) sizeDisplay.innerText = "ثابت";
-      if (increaseFontSizeBtn) increaseFontSizeBtn.disabled = true;
-      if (decreaseFontSizeBtn) decreaseFontSizeBtn.disabled = true;
+      if (sizeSlider) sizeSlider.disabled = true;
+      if (sizeToggleBtn) {
+        sizeToggleBtn.classList.remove("expanded");
+        if (collapsedText) collapsedText.textContent = "ثابت";
+      }
     } else {
       // B. منطق الخطوط القابلة للتعديل (Scalable Size Logic)
-      // يستخدم القيمة المخزنة في currentBaseSize
       const newSize = currentBaseSize + "px";
 
       paragraph.style.fontSize = newSize;
       if (infoText) infoText.style.fontSize = newSize;
-      if (chapterTitle) chapterTitle.style.fontSize = ""; // Reset title size if needed
+      if (chapterTitle) chapterTitle.style.fontSize = "";
 
-      if (sizeDisplay) sizeDisplay.innerText = currentBaseSize;
-      if (increaseFontSizeBtn) increaseFontSizeBtn.disabled = false;
-      if (decreaseFontSizeBtn) decreaseFontSizeBtn.disabled = false;
+      // تحديث حالة السلايدر وقيمة النص المصغر
+      if (sizeSlider) {
+        // تحديث قيمة السلايدر لتعكس الحجم الحالي
+        sizeSlider.value = sizeToSliderIndex(currentBaseSize);
+        sizeSlider.disabled = false;
+      }
+      if (collapsedText) {
+        // عرض الحجم الحالي (مثلاً 18) أو كلمة حجم الخط
+        collapsedText.textContent = currentBaseSize + "px";
+      }
     }
   }
 
@@ -70,36 +106,60 @@ document.addEventListener("DOMContentLoaded", () => {
       currentActiveFontId = settings.fontId || "font-alexandria";
     }
 
-    // Apply the loaded (or default) settings to the UI controls
-    const allFontButtons = fontContainer.querySelectorAll("button");
+    const allFontButtons = fontContainer
+      ? fontContainer.querySelectorAll("button")
+      : [];
     allFontButtons.forEach((btn) => btn.classList.remove("active"));
 
     const activeBtn = document.getElementById(currentActiveFontId);
     if (activeBtn) {
       activeBtn.classList.add("active");
-      // Update font family variable based on the loaded ID
       currentActiveFontFamily = window.getComputedStyle(activeBtn).fontFamily;
     }
   }
 
-  function increaseFontSize() {
-    // لا يمكن التعديل إذا كان الخط المستخدم هو النسخ
-    if (currentActiveFontFamily.includes("Naskh")) return;
+  function setupFontSizeSlider() {
+    if (sizeToggleBtn && sizeSlider) {
+      // 1. فتح وإغلاق الزر/السلايدر
+      sizeToggleBtn.addEventListener("click", (e) => {
+        // إذا كان خط النسخ مفعّلاً، لا تسمح بالفتح
+        if (currentActiveFontFamily.includes("Naskh")) {
+          sizeToggleBtn.classList.remove("expanded");
+          return;
+        }
 
-    currentBaseSize += 1;
-    if (currentBaseSize > 25) currentBaseSize = 25;
-    applyFontSize();
-    saveFontSettings();
-  }
+        // منع الإغلاق إذا كان النقر داخل شريط التمرير نفسه
+        if (e.target.closest("#size-slider")) {
+          return;
+        }
 
-  function decreaseFontSize() {
-    // لا يمكن التعديل إذا كان الخط المستخدم هو النسخ
-    if (currentActiveFontFamily.includes("Naskh")) return;
+        const isExpanded = sizeToggleBtn.classList.toggle("expanded");
 
-    currentBaseSize -= 1;
-    if (currentBaseSize < 15) currentBaseSize = 15;
-    applyFontSize();
-    saveFontSettings();
+        // عند الفتح، تأكد من تحديث قيمة السلايدر لتعكس الحجم الحالي
+        if (isExpanded) {
+          sizeSlider.value = sizeToSliderIndex(currentBaseSize);
+        } else {
+          // عند الإغلاق، نحدث النص المصغر
+          if (collapsedText) collapsedText.textContent = currentBaseSize + "px";
+        }
+      });
+    }
+
+    // 2. تحديث الحجم عند تغيير نقطة التوقف
+    if (sizeSlider) {
+      // نستخدم 'input' ليتم التحديث أثناء السحب
+      sizeSlider.addEventListener("input", (event) => {
+        const sliderIndex = parseInt(event.target.value);
+        currentBaseSize = SIZE_MAP[sliderIndex];
+
+        // التغيير السلس للحجم سيتم تنفيذه هنا بفضل CSS transition في main.css
+        applyFontSize();
+        saveFontSettings();
+      });
+
+      // تحديث قيمة السلايدر الافتراضية عند التحميل
+      sizeSlider.value = sizeToSliderIndex(currentBaseSize);
+    }
   }
 
   function setupFontSelection() {
@@ -118,16 +178,19 @@ document.addEventListener("DOMContentLoaded", () => {
           window.getComputedStyle(clickedButton).fontFamily;
 
         applyFontFamily();
-
-        // *** Fix: استدعاء applyFontSize هنا لضمان تطبيق الحجم الصحيح (ثابت أو متغير) ***
         applyFontSize();
+
+        // إغلاق السلايدر إذا تم اختيار خط النسخ
+        if (currentActiveFontFamily.includes("Naskh") && sizeToggleBtn) {
+          sizeToggleBtn.classList.remove("expanded");
+        }
 
         saveFontSettings();
       });
     }
   }
 
-  // --- 4. Text Alignment ---
+  // --- 4. Text Alignment (كما هو) ---
   const alignContainer = document.getElementById("align-formate");
   const ltrBtn = document.getElementById("ltr-btn");
   const middleBtn = document.getElementById("middle-btn");
@@ -212,28 +275,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- 5. Initialization ---
 
-  // 1. Load settings from localStorage
   loadFontSettings();
   loadTextAlign();
 
-  // 2. Apply initial styles immediately (Crucial for sizeDisplay fix)
   applyFontFamily();
-  applyFontSize(); // *** FIX: يطبق الحجم المحفوظ أو الثابت ويعرض القيمة في sizeDisplay ***
+  setupFontSizeSlider();
+  applyFontSize();
   applyTextAlign();
-
-  // 3. Attach listeners
-  if (increaseFontSizeBtn)
-    increaseFontSizeBtn.addEventListener("click", increaseFontSize);
-  if (decreaseFontSizeBtn)
-    decreaseFontSizeBtn.addEventListener("click", decreaseFontSize);
 
   setupFontSelection();
   setupAlignmentSelection();
 
-  // If you still rely on the custom contentLoaded event for asynchronous content
   document.addEventListener("contentLoaded", () => {
-    // If the elements (paragraph, chapterTitle) are loaded after DOMContentLoaded,
-    // these functions ensure styles are reapplied to the newly loaded content.
     applyFontFamily();
     applyFontSize();
     applyTextAlign();

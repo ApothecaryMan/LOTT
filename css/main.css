@@ -1,4 +1,4 @@
-.chapter {
+--- START OF FILE main.css --- .chapter {
   font-size: 20px;
   display: flex;
   flex-direction: column;
@@ -15,6 +15,16 @@
 .info {
   font-size: 18px;
 }
+
+/* إضافة الانتقال السلس لحجم الخط هنا */
+#chapter-text {
+  transition: font-size 0.3s ease-in-out;
+}
+#info-wrapper {
+  transition: font-size 0.3s ease-in-out;
+}
+/* ------------------------------------------- */
+
 p {
   margin: 4px 0 7px 0;
 }

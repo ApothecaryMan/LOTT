@@ -1,9 +1,8 @@
-.body {
+--- START OF FILE carousel.css --- .body {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* padding: 10px 5px 10px 1px; */
   padding: 5px 5px 5px 0;
   user-select: none;
 
@@ -32,7 +31,6 @@
 .carousel-wrapper {
   position: relative;
   overflow: hidden;
-  /* padding: 0 50px; */
 }
 
 .carousel {
@@ -80,7 +78,6 @@
 .carousel-btn-middle,
 .carousel-btn-end {
   background-color: #f2f2f2;
-  /* cursor: pointer; */
 }
 
 .carousel-btn-start:hover,
@@ -89,10 +86,7 @@
 }
 #font-selector button {
   display: flex;
-  /* width: 50px; */
   padding: 0 10px 0 10px;
-  /* border: 0px solid #f2f2f2; */
-  /* 1. Define a CSS variable for the bouncy timing function */
   --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
   transition: border-radius 0.2s ease-in-out, padding 0.5s var(--bounce-timing),
@@ -101,32 +95,120 @@
 
 #font-selector button:active {
   padding: 0 25px 0 25px;
-  /* 3. Add "scale" to make the button "pop" when pressed */
   transform: scale(1.01);
 
   transition: border-radius 0.2s ease-in-out, padding 0.5s var(--bounce-timing),
     transform 0.5s var(--bounce-timing);
 }
-#font-size {
-  cursor: default;
-  width: 30px;
-  border-radius: 3px;
-}
+
 #font-naskh {
   font-size: 22px;
 }
 #font-alexandria {
   font-size: 13px;
 }
-.carousel-btn-start:active,
-.carousel-btn-middle:active,
-.carousel-btn-end:active {
-  border-radius: 30px;
-}
 .carousel-item .active {
   border-radius: 50px;
-  /* background-color: #eb8317; */
 }
+
+/* ============================================== */
+/* ======= FONT SIZE SLIDER INTEGRATED STYLES ======= */
+/* ============================================== */
+
+#font-size-control-group {
+  padding: 0 5px 0 5px;
+}
+
+#size-toggle-btn {
+  /* الخصائص الأساسية للزر المغلق */
+  height: 25px;
+  width: auto; /* ليتناسب مع حجم النص */
+  padding: 0 10px;
+  max-width: 100px; /* العرض الأقصى لـ "حجم الخط" */
+  border-radius: 20px;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+
+  /* الانتقال على العرض/الحجم */
+  --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition: max-width 0.5s var(--bounce-timing), border-radius 0.3s ease,
+    height 0.4s ease;
+}
+
+/* حالة الزر المفتوح (المتمدد) */
+#size-toggle-btn.expanded {
+  max-width: 250px; /* العرض الأقصى لشريط التمرير */
+  height: 35px; /* ارتفاع أكبر لاستيعاب السلايدر والملصقات */
+  padding: 0 10px;
+  border-radius: 5px;
+
+  /* عند التمدد، نضمن أن التكبير والتصغير يتم تجاهله */
+  transform: none !important;
+}
+
+/* 3. تصميم المحتوى الداخلي (المصغر والممتد) */
+.collapsed-text {
+  /* يظهر بشكل افتراضي */
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#size-toggle-btn.expanded .collapsed-text {
+  /* يُخفى عند التمدد */
+  display: none;
+}
+
+.expanded-slider-content {
+  /* يُخفى بشكل افتراضي */
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#size-toggle-btn.expanded .expanded-slider-content {
+  /* يُظهر عند التمدد */
+  display: flex;
+}
+
+/* 4. تصميم شريط التمرير */
+.expanded-slider-content input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  background: #ccc;
+  border-radius: 5px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.expanded-slider-content input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #eb8317;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.expanded-slider-content .labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 10px;
+  color: #666;
+}
+
+/* ============================================== */
 
 /* COLOR ACCENT */
 #color-selector {
@@ -134,8 +216,6 @@
 }
 #color-selector button {
   width: 25px;
-  /* border: 0px solid #f2f2f2; */
-  /* 1. Define a CSS variable for the bouncy timing function */
   --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
   transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
@@ -145,7 +225,6 @@
 #color-selector button.active {
   width: 60px;
 
-  /* 3. Add "scale" to make the button "pop" when pressed */
   transform: scale(1.01);
 
   transition: border-radius 0.2s ease-in-out, width 0.4s var(--bounce-timing),
@@ -175,28 +254,25 @@
 
 .carousel-nav-btn {
   position: absolute;
-  top: 50%; /* يجعله في منتصف الكاروسيل عمودياً */
-  transform: translateY(-50%); /* يضبط مكانه ليكون في المنتصف بالضبط */
-  z-index: 10; /* يضمن أنه فوق العناصر الأخرى */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
 
-  /* تصميم الشكل */
-  background-color: rgba(0, 0, 0); /* خلفية شفافة قليلاً */
+  background-color: rgba(0, 0, 0);
   border: 0;
-  width: 25px; /* حجم الزر */
+  width: 25px;
   height: 30px;
   cursor: pointer;
 
-  /* لضبط الأيقونة (SVG) في المنتصف */
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* تأثير ناعم للإخفاء والإظهار */
   transition: opacity 0.2s ease, background-color 0.2s ease;
 }
 
 #prev-btn {
-  left: -3px; /* تثبيت الزر الأيسر */
+  left: -3px;
   border-radius: 0 25px 25px 0;
 }
 #next-btn {
@@ -204,8 +280,8 @@
   border-radius: 25px 0 0 25px;
 }
 .carousel-nav-btn.hidden {
-  opacity: 0; /* اجعله شفافاً */
-  pointer-events: none; /* امنع الضغط عليه وهو مخفي */
+  opacity: 0;
+  pointer-events: none;
 }
 
 #word-count {
@@ -257,8 +333,8 @@
 /* Ensure it doesn't get the hover effect of other buttons */
 #title-btn:hover,
 #title-btn:active {
-  transform: none; /* Disable the pop effect */
-  border-radius: 3px; /* Keep its original shape */
+  transform: none;
+  border-radius: 3px;
 }
 
 #align-formate button {
