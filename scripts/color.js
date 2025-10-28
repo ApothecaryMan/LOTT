@@ -119,13 +119,13 @@ function changeTheme(event) {
     #chapter-list button:hover .chapter-number,
     #chapter-list button:focus .chapter-number,
     #chapter-list button:hover .chapter-title-in-list,
-    #chapter-list button:focus .chapter-title-in-list, .comment-auther{
+    #chapter-list button:focus .chapter-title-in-list, .comment-author{
        color: ${newColor};
     }
        .comment-footer svg{
         fill: ${newColor};}
        
-       .auther-image{
+       .author-image{
         outline: 2px solid ${newColor}; 
        }
     .toggle-replies-btn {
@@ -156,7 +156,7 @@ function changeTheme(event) {
             body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
             body.light-theme .chapter, body.light-theme .support, body.light-theme .info,
             body.light-theme .main-header-container, body.light-theme #chapter-list-container,
-            body.light-theme .info-container .info,  body.light-theme .comments-container, body.light-theme .reply-textarea{
+            body.light-theme .info-container .info,  body.light-theme .comments-container,body.light-theme .main-comment-input-container , body.light-theme .reply-textarea{
                 background-color: ${containerBgColor};
             }
             body.light-theme .carousel-item button {
@@ -171,7 +171,7 @@ function changeTheme(event) {
                 body.light-theme .reply-textarea::placeholder {
                 color: ${newColor};
             }
-            body.light-theme .reply-form-container { background-color: ${containerBgColor}; }
+            body.light-theme .reply-form-container,body.light-theme #chapter-list button { background-color: ${containerBgColor}; }
             .reply-submit-btn,body.light-theme #comments-panel {
                 background-color: ${newColor};
                 color: ${bodyBgColor};

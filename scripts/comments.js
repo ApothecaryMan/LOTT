@@ -39,10 +39,10 @@
 
     commentElement.innerHTML = `
       <div class="comment-main-content">
-        <img src="${comment.imageSrc}" class="auther-image" alt="Author Image" />
+        <img src="${comment.imageSrc}" class="author-image" alt="Author Image" />
         <div class="comment-details">
           <div class="comment-header">
-            <div class="comment-auther">${comment.author}</div>
+            <div class="comment-author">${comment.author}</div>
             <div class="comment-time">${comment.time}</div>
           </div>
           <p class="comment-body">${comment.body}</p>

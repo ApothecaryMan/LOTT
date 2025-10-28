@@ -289,6 +289,14 @@
   transform: scale(0.95);
 }
 
+.likes-count {
+  color: #aaa;
+  font-size: 13px;
+  margin: 0;
+  min-width: 10px; /* Prevents layout shift */
+  text-align: center;
+}
+
 /* تصميم نموذج تعديل التعليق */
 .edit-form {
   margin-top: 10px;
@@ -380,7 +388,8 @@
 /* تحسينات إمكانية الوصول (للفوكس) */
 .auth-form input:focus,
 .edit-textarea:focus,
-.reply-textarea:focus {
+.reply-textarea:focus,
+.comment-textarea:focus {
   box-shadow: 0 0 0 3px rgba(62, 166, 255, 0.2);
 }
 
@@ -430,14 +439,6 @@ button:focus-visible {
 /* OS support: -REPLACE WITH YOUR OS SUPPORT- */
 /* Description: Styles for the nested comment section and reply form. */
 
-/* .comments-container {
-  margin-bottom: 15px;
-  border-radius: 25px;
-  padding: 5px 20px 10px 30px;
-  background-color: rgb(36, 36, 36);
-  transition: padding 0.4s ease-out, margin-bottom 0.4s ease-out;
-} */
-
 /* حاوية التعليقات الرئيسية (التي تحتوي كل التعليقات) */
 .comments-container {
   flex-grow: 1; /* تجعلها تملأ المساحة المتاحة عمودياً */
@@ -455,10 +456,6 @@ button:focus-visible {
   font-size: 12px;
   line-height: 16px;
 }
-
-/* .comment-section + .comment-section {
-  border-top: 1px solid #3f3f3f;
-} */
 
 /* المحتوى الرئيسي للتعليق (الصورة + التفاصيل) */
 .comment-main-content {
@@ -481,6 +478,10 @@ button:focus-visible {
   gap: 15px;
   font-size: 14px;
   font-weight: bold;
+}
+
+.comment-author {
+  color: #f1f1f1;
 }
 
 /* نص التعليق (المحتوى) */
@@ -530,7 +531,7 @@ button:focus-visible {
 }
 
 /* صورة المستخدم صاحب التعليق */
-.auther-image {
+.author-image {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -615,7 +616,16 @@ button:focus-visible {
   display: block;
 }
 
-/* --- تنسيقات نموذج الرد بأسلوب يوتيوب --- */
+/* --- تنسيقات نموذج الإدخال الرئيسي ونموذج الرد --- */
+
+/* حاوية فورم التعليق الرئيسي (أعلى اللوحة) */
+.main-comment-input-container {
+  display: flex;
+  gap: 16px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #3f3f3f;
+  flex-shrink: 0; /* Prevents it from shrinking */
+}
 
 /* حاوية فورم الرد (الصورة + الصندوق) */
 .reply-form-container {
@@ -634,6 +644,7 @@ button:focus-visible {
 }
 
 /* فورم الرد نفسه */
+.main-comment-form,
 .reply-form {
   width: 100%;
 }
@@ -643,7 +654,8 @@ button:focus-visible {
   width: 100%;
 }
 
-/* صندوق كتابة الرد (Textarea) */
+/* صندوق كتابة الرد (Textarea) للنموذجين */
+.comment-textarea,
 .reply-textarea {
   width: 100%;
   background-color: transparent;
@@ -659,16 +671,19 @@ button:focus-visible {
   transition: border-color 0.3s ease;
 }
 
+.comment-textarea::placeholder,
 .reply-textarea::placeholder {
   color: #aaa;
 }
 
 /* تكثيف الخط السفلي عند التركيز (Focus) */
+.comment-textarea:focus,
 .reply-textarea:focus {
   border-bottom: 2px solid #f1f1f1;
 }
 
 /* أزرار فورم الرد (إرسال / إلغاء) */
+.comment-form-actions,
 .reply-form-actions {
   display: flex;
   justify-content: flex-end;
@@ -677,7 +692,9 @@ button:focus-visible {
 }
 
 /* زر إلغاء الرد */
+.comment-cancel-btn,
 .reply-cancel-btn,
+.comment-submit-btn,
 .reply-submit-btn {
   /* زر إرسال الرد */
   background-color: transparent;
@@ -690,29 +707,62 @@ button:focus-visible {
   transition: background-color 0.2s ease;
 }
 
+.comment-cancel-btn,
 .reply-cancel-btn {
   color: #aaa;
 }
+
+.comment-cancel-btn:hover,
 .reply-cancel-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.comment-submit-btn,
 .reply-submit-btn {
   background-color: #3ea6ff;
   color: #0f0f0f;
 }
 
 /* حالة زر الإرسال (عندما يكون معطلاً/فارغاً) */
+.comment-submit-btn:disabled,
 .reply-submit-btn:disabled {
   background-color: #272727;
   color: #717171;
   cursor: not-allowed;
 }
+
+.comment-submit-btn:not(:disabled):hover,
 .reply-submit-btn:not(:disabled):hover {
   filter: brightness(0.9);
 }
 
-/* --- End of comments.css --- */
+/* تنسيق رسالة تسجيل الدخول */
+.comment-auth-prompt {
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+  color: #aaa;
+}
+
+.comment-auth-prompt p {
+  margin: 0 0 15px;
+}
+
+.auth-prompt-btn {
+  background-color: #3ea6ff;
+  color: #0f0f0f;
+  border: none;
+  border-radius: 18px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.auth-prompt-btn:hover {
+  filter: brightness(0.9);
+}
 
 /* يمنع الصفحة الرئيسية من التمرير عند فتح التعليقات */
 body.comments-open {

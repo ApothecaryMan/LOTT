@@ -16,19 +16,22 @@
       rel="stylesheet"
     />
 
+    <!-- Existing CSS -->
     <link rel="stylesheet" href="css/general.css" />
     <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/theme.css" />
     <link rel="stylesheet" href="css/main.css" />
-    <link rel="stylesheet" href="css/aspect-ratio.css" />
     <link rel="stylesheet" href="css/card.css" />
     <link rel="stylesheet" href="css/carousel.css" />
     <link rel="stylesheet" href="css/scroll-gear.css" />
     <link rel="stylesheet" href="css/font.css" />
     <link rel="stylesheet" href="css/chapter-list.css" />
-    <link rel="stylesheet" href="css/theme.css" />
-    <!-- <link rel="stylesheet" href="css/comments.css" /> -->
     <link rel="stylesheet" href="css/comments-auth.css" />
 
+    <!-- NEW: Desktop Split Layout CSS -->
+    <link rel="stylesheet" href="css/desktop-layout.css" />
+
+    <!-- Existing Scripts -->
     <script src="scripts/loader/content-loader.js" defer></script>
     <script src="scripts/loader/list-loader.js" defer></script>
     <script src="scripts/vibration/vibration-manager.js" defer></script>
@@ -42,15 +45,19 @@
     <script src="scripts/title-animation.js" defer></script>
     <script src="scripts/custom-color-picker.js" defer></script>
     <script src="scripts/real-comments.js" defer></script>
+
+    <!-- NEW: Supabase SDK (Option 1: Supabase) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> -->
+
+    <!-- NEW: Real Comments System (Choose ONE option below) -->
+    <!-- Option 1: Supabase (Recommended - Fastest) -->
+
+    <!-- Option 2: Node.js Backend (Comment out Option 1 and uncomment this) -->
+    <!-- <script src="scripts/comments-nodejs.js" defer></script> -->
   </head>
 
   <body>
-    <div class="header-container" style="background-image: url('img/55.jpg')">
-      <header class="header">
-        <h2 class="title">Lord Of The Truth</h2>
-      </header>
-    </div>
-
+    <!-- Carousel -->
     <div class="body">
       <div class="carousel-container">
         <div class="carousel-wrapper">
@@ -215,7 +222,7 @@
               <button class="carousel-btn-middle" id="pink"></button>
               <button class="carousel-btn-end" id="custom-color-btn"></button>
             </div>
-            <div class="carousel-item" id="word-count-item">
+            <div class="carousel-item" id="font-selector">
               <button class="carousel-btn-middle" id="word-count"></button>
             </div>
             <div class="carousel-item" id="mode-selector">
@@ -252,107 +259,120 @@
       <div id="chapter-list-container"></div>
     </div>
 
-    <div class="main-content-area">
-      <div class="main-body">
-        <main class="main">
-          <div class="main-header-container">
-            <div class="main-header">
-              <p class="chapter-title" id="chapter-title"></p>
-              <div class="date">
-                <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-                <p>بواسطــــه زيـــوس</p>
-                <p>&hearts;</p>
-                <p>19 أكتوبر, 2025</p>
+    <!-- Header -->
+    <div class="header-container" style="background-image: url('img/55.jpg')">
+      <header class="header">
+        <h2 class="title">Lord Of The Truth</h2>
+      </header>
+    </div>
+
+    <!-- NEW: Main Content Wrapper for Split Layout -->
+    <div class="main-content-wrapper">
+      <!-- Main Content Area -->
+      <div class="main-content-area">
+        <div class="main-body">
+          <main class="main">
+            <div class="main-header-container">
+              <div class="main-header">
+                <p class="chapter-title" id="chapter-title"></p>
+                <div class="date">
+                  <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
+                  <p>بواسطـــــه زيـــوس</p>
+                  <p>&hearts;</p>
+                  <p>19 أكتوبر, 2025</p>
+                </div>
+              </div>
+              <div class="pre-nex">
+                <button class="next">
+                  <svg
+                    height="18px"
+                    viewBox="0 0 25 25"
+                    width="18px"
+                    fill="black"
+                  >
+                    <g><path d="M0,0h24v24H0V0z" fill="none" /></g>
+                    <g>
+                      <polygon
+                        points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"
+                      />
+                    </g>
+                  </svg>
+                </button>
+                <button class="previous" id="previous-btn">
+                  <svg
+                    height="18px"
+                    viewBox="0 0 25 25"
+                    width="24px"
+                    fill="black"
+                  >
+                    <path d="M0 0h24v24H0V0z" fill="none" opacity=".87" />
+                    <path
+                      d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
-            <div class="pre-nex">
-              <button class="next">
-                <svg
-                  height="18px"
-                  viewBox="0 0 25 25"
-                  width="18px"
-                  fill="black"
-                >
-                  <g><path d="M0,0h24v24H0V0z" fill="none" /></g>
-                  <g>
-                    <polygon
-                      points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"
-                    />
-                  </g>
-                </svg>
-              </button>
-              <button class="previous" id="previous-btn">
-                <svg
-                  height="18px"
-                  viewBox="0 0 25 25"
-                  width="24px"
-                  fill="black"
-                >
-                  <path d="M0 0h24v24H0V0z" fill="none" opacity=".87" />
-                  <path
-                    d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
 
-          <div class="chapter" id="chapter-text"></div>
-        </main>
-        <div class="info-container">
-          <div class="info" id="info-wrapper">
-            <p id="expand-info">فصول الشهر 97 /38</p>
-            <p>سيرفر ديسكورد لمـتابعة مواعيد نزول الفصل:</p>
-            <p>https://discord.com/invite/lott</p>
-            <p>او</p>
-            <p>https://discord.gg/AxDFN6uVTE</p>
-            <p>تدقيق/ زولان</p>
-            <p>داعمي الشهر:</p>
-            <p>محول:10</p>
-            <p>Weed :5chXX</p>
-            <p>Stealpro :20</p>
-            <p>سنكر: 20</p>
-            <p>Ronin: 2ch</p>
-            <p>Ronin: 2chX</p>
-            <p>Leman: 19chX</p>
-            <p>سارق قلوب الميمات: 6</p>
-            <p>المهمهم: 1</p>
-            <p>العظمة بذاتها: 1</p>
-            <p>الشيخ الكوني زولان: 2×</p>
-            <p>Chef: 2chX</p>
-            <p>Hamdan: 7chXx</p>
-            <p>لا تنسوا المساهمة بالاحجار اليومية، المسابقة رجعت!</p>
-            <p>
-              <a href="https://www.webnovel.com/book/"
-                >https://www.webnovel.com/book/</a
-              >
-            </p>
+            <div class="chapter" id="chapter-text"></div>
+          </main>
+
+          <div class="info-container">
+            <div class="info" id="info-wrapper">
+              <p id="expand-info">فصول الشهر 97 /38</p>
+              <p>سيرفر ديسكورد لمـتابعة مواعيد نزول الفصل:</p>
+              <p>https://discord.com/invite/lott</p>
+              <p>او</p>
+              <p>https://discord.gg/AxDFN6uVTE</p>
+              <p>تدقيق/ زولان</p>
+              <p>داعميي الشهر:</p>
+              <p>محول:10</p>
+              <p>Weed :5chXX</p>
+              <p>Stealpro :20</p>
+              <p>سنكر: 20</p>
+              <p>Ronin: 2ch</p>
+              <p>Ronin: 2chX</p>
+              <p>Leman: 19chX</p>
+              <p>سارق قلوب الميمات: 6</p>
+              <p>المهمهم: 1</p>
+              <p>العظمة بذاتها: 1</p>
+              <p>الشيخ الكوني زولان: 2×</p>
+              <p>Chef: 2chX</p>
+              <p>Hamdan: 7chXx</p>
+              <p>لا تنسوا المساهمة بالاحجار اليومية، المسابقة رجعت!</p>
+              <p>https://www.webnovel.com/book/p></p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div id="comments-panel">
-      <div class="comments-panel-header">
-        <h4 class="comments-panel-title">التعليقات</h4>
-        <button
-          id="close-comments-btn"
-          class="comments-panel-close"
-          title="Close"
-        >
-          &times;
-        </button>
+      <!-- NEW: Comments Panel (Inline on Desktop, Overlay on Mobile) -->
+      <div id="comments-panel">
+        <div class="comments-panel-header">
+          <h4 class="comments-panel-title">التعليقات</h4>
+          <button
+            id="close-comments-btn"
+            class="comments-panel-close"
+            title="إغلاق"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="comments-container"></div>
       </div>
-      <div class="comments-container"></div>
     </div>
+    <!-- End Main Content Wrapper -->
 
+    <!-- Overlay for Mobile -->
     <div id="comments-overlay"></div>
 
+    <!-- Footer -->
     <footer class="footer">
       <p>&copy; 2025 Lord Of The Truth. جميع الحقوق محفوظة.</p>
       <p>ترجمة وتدقيق بواسطة فريق زيوس.</p>
     </footer>
 
+    <!-- Card Carousel -->
     <div class="card-carousel-container">
       <button id="card-prev-btn" class="carousel-nav-btn hidden">
         <svg
@@ -368,51 +388,51 @@
 
       <div class="cards" id="card-carousel">
         <div class="card">
-          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
+          <img class="card-img" src="img/card.jpg" />
           <div class="card-info">
             <p class="x">1767 - قرار صعب</p>
             <div class="date">
               <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-              <p>بواسطــــه زيـــوس</p>
+              <p>بواسطـــــه زيـــوس</p>
               <p>19 أكتوبر, 2025</p>
             </div>
           </div>
         </div>
         <div class="card">
-          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
+          <img class="card-img" src="img/card.jpg" />
           <div class="card-info">
             <p class="x">1768 -تطور معارك الجنوب-1</p>
             <div class="date">
               <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-              <p>بواسطــــه زيـــوس</p>
+              <p>بواسطـــــه زيـــوس</p>
               <p>19 أكتوبر, 2025</p>
             </div>
           </div>
         </div>
         <div class="card">
-          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
+          <img class="card-img" src="img/card.jpg" />
           <div class="card-info">
             <p class="x">1769 -تطور معارك الجنوب-2</p>
             <div class="date">
               <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-              <p>بواسطــــه زيـــوس</p>
+              <p>بواسطـــــه زيـــوس</p>
               <p>19 أكتوبر, 2025</p>
             </div>
           </div>
         </div>
         <div class="card">
-          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
+          <img class="card-img" src="img/card.jpg" />
           <div class="card-info">
             <p class="x">1770 -للمتجر مجدداً؟</p>
             <div class="date">
               <img class="zeus" src="img/zeus.png" alt="صورة الكاتب زيوس" />
-              <p>بواسطــــه زيـــوس</p>
+              <p>بواسطـــــه زيـــوس</p>
               <p>19 أكتوبر, 2025</p>
             </div>
           </div>
         </div>
         <div class="card">
-          <img class="card-img" src="img/card.jpg" alt="صورة غلاف الفصل" />
+          <img class="card-img" src="img/card.jpg" />
           <div class="card-info">
             <p class="x">1771 -مجتمع الروح</p>
             <div class="date">

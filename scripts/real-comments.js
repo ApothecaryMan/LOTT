@@ -1,39 +1,17 @@
-/* ========================================================================== */
-/* == REAL COMMENTS SYSTEM - FRONTEND CLIENT                              == */
-/* ========================================================================== */
-
-/**
- * Professional Comments System Frontend
- * Integrates with backend API for real-time comment functionality
- *
- * Features:
- * - User authentication
- * - Real-time comment posting
- * - Edit/delete operations
- * - Like/unlike functionality
- * - Nested replies
- * - Error handling and loading states
- *
- * @author Your Name
- * @os Fedora with GNOME
- */
+// Author: -REPLACE WITH YOUR NAME-
+// OS support: Fedora Gnome
+// Description: Professional Comments System Frontend
 
 (function () {
   "use strict";
 
-  // ========================================================================
-  // Configuration
-  // ========================================================================
   const CONFIG = {
     apiBaseUrl: "http://localhost:3000/api",
     tokenKey: "auth_token",
     userKey: "current_user",
-    currentChapterId: "chapter-1766", // Update dynamically based on page
+    currentChapterId: "chapter-1766",
   };
 
-  // ========================================================================
-  // State Management
-  // ========================================================================
   const state = {
     comments: [],
     currentUser: null,
@@ -41,9 +19,6 @@
     isLoading: false,
   };
 
-  // ========================================================================
-  // DOM Elements
-  // ========================================================================
   const elements = {
     commentsContainer: null,
     commentsBtn: null,
@@ -51,15 +26,12 @@
     closeCommentsBtn: null,
     commentsOverlay: null,
     authModal: null,
+    commentInputContainer: null,
+    commentInputTextarea: null,
+    commentSubmitBtn: null,
   };
 
-  // ========================================================================
-  // API Client
-  // ========================================================================
   const api = {
-    /**
-     * Generic fetch wrapper with authentication
-     */
     async request(endpoint, options = {}) {
       const token = localStorage.getItem(CONFIG.tokenKey);
       const headers = {
@@ -92,7 +64,6 @@
       }
     },
 
-    // Auth endpoints
     async register(username, email, password) {
       return await this.request("/auth/register", {
         method: "POST",
@@ -107,7 +78,6 @@
       });
     },
 
-    // Comment endpoints
     async getComments(chapterId) {
       return await this.request(`/comments/${chapterId}`);
     },
@@ -139,13 +109,7 @@
     },
   };
 
-  // ========================================================================
-  // Authentication Manager
-  // ========================================================================
   const auth = {
-    /**
-     * Initialize auth state from localStorage
-     */
     init() {
       const token = localStorage.getItem(CONFIG.tokenKey);
       const user = localStorage.getItem(CONFIG.userKey);
@@ -156,9 +120,6 @@
       }
     },
 
-    /**
-     * Login user
-     */
     async login(username, password) {
       try {
         const response = await api.login(username, password);
@@ -169,9 +130,6 @@
       }
     },
 
-    /**
-     * Register new user
-     */
     async register(username, email, password) {
       try {
         const response = await api.register(username, email, password);
@@ -182,9 +140,6 @@
       }
     },
 
-    /**
-     * Logout user
-     */
     logout() {
       localStorage.removeItem(CONFIG.tokenKey);
       localStorage.removeItem(CONFIG.userKey);
@@ -193,9 +148,6 @@
       location.reload();
     },
 
-    /**
-     * Store auth data
-     */
     setAuthData(token, user) {
       localStorage.setItem(CONFIG.tokenKey, token);
       localStorage.setItem(CONFIG.userKey, JSON.stringify(user));
@@ -203,21 +155,12 @@
       state.currentUser = user;
     },
 
-    /**
-     * Check if user is authenticated
-     */
     isAuthenticated() {
       return state.isAuthenticated;
     },
   };
 
-  // ========================================================================
-  // UI Rendering
-  // ========================================================================
   const ui = {
-    /**
-     * Create comment element
-     */
     createCommentElement(comment, isReply = false) {
       const commentElement = document.createElement("div");
       commentElement.className = `comment-section ${isReply ? "is-reply" : ""}`;
@@ -257,10 +200,10 @@
         <div class="comment-main-content">
           <img src="${
             comment.avatar_url
-          }" class="auther-image" alt="Author Image" />
+          }" class="author-image" alt="Author Image" />
           <div class="comment-details">
             <div class="comment-header">
-              <div class="comment-auther">
+              <div class="comment-author">
                 ${comment.username}
                 ${
                   comment.is_edited
@@ -310,9 +253,6 @@
       return commentElement;
     },
 
-    /**
-     * Display all comments
-     */
     displayComments(comments) {
       if (!elements.commentsContainer) return;
 
@@ -333,9 +273,6 @@
       });
     },
 
-    /**
-     * Show loading state
-     */
     showLoading() {
       if (elements.commentsContainer) {
         elements.commentsContainer.innerHTML = `
@@ -347,9 +284,6 @@
       }
     },
 
-    /**
-     * Show error message
-     */
     showError(message) {
       if (elements.commentsContainer) {
         elements.commentsContainer.innerHTML = `
@@ -360,18 +294,12 @@
       }
     },
 
-    /**
-     * Escape HTML to prevent XSS
-     */
     escapeHtml(text) {
       const div = document.createElement("div");
       div.textContent = text;
       return div.innerHTML;
     },
 
-    /**
-     * Show authentication modal
-     */
     showAuthModal() {
       const modal = document.createElement("div");
       modal.id = "auth-modal";
@@ -384,7 +312,6 @@
             <button class="auth-tab" data-tab="register">إنشاء حساب</button>
           </div>
           
-          <!-- Login Form -->
           <form id="login-form" class="auth-form active">
             <h3>تسجيل الدخول</h3>
             <div class="form-group">
@@ -397,7 +324,6 @@
             <button type="submit" class="auth-submit-btn">دخول</button>
           </form>
 
-          <!-- Register Form -->
           <form id="register-form" class="auth-form">
             <h3>إنشاء حساب جديد</h3>
             <div class="form-group">
@@ -418,9 +344,51 @@
       elements.authModal = modal;
     },
 
-    /**
-     * Show reply form
-     */
+    showMainCommentForm() {
+      if (!elements.commentsPanel) return;
+
+      const formHtml = `
+        <div class="main-comment-input-container">
+          ${
+            state.isAuthenticated
+              ? `
+                <img src="${state.currentUser.avatar_url}" class="current-user-avatar" alt="Your Avatar">
+                <form id="main-comment-form" class="main-comment-form">
+                  <div class="textarea-wrapper">
+                    <textarea id="main-comment-textarea" class="comment-textarea" placeholder="ما رأيك؟" required></textarea>
+                  </div>
+                  <div class="comment-form-actions">
+                    <button type="button" id="main-cancel-btn" class="comment-cancel-btn">إلغاء</button>
+                    <button type="submit" id="main-submit-btn" class="comment-submit-btn" disabled>تعليق</button>
+                  </div>
+                </form>
+              `
+              : `
+                <div class="comment-auth-prompt">
+                  <p>يجب تسجيل الدخول لإضافة تعليق</p>
+                  <button id="auth-prompt-btn" class="auth-prompt-btn">تسجيل الدخول / حساب جديد</button>
+                </div>
+              `
+          }
+        </div>
+      `;
+
+      const commentsPanelHeader = elements.commentsPanel.querySelector(
+        ".comments-panel-header"
+      );
+      if (commentsPanelHeader) {
+        commentsPanelHeader.insertAdjacentHTML("afterend", formHtml);
+        elements.commentInputContainer = elements.commentsPanel.querySelector(
+          ".main-comment-input-container"
+        );
+        elements.commentInputTextarea = elements.commentsPanel.querySelector(
+          "#main-comment-textarea"
+        );
+        elements.commentSubmitBtn =
+          elements.commentsPanel.querySelector("#main-submit-btn");
+      }
+    },
+
     showReplyForm(targetElement, commentId) {
       const existingForm = document.querySelector(".reply-form-container");
       if (existingForm) {
@@ -430,7 +398,7 @@
       const formContainer = document.createElement("div");
       formContainer.className = "reply-form-container";
       formContainer.innerHTML = `
-        <img src="${state.currentUser.avatar}" class="current-user-avatar" alt="Your Avatar">
+        <img src="${state.currentUser.avatar_url}" class="current-user-avatar" alt="Your Avatar">
         <form class="reply-form" data-reply-to-id="${commentId}">
           <div class="textarea-wrapper">
             <textarea class="reply-textarea" placeholder="إضافة رد..." required></textarea>
@@ -446,9 +414,6 @@
       formContainer.querySelector(".reply-textarea").focus();
     },
 
-    /**
-     * Show edit form
-     */
     showEditForm(commentElement, commentId, currentBody) {
       const bodyElement = commentElement.querySelector(".comment-body");
       const originalText = bodyElement.textContent;
@@ -469,13 +434,7 @@
     },
   };
 
-  // ========================================================================
-  // Comment Manager
-  // ========================================================================
   const commentManager = {
-    /**
-     * Load comments from API
-     */
     async loadComments() {
       state.isLoading = true;
       ui.showLoading();
@@ -496,9 +455,6 @@
       }
     },
 
-    /**
-     * Post new comment
-     */
     async postComment(body, parentId = null) {
       if (!state.isAuthenticated) {
         ui.showAuthModal();
@@ -511,7 +467,7 @@
           body,
           parentId
         );
-        await this.loadComments(); // Reload to get updated structure
+        await this.loadComments();
         return { success: true };
       } catch (error) {
         console.error("Error posting comment:", error);
@@ -519,9 +475,6 @@
       }
     },
 
-    /**
-     * Update comment
-     */
     async updateComment(commentId, body) {
       try {
         await api.updateComment(commentId, body);
@@ -533,9 +486,6 @@
       }
     },
 
-    /**
-     * Delete comment
-     */
     async deleteComment(commentId) {
       if (!confirm("هل أنت متأكد من حذف هذا التعليق؟")) {
         return;
@@ -552,9 +502,6 @@
       }
     },
 
-    /**
-     * Toggle like on comment
-     */
     async toggleLike(commentId) {
       if (!state.isAuthenticated) {
         ui.showAuthModal();
@@ -564,7 +511,6 @@
       try {
         const response = await api.toggleLike(commentId);
 
-        // Update UI immediately
         const likeBtn = document.querySelector(
           `.like-btn[data-comment-id="${commentId}"]`
         );
@@ -587,15 +533,8 @@
     },
   };
 
-  // ========================================================================
-  // Event Handlers
-  // ========================================================================
   const handlers = {
-    /**
-     * Handle document clicks (event delegation)
-     */
     handleDocumentClick(event) {
-      // Reply button
       const replyBtn = event.target.closest(".reply-btn");
       if (replyBtn) {
         const commentId = replyBtn.dataset.commentId;
@@ -604,14 +543,12 @@
         return;
       }
 
-      // Cancel reply button
       const cancelBtn = event.target.closest(".reply-cancel-btn");
       if (cancelBtn) {
         cancelBtn.closest(".reply-form-container").remove();
         return;
       }
 
-      // Toggle replies button
       const toggleBtn = event.target.closest(".toggle-replies-btn");
       if (toggleBtn) {
         toggleBtn.classList.toggle("open");
@@ -621,7 +558,6 @@
         return;
       }
 
-      // Like button
       const likeBtn = event.target.closest(".like-btn");
       if (likeBtn) {
         const commentId = likeBtn.dataset.commentId;
@@ -629,7 +565,6 @@
         return;
       }
 
-      // Edit button
       const editBtn = event.target.closest(".edit-comment-btn");
       if (editBtn) {
         const commentId = editBtn.dataset.commentId;
@@ -640,7 +575,6 @@
         return;
       }
 
-      // Delete button
       const deleteBtn = event.target.closest(".delete-comment-btn");
       if (deleteBtn) {
         const commentId = deleteBtn.dataset.commentId;
@@ -648,14 +582,12 @@
         return;
       }
 
-      // Edit cancel button
       const editCancelBtn = event.target.closest(".edit-cancel-btn");
       if (editCancelBtn) {
-        commentManager.loadComments(); // Reload to restore original
+        commentManager.loadComments();
         return;
       }
 
-      // Auth modal close
       if (
         event.target.matches(".auth-modal-close") ||
         event.target.matches(".auth-modal")
@@ -665,7 +597,12 @@
         return;
       }
 
-      // Auth tabs
+      const authPromptBtn = event.target.closest("#auth-prompt-btn");
+      if (authPromptBtn) {
+        ui.showAuthModal();
+        return;
+      }
+
       const authTab = event.target.closest(".auth-tab");
       if (authTab) {
         const targetTab = authTab.dataset.tab;
@@ -681,11 +618,25 @@
       }
     },
 
-    /**
-     * Handle form submissions
-     */
     async handleFormSubmit(event) {
-      // Reply form
+      console.log("Submit event fired! Target:", event.target);
+
+      if (event.target.matches("#main-comment-form")) {
+        event.preventDefault();
+        const textarea = document.getElementById("main-comment-textarea");
+        const body = textarea.value.trim();
+
+        if (body) {
+          const result = await commentManager.postComment(body);
+          if (result.success) {
+            textarea.value = "";
+            textarea.style.height = "auto";
+            document.getElementById("main-submit-btn").disabled = true;
+          }
+        }
+        return;
+      }
+
       if (event.target.matches(".reply-form")) {
         event.preventDefault();
         const form = event.target;
@@ -702,7 +653,6 @@
         return;
       }
 
-      // Edit form
       if (event.target.matches(".edit-form")) {
         event.preventDefault();
         const form = event.target;
@@ -716,7 +666,6 @@
         return;
       }
 
-      // Login form
       if (event.target.matches("#login-form")) {
         event.preventDefault();
         const username = document.getElementById("login-username").value.trim();
@@ -727,14 +676,13 @@
         if (result.success) {
           document.getElementById("auth-modal")?.remove();
           commentManager.loadComments();
-          location.reload(); // Refresh to update UI
+          location.reload();
         } else {
           errorDiv.textContent = result.error;
         }
         return;
       }
 
-      // Register form
       if (event.target.matches("#register-form")) {
         event.preventDefault();
         const username = document
@@ -756,11 +704,13 @@
       }
     },
 
-    /**
-     * Handle textarea input for auto-resize and button state
-     */
     handleTextareaInput(event) {
-      if (!event.target.matches(".reply-textarea, .edit-textarea")) return;
+      if (
+        !event.target.matches(
+          ".reply-textarea, .edit-textarea, .comment-textarea"
+        )
+      )
+        return;
 
       const textarea = event.target;
       textarea.style.height = "auto";
@@ -772,13 +722,7 @@
     },
   };
 
-  // ========================================================================
-  // Panel Controls
-  // ========================================================================
   const panelControls = {
-    /**
-     * Open comments panel
-     */
     openPanel() {
       const isDesktop = window.innerWidth >= 1081;
 
@@ -796,9 +740,6 @@
       elements.commentsBtn.classList.add("active");
     },
 
-    /**
-     * Close comments panel
-     */
     closePanel() {
       const isDesktop = window.innerWidth >= 1081;
 
@@ -816,9 +757,6 @@
       elements.commentsBtn.classList.remove("active");
     },
 
-    /**
-     * Toggle comments panel
-     */
     togglePanel() {
       if (elements.commentsPanel.classList.contains("open")) {
         this.closePanel();
@@ -828,35 +766,28 @@
     },
   };
 
-  // ========================================================================
-  // Initialization
-  // ========================================================================
   async function init() {
-    // Initialize DOM references
     elements.commentsContainer = document.querySelector(".comments-container");
     elements.commentsBtn = document.getElementById("comments-btn");
     elements.commentsPanel = document.getElementById("comments-panel");
     elements.closeCommentsBtn = document.getElementById("close-comments-btn");
     elements.commentsOverlay = document.getElementById("comments-overlay");
 
-    // Validate required elements
     if (!elements.commentsContainer) {
       console.error("Comments container not found!");
       return;
     }
 
-    // Initialize authentication
     auth.init();
 
-    // Load comments
+    ui.showMainCommentForm();
+
     await commentManager.loadComments();
 
-    // Attach event listeners
     document.addEventListener("click", handlers.handleDocumentClick);
     document.addEventListener("submit", handlers.handleFormSubmit);
     document.addEventListener("input", handlers.handleTextareaInput);
 
-    // Panel controls
     if (elements.commentsBtn) {
       elements.commentsBtn.addEventListener("click", () =>
         panelControls.togglePanel()
@@ -873,7 +804,6 @@
       );
     }
 
-    // Handle responsive behavior
     let resizeTimer;
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimer);
@@ -903,16 +833,12 @@
     );
   }
 
-  // ========================================================================
-  // Start Application
-  // ========================================================================
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
   }
 
-  // Expose API for external use (optional)
   window.CommentsSystem = {
     auth,
     reload: () => commentManager.loadComments(),
@@ -922,25 +848,3 @@
     },
   };
 })();
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-// // إنشاء كائن إعدادات لو مش موجود
-// const CONFIG = CONFIG || {};
-
-// // أولوية القراءة:
-// // 1️⃣ من رابط الصفحة (URL parameter)
-// // 2️⃣ من data attribute في الـ body
-// // 3️⃣ من عنصر في الصفحة (مثل العنوان)
-// // 4️⃣ القيمة الافتراضية "chapter-1"
-
-// (function detectChapterId() {
-//   const urlParams = new URLSearchParams(window.location.search);
-
-//   CONFIG.currentChapterId =
-//     urlParams.get("chapter") || // من الرابط
-//     document.body.dataset.chapterId || // من الـbody
-//     document.getElementById("chapter-title")?.dataset.chapterId || // من عنصر محدد
-//     "chapter-1"; // الافتراضي
-
-//   console.log("📘 الفصل الحالي:", CONFIG.currentChapterId);
-// })();

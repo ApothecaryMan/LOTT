@@ -82,6 +82,7 @@ body.list-is-open {
 
 #chapter-list button {
   display: flex;
+  border: none;
   flex-direction: raw;
   align-items: center;
   padding: 5px 15px;
