@@ -1,4 +1,4 @@
---- START OF FILE carousel.css --- .body {
+.body {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,28 +133,15 @@
   display: flex;
   align-items: center;
 
-  /* الانتقال على العرض/الحجم */
-  --bounce-timing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  transition: max-width 0.5s var(--bounce-timing), border-radius 0.3s ease,
-    height 0.4s ease;
+  transition: max-width 0.4s ease-in-out;
 }
 
 /* حالة الزر المفتوح (المتمدد) */
 #size-toggle-btn.expanded {
   max-width: 250px; /* العرض الأقصى لشريط التمرير */
-  height: 35px; /* ارتفاع أكبر لاستيعاب السلايدر والملصقات */
+  height: 25px; /* ارتفاع أكبر لاستيعاب السلايدر والملصقات */
   padding: 0 10px;
-  border-radius: 5px;
-
-  /* عند التمدد، نضمن أن التكبير والتصغير يتم تجاهله */
-  transform: none !important;
-}
-
-/* 3. تصميم المحتوى الداخلي (المصغر والممتد) */
-.collapsed-text {
-  /* يظهر بشكل افتراضي */
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: 25px;
 }
 
 #size-toggle-btn.expanded .collapsed-text {
@@ -170,7 +157,7 @@
   align-items: center;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0px;
 }
 
 #size-toggle-btn.expanded .expanded-slider-content {
@@ -182,30 +169,46 @@
 .expanded-slider-content input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
-  height: 5px;
-  background: #ccc;
-  border-radius: 5px;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  height: 3px;
+  background: #1b7ffa;
+  border-radius: 25px;
 }
 
 .expanded-slider-content input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #eb8317;
+  width: 25px;
+  height: 15px;
+  border-radius: 25px;
+  /* background: #002f6975;
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); */
+
+  /* --- Core Glass Effect --- */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.3),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
+  /* --- "Liquid" Shape & Style --- */
+  color: rgba(255, 255, 255, 0.8);
+
+  /* --- Optional but Recommended --- */
+  border: none;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.5);
 }
 
-.expanded-slider-content .labels {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  font-size: 10px;
-  color: #666;
+.expanded-slider-content input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.05);
+  /* Swap the border-radius values for a subtle liquid shift */
+  border-radius: 9.8vmin 10.2vmin 9.8vmin 10.2vmin;
+}
+
+.expanded-slider-content input[type="range"]::-webkit-slider-thumb:active {
+  /* Make the button shrink slightly when clicked */
+  transform: scale(0.95);
 }
 
 /* ============================================== */

@@ -142,6 +142,10 @@ function changeTheme(event) {
     .reply-textarea:focus {
         border-bottom-color: ${newColor};
     }
+
+    body.light-theme .expanded-slider-content input[type="range"]{
+          background:${newColor};
+    }
     `;
 
   if (isLightTheme) {
