@@ -146,6 +146,12 @@ function changeTheme(event) {
     body.light-theme .expanded-slider-content input[type="range"]{
           background:${newColor};
     }
+
+    /* تكثيف الخط السفلي عند التركيز (Focus) */
+body.light-theme .comment-textarea:focus,
+body.light-theme .reply-textarea:focus {
+  border-bottom: 2px solid ${newColor};
+}
     `;
 
   if (isLightTheme) {
@@ -160,7 +166,9 @@ function changeTheme(event) {
             body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
             body.light-theme .chapter, body.light-theme .support, body.light-theme .info,
             body.light-theme .main-header-container, body.light-theme #chapter-list-container,
-            body.light-theme .info-container .info,  body.light-theme .comments-container,body.light-theme .main-comment-input-container , body.light-theme .reply-textarea{
+            body.light-theme .info-container .info,  body.light-theme .comments-container,body.light-theme .main-comment-input-container , body.light-theme .reply-textarea,
+            body.light-theme .edit-textarea
+            {
                 background-color: ${containerBgColor};
             }
             body.light-theme .carousel-item button {
@@ -172,7 +180,7 @@ function changeTheme(event) {
             body.light-theme .comment-footer svg {
                 fill: ${newColor};
             }
-                body.light-theme .reply-textarea::placeholder {
+                body.light-theme .reply-textarea::placeholder, body.light-theme .comment-author {
                 color: ${newColor};
             }
             body.light-theme .reply-form-container,body.light-theme #chapter-list button { background-color: ${containerBgColor}; }

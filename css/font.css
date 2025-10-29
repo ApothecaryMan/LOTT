@@ -101,3 +101,21 @@
 #chapter-title {
   font-size: 34px;
 }
+
+/* -------------------------------
+   4. Comments section
+--------------------------------*/
+.comment-textarea:focus,
+.reply-textarea:focus {
+  color: black;
+}
+.comment-textarea,
+.reply-textarea,
+.edit-textarea {
+  color: black;
+  font-family: inherit;
+  font-size: 14px;
+}
+.comment-author {
+  color: #333;
+}

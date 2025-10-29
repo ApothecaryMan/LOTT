@@ -83,9 +83,17 @@
     },
 
     async postComment(chapterId, body, parentId = null) {
+      const payload = {
+        chapterId,
+        body,
+      };
+      if (parentId) {
+        payload.parentId = parentId;
+      }
+
       return await this.request("/comments", {
         method: "POST",
-        body: JSON.stringify({ chapterId, body, parentId }),
+        body: JSON.stringify(payload),
       });
     },
 
@@ -549,6 +557,23 @@
         return;
       }
 
+      const mainCancelBtn = event.target.closest("#main-cancel-btn");
+      if (mainCancelBtn) {
+        const form = mainCancelBtn.closest("form");
+        if (form) {
+          const textarea = form.querySelector("#main-comment-textarea");
+          const submitBtn = form.querySelector("#main-submit-btn");
+          if (textarea) {
+            textarea.value = "";
+            textarea.style.height = "auto";
+          }
+          if (submitBtn) {
+            submitBtn.disabled = true;
+          }
+        }
+        return;
+      }
+
       const toggleBtn = event.target.closest(".toggle-replies-btn");
       if (toggleBtn) {
         toggleBtn.classList.toggle("open");
@@ -848,3 +873,4 @@
     },
   };
 })();
+// HANDLE COMMENT BTN AND CANCEL BTN

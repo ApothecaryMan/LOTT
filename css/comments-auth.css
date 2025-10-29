@@ -308,7 +308,6 @@
   background-color: #0f0f0f;
   border: 1px solid #3ea6ff;
   border-radius: 8px;
-  color: #f1f1f1;
   font-family: inherit;
   font-size: 14px;
   padding: 10px;
@@ -385,16 +384,8 @@
   }
 }
 
-/* تحسينات إمكانية الوصول (للفوكس) */
-.auth-form input:focus,
-.edit-textarea:focus,
-.reply-textarea:focus,
-.comment-textarea:focus {
-  box-shadow: 0 0 0 3px rgba(62, 166, 255, 0.2);
-}
-
 button:focus-visible {
-  outline: 2px solid #3ea6ff;
+  outline: 2px solid #000000;
   outline-offset: 2px;
 }
 
@@ -478,10 +469,6 @@ button:focus-visible {
   gap: 15px;
   font-size: 14px;
   font-weight: bold;
-}
-
-.comment-author {
-  color: #f1f1f1;
 }
 
 /* نص التعليق (المحتوى) */
@@ -661,9 +648,7 @@ button:focus-visible {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid #3f3f3f; /* خط سفلي خفيف */
-  color: #f1f1f1;
-  font-family: inherit;
-  font-size: 14px;
+
   padding: 8px 0;
   outline: none;
   resize: none;
@@ -679,7 +664,7 @@ button:focus-visible {
 /* تكثيف الخط السفلي عند التركيز (Focus) */
 .comment-textarea:focus,
 .reply-textarea:focus {
-  border-bottom: 2px solid #f1f1f1;
+  border-bottom: 2px solid #737373;
 }
 
 /* أزرار فورم الرد (إرسال / إلغاء) */
