@@ -9,11 +9,11 @@
   /* ====================================================================== */
   /* REMOVE ALL ROUNDED CORNERS (SHARP DESIGN)                            */
   /* ====================================================================== */
-  *,
+  /* *,
   *::before,
   *::after {
     border-radius: 0 !important;
-  }
+  } */
 
   /* ====================================================================== */
   /* MAIN LAYOUT STRUCTURE                                                 */
@@ -66,7 +66,8 @@
 
   #comments-panel {
     /* Reset mobile styles */
-    position: static;
+    position: sticky;
+    top: 50px;
     transform: none;
     box-shadow: none;
 

@@ -255,6 +255,21 @@
 
     <!-- NEW: Main Content Wrapper for Split Layout -->
     <div class="main-content-wrapper">
+      <!-- NEW: Comments Panel (Inline on Desktop, Overlay on Mobile) -->
+      <div id="comments-panel">
+        <div class="comments-panel-header">
+          <h4 class="comments-panel-title">التعليقات</h4>
+          <button
+            id="close-comments-btn"
+            class="comments-panel-close"
+            title="إغلاق"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="comments-container"></div>
+      </div>
+
       <!-- Main Content Area -->
       <div class="main-content-area">
         <div class="main-body">
@@ -331,21 +346,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- NEW: Comments Panel (Inline on Desktop, Overlay on Mobile) -->
-      <div id="comments-panel">
-        <div class="comments-panel-header">
-          <h4 class="comments-panel-title">التعليقات</h4>
-          <button
-            id="close-comments-btn"
-            class="comments-panel-close"
-            title="إغلاق"
-          >
-            &times;
-          </button>
-        </div>
-        <div class="comments-container"></div>
       </div>
     </div>
     <!-- End Main Content Wrapper -->

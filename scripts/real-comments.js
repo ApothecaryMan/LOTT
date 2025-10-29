@@ -6,7 +6,7 @@
   "use strict";
 
   const CONFIG = {
-    apiBaseUrl: "http://localhost:3000/api",
+    apiBaseUrl: "http://192.168.1.6:3000/api", // http://localhost:3000/api
     tokenKey: "auth_token",
     userKey: "current_user",
     currentChapterId: "chapter-1766",
