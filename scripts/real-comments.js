@@ -363,7 +363,7 @@
                 <img src="${state.currentUser.avatar_url}" class="current-user-avatar" alt="Your Avatar">
                 <form id="main-comment-form" class="main-comment-form">
                   <div class="textarea-wrapper">
-                    <textarea id="main-comment-textarea" class="comment-textarea" placeholder="ما رأيك؟" required></textarea>
+                    <textarea id="main-comment-textarea" class="comment-textarea" placeholder="اتحفنا بـ ردك" required></textarea>
                   </div>
                   <div class="comment-form-actions">
                     <button type="button" id="main-cancel-btn" class="comment-cancel-btn">إلغاء</button>

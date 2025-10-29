@@ -107,15 +107,15 @@
 --------------------------------*/
 .comment-textarea:focus,
 .reply-textarea:focus {
-  color: black;
+  color: rgb(120, 120, 120);
 }
 .comment-textarea,
 .reply-textarea,
 .edit-textarea {
-  color: black;
+  color: rgb(120, 120, 120);
   font-family: inherit;
   font-size: 14px;
 }
 .comment-author {
-  color: #333;
+  color: rgb(120, 120, 120);
 }

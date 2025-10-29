@@ -174,7 +174,7 @@ body.light-theme .reply-textarea:focus {
             body.light-theme .carousel-item button {
                 background-color: ${containerBgColor};
             }
-            body.light-theme .next, body.light-theme .previous {
+            body.light-theme .next, body.light-theme .previous, body.light-theme .auth-prompt-btn {
                 background-color: ${bodyBgColor};
             }
             body.light-theme .comment-footer svg {

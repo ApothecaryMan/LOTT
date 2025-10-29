@@ -313,7 +313,7 @@
   padding: 10px;
   outline: none;
   resize: vertical;
-  min-height: 60px;
+  min-height: 30px;
 }
 
 /* أزرار نموذج التعديل (حفظ / إلغاء) */
@@ -422,14 +422,6 @@ button:focus-visible {
   }
 }
 
-/* ================================================================== */
-/* == بدء الكود المدمج من comments.css == */
-/* ================================================================== */
-
-/* Author: -REPLACE WITH YOUR NAME- */
-/* OS support: -REPLACE WITH YOUR OS SUPPORT- */
-/* Description: Styles for the nested comment section and reply form. */
-
 /* حاوية التعليقات الرئيسية (التي تحتوي كل التعليقات) */
 .comments-container {
   flex-grow: 1; /* تجعلها تملأ المساحة المتاحة عمودياً */
@@ -519,8 +511,8 @@ button:focus-visible {
 
 /* صورة المستخدم صاحب التعليق */
 .author-image {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   margin-top: 5px;
 }
@@ -802,7 +794,7 @@ body.comments-open {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 7px 20px;
   border-bottom: 1px solid #3f3f3f;
   color: #f1f1f1;
   flex-shrink: 0; /* يمنع الرأس من الانكماش */
