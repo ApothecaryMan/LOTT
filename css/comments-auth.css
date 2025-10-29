@@ -628,6 +628,7 @@ button:focus-visible {
   height: 24px;
   border-radius: 50%;
   margin-top: 8px;
+  display: none;
 }
 
 /* فورم الرد نفسه */
