@@ -25,11 +25,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 3. Use event delegation to handle clicks on any chapter button inside the list.
     // This is more efficient than adding a listener to every single button.
     listContainer.addEventListener("click", async (event) => {
-      // Find the button that was clicked, even if the user clicked a span inside it.
-      const button = event.target.closest("button.list-item");
+      // Find the chapter item that was clicked
+      const chapterItem = event.target.closest("a.chapter-item");
 
-      // If the click wasn't on a chapter button, do nothing.
-      if (!button) {
+      // If the click wasn't on a chapter item, do nothing.
+      if (!chapterItem) {
         return;
       }
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       // --- Chapter Loading Logic ---
-      const chapterToLoad = button.id; // Get the chapter number from the button's ID
+      const chapterToLoad = chapterItem.dataset.chapterId; // Get the chapter number from the data attribute
       const paragraphContainer = document.getElementById("chapter-text");
       const chapterTitle = document.getElementById("chapter-title");
 

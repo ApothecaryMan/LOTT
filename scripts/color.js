@@ -115,6 +115,7 @@ function changeTheme(event) {
     ::selection { background-color: ${newColor}; color: white; }
     #chapter-title { color: ${newColor}; }
     #chapter-list-container h3 { color: ${newColor}; }
+    .chapter-item .chapter-number { color: ${newColor}; }
     #chapter-list button:hover, #chapter-list button:focus { border-color: ${newColor}; color: ${newColor}; }
     #chapter-list button:hover .chapter-number,
     #chapter-list button:focus .chapter-number,
@@ -150,6 +151,7 @@ function changeTheme(event) {
       // القيم الأصلية التي كانت لديك
       const bodyBgColor = `hsl(${h}, ${safeS}%, 88%)`;
       const containerBgColor = `hsl(${h}, ${safeS - 5}%, 97%)`;
+      const hoverBgColor = `hsl(${h}, ${safeS - 5}%, 92%)`; // Lighter hover for light theme
 
       dynamicCSS += `
             body.light-theme { background-color: ${bodyBgColor}; }
@@ -161,7 +163,10 @@ function changeTheme(event) {
                 background-color: ${containerBgColor};
             }
             body.light-theme .carousel-item button, 
-            body.light-theme #chapter-list button { background-color: ${containerBgColor}; }
+            body.light-theme .chapter-item { background-color: ${containerBgColor}; }
+            body.light-theme .chapter-item:hover { background-color: ${hoverBgColor}; }
+            body.light-theme .novel-title { color: #333; }
+            body.light-theme .chapter-title-in-list, body.light-theme .dash { color: #555; }
              body.light-theme .next, body.light-theme .previous, body.light-theme .auth-modal-content{
              background-color: ${bodyBgColor}}
             `;
@@ -175,14 +180,18 @@ function changeTheme(event) {
       const safeS = s < 20 ? s / 2 : 20;
       const bodyBgColor = `hsl(${h}, ${safeS}%, 10%)`;
       const containerBgColor = `hsl(${h}, ${safeS}%, 15%)`;
+      const hoverBgColor = `hsl(${h}, ${safeS}%, 20%)`; // Lighter hover for dark theme
 
       dynamicCSS += `
             body { background-color: ${bodyBgColor}; }
             .body, .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
             .chapter, #info-wrapper , .main-header-container, #chapter-list-container, 
-            #comments-panel, .auth-modal-content {
+            #comments-panel, .auth-modal-content, .chapter-item {
                 background-color: ${containerBgColor};
             }
+            .chapter-item:hover { background-color: ${hoverBgColor}; }
+            .novel-title { color: #e0e0e0; }
+            .chapter-title-in-list, .dash { color: #b0b0b0; }
             `;
     }
   }
