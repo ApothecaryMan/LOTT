@@ -793,6 +793,8 @@ body.comments-open {
   border-bottom: 1px solid #3f3f3f;
   color: #f1f1f1;
   flex-shrink: 0; /* يمنع الرأس من الانكماش */
+
+  display: none;
 }
 
 /* عنوان "التعليقات" */

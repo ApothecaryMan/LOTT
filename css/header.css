@@ -13,6 +13,8 @@
   border-radius: 20px;
   background-size: cover;
   user-select: none;
+
+  display: none;
 }
 .search-container {
   display: flex;

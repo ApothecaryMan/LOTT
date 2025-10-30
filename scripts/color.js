@@ -42,9 +42,9 @@ function changeTheme(event) {
   const themeStyleTag = document.getElementById("dynamic-theme-rules");
   const isLightTheme = document.body.classList.contains("light-theme");
 
-  document.querySelectorAll("strong").forEach((element) => {
-    element.style.color = newColor;
-  });
+  // document.querySelectorAll("strong").forEach((element) => {
+  //   element.style.color = newColor;
+  // });
 
   const colorSelector = document.getElementById("color-selector");
   colorSelector.querySelectorAll("button").forEach((btn) => {
@@ -63,7 +63,8 @@ function changeTheme(event) {
     body.light-theme #decrease-font-size:hover, body.light-theme #decrease-font-size:active,
     #font-selector button:hover, body.light-theme #font-selector button:hover,
     #align-formate button:hover, body.light-theme #align-formate button:hover,
-    #list:hover, #list:active, body.light-theme #list:hover, body.light-theme #list:active, #comments-btn:hover, #comments-btn:active,#comments-btn.active {
+    #list:hover, #list:active, body.light-theme #list:hover, body.light-theme #list:active, #comments-btn:hover, #comments-btn:active,#comments-btn.active,
+    .auth-submit-btn, .auth-prompt-btn, .edit-submit-btn, .comment-submit-btn, .reply-submit-btn {
         background-color: ${newColor};
     }
     .carousel-item#font-selector button.active,
@@ -71,7 +72,7 @@ function changeTheme(event) {
     .carousel-item#align-formate button.active,
     body.light-theme .carousel-item#align-formate button.active,
     .carousel-item button#list.active,
-    body.light-theme .carousel-item button#list.active,body.light-theme #comments-btn:hover, .reply-submit-btn {
+    body.light-theme .carousel-item button#list.active,body.light-theme #comments-btn:hover {
         background-color: ${newColor};
     }
     .next:hover, .next:active, .previous:hover, .previous:active,
@@ -109,7 +110,6 @@ function changeTheme(event) {
     {
         fill: white;
     }
-    .card .card-info { background: ${newColor} }
     #color-selector button.active { border-color: ${newColor}; box-shadow: 0 0 8px ${newColor}aa; }
     .zeus { outline: 1px solid ${newColor}; }
     ::selection { background-color: ${newColor}; color: white; }
@@ -122,73 +122,67 @@ function changeTheme(event) {
     #chapter-list button:focus .chapter-title-in-list, .comment-author{
        color: ${newColor};
     }
-       .comment-footer svg{
-        fill: ${newColor};}
-       
-       .author-image{
-        outline: 2px solid ${newColor}; 
-       }
-    .toggle-replies-btn {
-        color: ${newColor};
-    }
-    .toggle-replies-btn svg {
-        fill: ${newColor};
-    }
-    .toggle-replies-btn:hover {
-        background-color: ${newColor
-          .replace("rgb", "rgba")
-          .replace(")", ", 0.1)")};
-    }
-    .reply-textarea:focus {
-        border-bottom-color: ${newColor};
-    }
-
-    body.light-theme .expanded-slider-content input[type="range"]{
-          background:${newColor};
-    }
-
-    /* تكثيف الخط السفلي عند التركيز (Focus) */
-body.light-theme .comment-textarea:focus,
-body.light-theme .reply-textarea:focus {
-  border-bottom: 2px solid ${newColor};
-}
+    .like-btn.liked svg { fill: ${newColor}; }
+    .author-image{ outline: 2px solid ${newColor}; }
+    .toggle-replies-btn { color: ${newColor}; }
+    .toggle-replies-btn svg { fill: ${newColor}; }
+    .toggle-replies-btn:hover, .reply-btn:hover { background-color: ${newColor
+      .replace("rgb", "rgba")
+      .replace(")", ", 0.1)")}; }
+    .comment-textarea:focus, .reply-textarea:focus, .edit-textarea:focus { border-color: ${newColor}; }
+    .auth-tab.active { color: ${newColor}; }
+    .auth-tab.active::after { background-color: ${newColor}; }
+    .form-group input:focus { border-color: ${newColor}; }
+    .sort-by-btn .current-sort-value { color: ${newColor}; }
+    .sort-option:hover { background-color: ${newColor}; color: #0f0f0f; }
+    .sort-option.active { background-color: ${newColor
+      .replace("rgb", "rgba")
+      .replace(")", ", 0.2)")}; }
     `;
 
   if (isLightTheme) {
+    // =================================================================
+    // ✅ قسم الثيم الفاتح - تم إعادته إلى القيم الأصلية الصحيحة
+    // =================================================================
     if (clickedButton.id !== "default") {
       const [h, s, l] = rgbToHsl(newColor);
-      const safeS = s < 10 ? 0 : 50; // لو اللون شبه رمادي، خليه رمادي فعلاً
+      const safeS = s < 10 ? 0 : 50;
+      // القيم الأصلية التي كانت لديك
       const bodyBgColor = `hsl(${h}, ${safeS}%, 88%)`;
       const containerBgColor = `hsl(${h}, ${safeS - 5}%, 97%)`;
+
       dynamicCSS += `
-            body.light-theme{ background-color: ${bodyBgColor}; }
+            body.light-theme { background-color: ${bodyBgColor}; }
             body.light-theme .body { background-color: ${bodyBgColor}; box-shadow: none; }
             body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
-            body.light-theme .chapter, body.light-theme .support, body.light-theme .info,
-            body.light-theme .main-header-container, body.light-theme #chapter-list-container,
-            body.light-theme .info-container .info,  body.light-theme .comments-container,body.light-theme .main-comment-input-container , body.light-theme .reply-textarea,
-            body.light-theme .edit-textarea
-            {
+            body.light-theme .chapter, body.light-theme #info-wrapper,body.light-theme .main-header-container, 
+            body.light-theme #chapter-list-container, body.light-theme #comments-panel, 
+            body.light-theme .auth-modal-content {
                 background-color: ${containerBgColor};
             }
-            body.light-theme .carousel-item button {
+            body.light-theme .carousel-item button, 
+            body.light-theme #chapter-list button { background-color: ${containerBgColor}; }
+             body.light-theme .next, body.light-theme .previous{
+             background-color: ${bodyBgColor}}
+            `;
+    }
+  } else {
+    // =================================================================
+    // 🌑 قسم الثيم الداكن - يبقى كما هو بالمنطق الديناميكي الصحيح
+    // =================================================================
+    if (clickedButton.id !== "default") {
+      const [h, s, l] = rgbToHsl(newColor);
+      const safeS = s < 20 ? s / 2 : 20;
+      const bodyBgColor = `hsl(${h}, ${safeS}%, 10%)`;
+      const containerBgColor = `hsl(${h}, ${safeS}%, 15%)`;
+
+      dynamicCSS += `
+            body { background-color: ${bodyBgColor}; }
+            .body, .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
+            .chapter, #info-wrapper , .main-header-container, #chapter-list-container, 
+            #comments-panel, .auth-modal-content {
                 background-color: ${containerBgColor};
             }
-            body.light-theme .next, body.light-theme .previous, body.light-theme .auth-prompt-btn {
-                background-color: ${bodyBgColor};
-            }
-            body.light-theme .comment-footer svg {
-                fill: ${newColor};
-            }
-                body.light-theme .reply-textarea::placeholder, body.light-theme .comment-author {
-                color: ${newColor};
-            }
-            body.light-theme .reply-form-container,body.light-theme #chapter-list button { background-color: ${containerBgColor}; }
-            .reply-submit-btn,body.light-theme #comments-panel {
-                background-color: ${newColor};
-                color: ${bodyBgColor};
-            }
-            
             `;
     }
   }
