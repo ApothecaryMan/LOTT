@@ -134,7 +134,7 @@
 
 /* حقول الإدخال (الايميل، كلمة السر) */
 .form-group input {
-  width: 100%;
+  width: 90%;
   background-color: #0f0f0f;
   border: 1px solid #3f3f3f;
   border-radius: 8px;
