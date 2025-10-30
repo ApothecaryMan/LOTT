@@ -24,6 +24,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: all 0.25s ease-in-out; /* نفس الزمن بالظبط */
   }
 
   /* Wrapper for split layout */
@@ -68,6 +69,8 @@
     /* Reset mobile styles */
     position: sticky;
     top: 51px;
+    transition: all 0.25s ease-in-out; /* حركة أسرع ومتزامنة */
+    z-index: 100;
     transform: none;
     box-shadow: none;
 
@@ -75,10 +78,9 @@
     width: 0;
     max-width: 0;
     opacity: 0;
-    border-left: 1px solid black;
     overflow: hidden;
     /* height: auto; */
-    min-height: calc(100vh - 53px);
+    min-height: calc(100vh - 0px);
     /* max-height: calc(100vh - 100px); */
     border-radius: 0;
 
@@ -86,9 +88,9 @@
     background-color: rgb(24, 24, 24);
 
     /* Smooth transitions */
-    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    /* transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
       max-width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      opacity 0.3s ease 0.1s;
+      opacity 0.3s ease 0.1s; */
 
     /* Internal layout */
     display: flex;

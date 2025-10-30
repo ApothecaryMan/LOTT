@@ -123,3 +123,8 @@ body.light-theme .card-carousel-container #card-next-btn {
 body.light-theme .reply-textarea {
   color: #333;
 }
+
+/* COMMENTS */
+body.light-theme .form-group input {
+  color: #333;
+}

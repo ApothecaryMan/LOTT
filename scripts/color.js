@@ -119,7 +119,7 @@ function changeTheme(event) {
     #chapter-list button:hover .chapter-number,
     #chapter-list button:focus .chapter-number,
     #chapter-list button:hover .chapter-title-in-list,
-    #chapter-list button:focus .chapter-title-in-list, .comment-author{
+    #chapter-list button:focus .chapter-title-in-list, .comment-author, body.light-theme .auth-modal-content h3, body.light-theme .auth-modal-close {
        color: ${newColor};
     }
     .like-btn.liked svg { fill: ${newColor}; }
@@ -157,12 +157,12 @@ function changeTheme(event) {
             body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
             body.light-theme .chapter, body.light-theme #info-wrapper,body.light-theme .main-header-container, 
             body.light-theme #chapter-list-container, body.light-theme #comments-panel, 
-            body.light-theme .auth-modal-content {
+            body.light-theme .auth-modal-content, body.light-theme input, body.light-theme .auth-modal-close:hover {
                 background-color: ${containerBgColor};
             }
             body.light-theme .carousel-item button, 
             body.light-theme #chapter-list button { background-color: ${containerBgColor}; }
-             body.light-theme .next, body.light-theme .previous{
+             body.light-theme .next, body.light-theme .previous, body.light-theme .auth-modal-content{
              background-color: ${bodyBgColor}}
             `;
     }

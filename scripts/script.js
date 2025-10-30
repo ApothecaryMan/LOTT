@@ -91,10 +91,10 @@ document.addEventListener("contentLoaded", () => {
 /* ========================================================================== */
 // document.addEventListener("DOMContentLoaded", () => {
 //   const carouselContainer = document.querySelector(".body");
-//   if (!carouselContainer) {
-//     console.error(
-//       "Carousel container (.body) not found for auto-hide feature."
-//     );
+//   const commentsPanel = document.getElementById("comments-panel");
+
+//   if (!carouselContainer || !commentsPanel) {
+//     console.error("Carousel container or comments panel not found.");
 //     return;
 //   }
 
@@ -103,22 +103,24 @@ document.addEventListener("contentLoaded", () => {
 //   window.addEventListener("scroll", () => {
 //     const currentScrollY = window.scrollY;
 
-//     // Don't hide if we are at the very top of the page
+//     // ✅ لو فوق الصفحة خالص
 //     if (currentScrollY <= 0) {
+//       commentsPanel.style.top = "51px"; // ← خليها 51px مش "51"
 //       carouselContainer.classList.remove("carousel-hidden");
 //       return;
 //     }
 
-//     // Hide if scrolling down
+//     // ✅ لو نازل لتحت
 //     if (currentScrollY > lastScrollY) {
+//       commentsPanel.style.top = "0"; // ← يخليه في الأعلى
 //       carouselContainer.classList.add("carousel-hidden");
 //     }
-//     // Show if scrolling up
+//     // ✅ لو طالع لفوق
 //     else {
+//       commentsPanel.style.top = "51px";
 //       carouselContainer.classList.remove("carousel-hidden");
 //     }
 
-//     // Update last scroll position for the next event
 //     lastScrollY = currentScrollY;
 //   });
 // });
