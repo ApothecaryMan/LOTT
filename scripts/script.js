@@ -89,36 +89,36 @@ document.addEventListener("contentLoaded", () => {
 /* ========================================================================== */
 /* == Auto-hide Sticky Carousel on Scroll == */
 /* ========================================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const carouselContainer = document.querySelector(".body");
-  if (!carouselContainer) {
-    console.error(
-      "Carousel container (.body) not found for auto-hide feature."
-    );
-    return;
-  }
+// document.addEventListener("DOMContentLoaded", () => {
+//   const carouselContainer = document.querySelector(".body");
+//   if (!carouselContainer) {
+//     console.error(
+//       "Carousel container (.body) not found for auto-hide feature."
+//     );
+//     return;
+//   }
 
-  let lastScrollY = window.scrollY;
+//   let lastScrollY = window.scrollY;
 
-  window.addEventListener("scroll", () => {
-    const currentScrollY = window.scrollY;
+//   window.addEventListener("scroll", () => {
+//     const currentScrollY = window.scrollY;
 
-    // Don't hide if we are at the very top of the page
-    if (currentScrollY <= 0) {
-      carouselContainer.classList.remove("carousel-hidden");
-      return;
-    }
+//     // Don't hide if we are at the very top of the page
+//     if (currentScrollY <= 0) {
+//       carouselContainer.classList.remove("carousel-hidden");
+//       return;
+//     }
 
-    // Hide if scrolling down
-    if (currentScrollY > lastScrollY) {
-      carouselContainer.classList.add("carousel-hidden");
-    }
-    // Show if scrolling up
-    else {
-      carouselContainer.classList.remove("carousel-hidden");
-    }
+//     // Hide if scrolling down
+//     if (currentScrollY > lastScrollY) {
+//       carouselContainer.classList.add("carousel-hidden");
+//     }
+//     // Show if scrolling up
+//     else {
+//       carouselContainer.classList.remove("carousel-hidden");
+//     }
 
-    // Update last scroll position for the next event
-    lastScrollY = currentScrollY;
-  });
-});
+//     // Update last scroll position for the next event
+//     lastScrollY = currentScrollY;
+//   });
+// });

@@ -58,6 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(clone);
 
     chapterTitle.classList.add("hidden");
+
+    //extract chapter title
+    const fullTitle = chapterTitle.textContent;
+    const titleOnly = fullTitle.split("–")[1]?.trim() || fullTitle;
+    titleBtn.textContent = titleOnly;
+
     titleBtn.classList.add("visible");
 
     const deltaX =
