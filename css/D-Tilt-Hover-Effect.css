@@ -1,0 +1,87 @@
+.origin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  background-color: transparent;
+  font-family: "Ink";
+  padding-top: 30px;
+}
+
+.card-container {
+  perspective: 1500px;
+}
+.card-container:hover {
+  z-index: 100000;
+}
+
+.card {
+  width: 320px;
+  height: 500px;
+  /* background: linear-gradient(135deg, #3c4a88, #232c52); */
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  position: relative;
+  transform-style: preserve-3d; /* مهم جداً للحفاظ على عمق العناصر الداخلية */
+  transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
+}
+
+.card-container:hover .card {
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0) 70%
+  );
+  border-radius: 50%;
+  top: var(--mouse-y, -100px);
+  left: var(--mouse-x, -100px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* هنا نعطي العناصر الداخلية عمقاً ثابتاً ولن نغيره بالجافاسكريبت */
+.card-img {
+  width: 100%;
+  height: 85%;
+  object-fit: cover;
+  border-radius: 10px;
+  /* جعل الصورة تبدو وكأنها في الخلفية قليلاً */
+  transform: translateZ(20px);
+}
+
+.card-info {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 20px 5px 0 5px;
+  /* جعل النص يبدو أقرب إليك من الصورة */
+  transform: translateZ(50px);
+}
+
+.card-info p {
+  width: 100%;
+  margin: 0;
+  color: white;
+  font-size: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-info .title {
+  font-weight: 700;
+}
+.card-info .chapter-number {
+  color: #c0c8e7;
+  font-size: 40px;
+}

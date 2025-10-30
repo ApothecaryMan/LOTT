@@ -16,6 +16,10 @@
       rel="stylesheet"
     />
 
+    <!-- ATROPOS LIB -->
+    <link rel="stylesheet" href="https://unpkg.com/atropos@2/atropos.min.css" />
+    <script src="https://unpkg.com/atropos@2/atropos.min.js"></script>
+
     <!-- Existing CSS -->
     <link rel="stylesheet" href="css/general.css" />
     <link rel="stylesheet" href="css/header.css" />
@@ -28,6 +32,7 @@
     <link rel="stylesheet" href="css/chapter-list.css" />
     <link rel="stylesheet" href="css/comments-auth.css" />
     <link rel="stylesheet" href="css/new-chapter-list.css" />
+    <link rel="stylesheet" href="css/D-Tilt-Hover-Effect.css" />
 
     <!-- NEW: Desktop Split Layout CSS -->
     <link rel="stylesheet" href="css/desktop-layout.css" />
@@ -262,6 +267,19 @@
         <div class="main-body">
           <main class="main">
             <div class="main-header-container">
+              <div class="origin">
+                <div class="card-container">
+                  <div class="card">
+                    <img class="card-img" src="img/card.jpg" alt="غلاف القصة" />
+                    <div class="card-info">
+                      <p>
+                        <span class="card-title">مجتمع الروح</span>
+                        <span class="card-chapter-number">1771</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="main-header">
                 <p class="chapter-title" id="chapter-title"></p>
                 <div class="date">
@@ -444,5 +462,6 @@
     <script src="scripts/font.js"></script>
     <script src="scripts/title-animation.js"></script>
     <script src="scripts/script.js"></script>
+    <script src="scripts/D-Tilt-Hover-Effect.js"></script>
   </body>
 </html>
