@@ -139,6 +139,9 @@ function changeTheme(event) {
     .sort-option.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.2)")}; }
+      body.light-theme .card{ background-color: ${newColor
+        .replace("rgb", "rgba")
+        .replace(")", ", 0.8)")}; }
     `;
 
   if (isLightTheme) {

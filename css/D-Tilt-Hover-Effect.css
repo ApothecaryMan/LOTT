@@ -64,19 +64,16 @@
   display: flex;
   align-items: center;
   text-align: center;
-  padding: 20px 5px 0 5px;
+  padding: 30px 5px 0 5px;
   /* جعل النص يبدو أقرب إليك من الصورة */
   transform: translateZ(50px);
 }
 
-.card-info p {
+.card-info span {
   width: 100%;
   margin: 0;
   color: white;
   font-size: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 .card-info .title {
   font-weight: 700;
