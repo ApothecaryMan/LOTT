@@ -207,7 +207,7 @@ function changeTheme(event) {
 }
 
 function loadColorSetting() {
-  const savedColorId = localStorage.getItem(COLOR_KEY) || "gray"; //default color
+  const savedColorId = localStorage.getItem(COLOR_KEY) || "orange"; //default color
   const savedCustomColor = localStorage.getItem(
     "userCustomColorPreferenceValue"
   );

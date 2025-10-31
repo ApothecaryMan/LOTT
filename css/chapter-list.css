@@ -36,9 +36,9 @@
   /* --- Visible State (Slide Down) --- */
   opacity: 1;
   padding: 20px;
-
+  min-width: 95%; /* Expand it vertically */
   /* margin-bottom: 6px; */
-  border-width: 2px;
+  border-width: 1px;
 }
 
 /* --- Add Smooth Transition to Main Content Elements --- */
