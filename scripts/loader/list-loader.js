@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // 1. Fetch the chapter list HTML content from the external file.
-    // Make sure 'chapter-list.html' is in the correct path relative to index.html.
     const response = await fetch("partials/chapter-list.html");
     if (!response.ok) {
       throw new Error(`Failed to load chapter list: ${response.status}`);
@@ -22,8 +21,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 2. Inject the fetched HTML into its container.
     listContainer.innerHTML = listHtml;
 
-    // 3. Use event delegation to handle clicks on any chapter button inside the list.
-    // This is more efficient than adding a listener to every single button.
+    // 3. Fetch chapter data from the JSON file.
+    const chaptersResponse = await fetch("chapters.json");
+    if (!chaptersResponse.ok) {
+      throw new Error(`Failed to load chapters data: ${chaptersResponse.status}`);
+    }
+    const chapters = await chaptersResponse.json();
+
+    // 4. Generate and inject chapter items.
+    const chapterListDiv = document.getElementById("chapter-list");
+    if (chapterListDiv) {
+      chapters.forEach((chapter) => {
+        const chapterItem = document.createElement("a");
+        chapterItem.href = "#";
+        chapterItem.className = "chapter-item";
+        chapterItem.dataset.chapterId = chapter.id;
+
+        chapterItem.innerHTML = `
+          <img class="chapter-item-img" src="img/card.jpg" alt="Chapter Image">
+          <div class="chapter-item-details">
+            <div class="chapter-item-header">
+              <p class="novel-title">سيد الحقيقة</p>
+            </div>
+            <div class="chapter-item-body">
+              <span class="chapter-number">${chapter.id}</span>
+              <span class="dash">-</span>
+              <span class="chapter-title-in-list">${chapter.title}</span>
+            </div>
+          </div>
+        `;
+        chapterListDiv.appendChild(chapterItem);
+      });
+    }
+
+
+    // 5. Use event delegation to handle clicks on any chapter button inside the list.
     listContainer.addEventListener("click", async (event) => {
       // Find the chapter item that was clicked
       const chapterItem = event.target.closest("a.chapter-item");
