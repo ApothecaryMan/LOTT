@@ -256,7 +256,25 @@ async function loadChapter(chapterId, position = "replace") {
       setCurrentChapter(chapterId);
       window.currentChapterNumber = parseInt(chapterId, 10);
       resetInfiniteScroll();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Scroll to the chapter title, accounting for the sticky header
+      const chapterTitleElement = document.getElementById(
+        `chapter-title-${chapterId}`
+      );
+      if (chapterTitleElement) {
+        const stickyHeader = document.querySelector(".body");
+        const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
+        const elementPosition = chapterTitleElement.getBoundingClientRect().top;
+        const offsetPosition =
+          elementPosition + window.scrollY - headerHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "auto",
+        });
+      } else {
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }
     }
 
     // إطلاق حدث مخصص لإعلام الأنظمة الأخرى باكتمال التحديث
