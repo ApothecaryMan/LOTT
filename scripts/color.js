@@ -97,7 +97,8 @@ function changeTheme(event) {
     .carousel-item#align-formate button.active svg,
     body.light-theme .carousel-item#align-formate button.active svg,
     .carousel-item button#list.active svg,
-    body.light-theme .carousel-item button#list.active svg,body.light-theme #comments-btn.active svg, #comments-btn:hover svg
+    body.light-theme .carousel-item button#list.active svg, #comments-btn.active svg, #comments-btn:hover svg,
+    body.light-theme #comments-btn.active svg, body.light-theme #comments-btn:hover svg
     {
         fill: white;
     }
