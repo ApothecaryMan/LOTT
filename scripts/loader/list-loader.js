@@ -24,7 +24,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 3. Fetch chapter data from the JSON file.
     const chaptersResponse = await fetch("chapters.json");
     if (!chaptersResponse.ok) {
-      throw new Error(`Failed to load chapters data: ${chaptersResponse.status}`);
+      throw new Error(
+        `Failed to load chapters data: ${chaptersResponse.status}`
+      );
     }
     const chapters = await chaptersResponse.json();
 
@@ -54,7 +56,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-
     // 5. Use event delegation to handle clicks on any chapter button inside the list.
     listContainer.addEventListener("click", async (event) => {
       // Find the chapter item that was clicked
@@ -78,13 +79,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       // --- Chapter Loading Logic ---
       const chapterToLoad = chapterItem.dataset.chapterId; // Get the chapter number from the data attribute
       const paragraphContainer = document.getElementById("chapter-text");
-      const chapterTitle = document.getElementById("chapter-title");
 
-      if (!paragraphContainer || !chapterTitle) return;
+      if (!paragraphContainer) return;
 
       // Fade out current content for a smooth transition
       paragraphContainer.classList.add("is-loading");
-      chapterTitle.classList.add("is-loading");
       await new Promise((resolve) => setTimeout(resolve, 300)); // Wait for fade animation
 
       // Use the global function to load the new chapter content
@@ -95,7 +94,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Fade in new content
         paragraphContainer.classList.remove("is-loading");
-        chapterTitle.classList.remove("is-loading");
 
         // Update the visibility of next/previous buttons if the function exists
         if (typeof window.updateButtonVisibility === "function") {
@@ -105,7 +103,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error(`Failed to load chapter ${chapterToLoad} from list.`);
         // Revert loading state if the chapter failed to load
         paragraphContainer.classList.remove("is-loading");
-        chapterTitle.classList.remove("is-loading");
       }
     });
   } catch (error) {

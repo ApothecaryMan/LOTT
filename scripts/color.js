@@ -54,9 +54,6 @@ function changeTheme(event) {
 
   let dynamicCSS = `
     /* ACCENT COLOR RULES (INTERACTIVE BUTTONS ONLY) */
-    .next:hover, .next:active, .previous:hover, .previous:active,
-    body.light-theme .next:hover, body.light-theme .next:active,
-    body.light-theme .previous:hover, body.light-theme .previous:active,
     #increase-font-size:hover, #increase-font-size:active,
     #decrease-font-size:hover, #decrease-font-size:active,
     body.light-theme #increase-font-size:hover, body.light-theme #increase-font-size:active,
@@ -75,9 +72,6 @@ function changeTheme(event) {
     body.light-theme .carousel-item button#list.active,body.light-theme #comments-btn:hover {
         background-color: ${newColor};
     }
-    .next:hover, .next:active, .previous:hover, .previous:active,
-    body.light-theme .next:hover, body.light-theme .next:active,
-    body.light-theme .previous:hover, body.light-theme .previous:active,
     #increase-font-size:hover, #increase-font-size:active,
     #decrease-font-size:hover, #decrease-font-size:active,
     body.light-theme #increase-font-size:hover, body.light-theme #increase-font-size:active,
@@ -94,9 +88,6 @@ function changeTheme(event) {
     {
         color: white;
     }
-    .next:hover svg, .next:active svg, .previous:hover svg, .previous:active svg,
-    body.light-theme .next:hover svg, body.light-theme .next:active svg,
-    body.light-theme .previous:hover svg, body.light-theme .previous:active svg,
     #increase-font-size:hover svg, #increase-font-size:active svg,
     #decrease-font-size:hover svg, #decrease-font-size:active svg,
     body.light-theme #increase-font-size:hover svg, body.light-theme #increase-font-size:active svg,
@@ -172,7 +163,7 @@ function changeTheme(event) {
             body.light-theme .chapter-item:hover { background-color: ${hoverBgColor}; }
             body.light-theme .novel-title { color: #333; }
             body.light-theme .chapter-title-in-list, body.light-theme .dash { color: #555; }
-             body.light-theme .next, body.light-theme .previous, body.light-theme .auth-modal-content{
+             body.light-theme .auth-modal-content{
              background-color: ${bodyBgColor}}
             `;
     }
