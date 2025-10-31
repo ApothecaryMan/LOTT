@@ -1,19 +1,30 @@
 /**
- * ===========================================================
- * 📘 نظام قراءة الرواية - نسخة Infinity Scroll احترافية
- * ===========================================================
+ * =======================================================================
+ * 📘 نظام قراءة الرواية - نسخة 3.0 (تتبع ذكي ثنائي الاتجاه)
+ * =======================================================================
  * المميزات:
- * ✅ تحميل ديناميكي للفصول بالتدريج (Infinity Scroll)
- * ✅ حفظ موقع القراءة (Resume from last read)
- * ✅ تحديث نظام التعليقات
- * ✅ استخدام العناوين من ملف chapters.json
- * ✅ تأخير نصف ثانية بين التحميلات
- * ✅ إمكانية إعادة تهيئة النظام resetInfiniteScroll
- * ===========================================================
+ * ✅ تحميل تدريجي للفصول (Infinity Scroll).
+ * ✅ نظام تتبع ذكي يكتشف اتجاه التمرير لتحديث أكثر منطقية.
+ *    - عند النزول: التحديث عند ظهور عنوان الفصل الجديد.
+ *    - عند الصعود: التحديث فور دخول محتوى الفصل السابق.
+ * ✅ تحديث فوري لزر العنوان (title-btn) والتعليقات وآخر فصل مقروء.
+ * ✅ إعادة تهيئة النظام تلقائيًا عند الانتقال اليدوي لفصل جديد.
+ * =======================================================================
  */
 
+// متغيرات عامة لإدارة الحالة
+let chapterList = [];
+let isLoading = false;
+let reachedEnd = false;
+let infiniteScrollObserver;
+let chapterTrackingObserver;
+let currentlyTrackedChapterId = null; // لمنع التحديثات المتكررة
+let lastScrollY = window.scrollY; // لتحديد اتجاه التمرير
+
 /**
- * تحميل ملف فصل HTML
+ * جلب محتوى HTML لفصل معين.
+ * @param {string} chapterNumber رقم الفصل
+ * @returns {Promise<string>} محتوى الفصل
  */
 async function fetchChapterHtml(chapterNumber) {
   const response = await fetch(`chapters/${chapterNumber}.html`);
@@ -24,89 +35,69 @@ async function fetchChapterHtml(chapterNumber) {
 }
 
 /**
- * تحليل محتوى الفصل واستخراج العنوان من JSON بدلاً من HTML
+ * تحليل محتوى الفصل واستخراج العنوان من قائمة الفصول.
+ * @param {string} chapterHtml محتوى الفصل
+ * @param {string} chapterNumber رقم الفصل
+ * @returns {{title: string, content: string}}
  */
 function parseChapter(chapterHtml, chapterNumber) {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = chapterHtml;
 
-  // الحصول على العنوان من JSON
-  const chapterData = window.chapterList.find(
-    (c) => parseInt(c.id, 10) === parseInt(chapterNumber, 10)
-  );
-  const title = chapterData ? chapterData.title : `الفصل ${chapterNumber}`;
-
-  // إزالة أي عنصر عنوان داخلي من الفصل
   const oldTitle = tempDiv.querySelector("#chapter-title-data");
   if (oldTitle) oldTitle.remove();
+
+  const chapterData = chapterList.find((c) => c.id === chapterNumber);
+  const title = chapterData ? chapterData.title : `الفصل ${chapterNumber}`;
 
   return { title, content: tempDiv.innerHTML };
 }
 
 /**
- * تحديث واجهة المستخدم بالفصل الجديد
+ * تحديث واجهة المستخدم بالفصل الجديد.
+ * @param {string} title عنوان الفصل
+ * @param {string} content محتوى الفصل
+ * @param {boolean} append هل يتم إلحاق الفصل أم استبدال المحتوى
+ * @param {string} chapterNumber رقم الفصل
  */
 function updateChapterInDom(title, content, append = false, chapterNumber) {
-  const titleElement = document.getElementById("chapter-title");
   const paragraphContainer = document.getElementById("chapter-text");
-
   if (!paragraphContainer) return;
 
-  // ✅ توليد العنوان الكامل بالفصل + الاسم
   const fullTitle = `الفصل ${chapterNumber} – ${title}`;
 
-  // 🔹 تحديث العنوان الرئيسي (اللي فوق الصفحة)
-  if (titleElement && !append) {
-    titleElement.textContent = fullTitle;
-  }
+  const chapterWrapper = document.createElement("div");
+  chapterWrapper.className = "chapter-block";
+  chapterWrapper.setAttribute("data-chapter-id", chapterNumber);
+  chapterWrapper.innerHTML = `
+    <h2 id="chapter-title-${chapterNumber}" class="chapter-title">${fullTitle}</h2>
+    ${content}
+  `;
 
-  // 🔹 في كل الحالات، نضيف داخل المحتوى <h2> يحمل ID الفصل
   if (append) {
-    // ✅ في حالة التحميل التدريجي (infinite scroll)
-    const chapterWrapper = document.createElement("div");
-    chapterWrapper.classList.add("chapter-block");
-    chapterWrapper.setAttribute("data-chapter-id", chapterNumber);
-    chapterWrapper.innerHTML = `
-      <h2 id="chapter-${chapterNumber}" class="chapter-title">${fullTitle}</h2>
-      ${content}
-    `;
     paragraphContainer.appendChild(chapterWrapper);
   } else {
-    // ✅ في حالة أول فصل يتم تحميله (من القائمة أو من البداية)
-    // نضيف العنوان الداخلي علشان وظائف التتبع تشتغل عليه
-    paragraphContainer.innerHTML = `
-      <div class="chapter-block" data-chapter-id="${chapterNumber}">
-        <h2 id="chapter-${chapterNumber}" class="chapter-title">${fullTitle}</h2>
-        ${content}
-      </div>
-    `;
+    paragraphContainer.innerHTML = "";
+    paragraphContainer.appendChild(chapterWrapper);
   }
 }
 
 /**
- * إظهار أو إخفاء وصف القصة بناءً على الفصل
+ * إظهار أو إخفاء وصف القصة (يظهر فقط مع الفصل الأول).
+ * @param {string} chapterNumber رقم الفصل
  */
 async function handleStoryDescriptionVisibility(chapterNumber) {
   const storyContainer = document.getElementById("story-description-container");
   if (!storyContainer) return;
 
-  try {
-    const firstChapter = Math.min(
-      ...window.chapterList.map((c) => parseInt(c.id, 10))
-    );
-
-    if (parseInt(chapterNumber, 10) === firstChapter) {
-      storyContainer.style.display = "block";
-    } else {
-      storyContainer.style.display = "none";
-    }
-  } catch (error) {
-    console.error("Error handling story description visibility:", error);
-  }
+  const firstChapterId = chapterList[0]?.id;
+  storyContainer.style.display =
+    chapterNumber === firstChapterId ? "block" : "none";
 }
 
 /**
- * تحديث نظام التعليقات
+ * تحديث نظام التعليقات بالاعتماد على رقم الفصل.
+ * @param {string} chapterNumber رقم الفصل
  */
 function updateCommentsSystem(chapterNumber) {
   if (
@@ -115,12 +106,15 @@ function updateCommentsSystem(chapterNumber) {
   ) {
     const chapterId = `chapter-${chapterNumber}`;
     window.CommentsSystem.setChapter(chapterId);
-    console.log(`💬 Comments system updated for chapter: ${chapterId}`);
+    console.log(`💬 تم تحديث التعليقات للفصل: ${chapterId}`);
   }
 }
 
 /**
- * تحميل فصل محدد وتحديث الصفحة
+ * تحميل فصل معين وتحديث الصفحة وكل الأنظمة التابعة له.
+ * @param {string} chapterNumber رقم الفصل للتحميل
+ * @param {boolean} append هل هو تحميل إضافي (للتمرير اللانهائي)
+ * @returns {Promise<boolean>}
  */
 async function loadChapter(chapterNumber, append = false) {
   try {
@@ -128,463 +122,178 @@ async function loadChapter(chapterNumber, append = false) {
     const { title, content } = parseChapter(chapterHtml, chapterNumber);
 
     updateChapterInDom(title, content, append, chapterNumber);
-    await handleStoryDescriptionVisibility(chapterNumber);
-    updateCommentsSystem(chapterNumber);
 
-    localStorage.setItem("lastReadChapter", chapterNumber);
-    window.currentChapterNumber = parseInt(chapterNumber, 10);
-
-    // حدث عام يفيد أن المحتوى انتهى من التحميل
-    document.dispatchEvent(new CustomEvent("contentLoaded"));
-
-    // 🔴 الحدث الجديد: يخبر باقي الأنظمة أن الفصل تغيّر فورًا
-    document.dispatchEvent(
-      new CustomEvent("chapterChanged", {
-        detail: { chapterNumber: parseInt(chapterNumber, 10), title },
-      })
-    );
-
-    // إعادة تهيئة الـ infinite scroll (ضروري بعد التنقل اليدوي)
-    // فقط إذا لم يكن append (أي هو تحميل تحويلي/يدوي)
-    if (!append && typeof resetInfiniteScroll === "function") {
+    if (!append) {
+      await handleStoryDescriptionVisibility(chapterNumber);
+      localStorage.setItem("lastReadChapter", chapterNumber);
+      window.currentChapterNumber = parseInt(chapterNumber, 10);
       resetInfiniteScroll();
     }
 
+    document.dispatchEvent(new CustomEvent("contentUpdated"));
+
     return true;
   } catch (error) {
-    console.error(`Error loading chapter ${chapterNumber}:`, error);
+    console.error(`خطأ في تحميل الفصل ${chapterNumber}:`, error);
+    if (append) {
+      reachedEnd = true;
+      document.getElementById("loading-spinner").style.display = "none";
+    }
     return false;
   }
 }
 
 /**
- * تحميل أول فصل أو آخر فصل تمت قراءته
+ * تحميل الفصل الأول أو آخر فصل تمت قراءته عند فتح الصفحة.
  */
 async function loadInitialChapter() {
   try {
     const res = await fetch("chapters.json");
-    window.chapterList = await res.json(); // ✅ حفظ قائمة الفصول عالمياً
+    chapterList = await res.json();
+    window.chapterList = chapterList;
 
     const lastReadChapter = localStorage.getItem("lastReadChapter");
-    let chapterToLoad;
+    let chapterToLoadId = lastReadChapter;
 
-    if (lastReadChapter) {
-      chapterToLoad = window.chapterList.find((c) => c.id === lastReadChapter);
+    if (chapterToLoadId && !chapterList.some((c) => c.id === chapterToLoadId)) {
+      chapterToLoadId = null;
     }
 
-    if (!chapterToLoad) {
-      // تحميل أول فصل
-      chapterToLoad = window.chapterList.reduce((first, chapter) => {
-        const chapterId = parseInt(chapter.id, 10);
-        return chapterId < (first ? parseInt(first.id, 10) : Infinity)
-          ? chapter
-          : first;
-      }, null);
+    if (!chapterToLoadId) {
+      chapterToLoadId = chapterList[0]?.id;
     }
 
-    if (chapterToLoad) {
-      await loadChapter(chapterToLoad.id);
-      window.currentChapterNumber = parseInt(chapterToLoad.id, 10);
-      if (typeof window.updateButtonVisibility === "function") {
-        window.updateButtonVisibility();
-      }
+    if (chapterToLoadId) {
+      await loadChapter(chapterToLoadId);
+    } else {
+      console.error("لا توجد فصول متاحة للتحميل.");
     }
   } catch (error) {
-    console.error("Failed to load initial chapter data:", error);
+    console.error("فشل في تحميل بيانات الفصول الأولية:", error);
   }
 }
 
 /**
- * إعادة تهيئة نظام التمرير اللانهائي (عند الانتقال اليدوي)
+ * إعادة تهيئة نظام التمرير اللانهائي (عند الانتقال اليدوي).
  */
 function resetInfiniteScroll() {
-  console.log("♻️ إعادة تهيئة نظام التمرير اللانهائي...");
-  window.isLoading = false;
-  window.reachedEnd = false;
-
-  if (window.infiniteObserver) {
-    window.infiniteObserver.disconnect();
-  }
-
-  const sentinel = document.getElementById("scroll-end-sentinel");
-  if (sentinel) {
-    window.infiniteObserver = new IntersectionObserver(async (entries) => {
-      const entry = entries[0];
-      if (entry.isIntersecting && !window.isLoading && !window.reachedEnd) {
-        window.isLoading = true;
-        const nextChapter = await loadNextChapter();
-        if (!nextChapter) window.reachedEnd = true;
-        window.isLoading = false;
-      }
-    });
-
-    window.infiniteObserver.observe(sentinel);
-  }
+  isLoading = false;
+  reachedEnd = false;
+  if (infiniteScrollObserver) infiniteScrollObserver.disconnect();
+  initInfiniteScroll();
 }
 
 /**
- * نظام التمرير اللانهائي (Infinity Scroll)
+ * نظام التمرير اللانهائي لتحميل الفصول التالية.
  */
-async function infinityScrollManager() {
+function initInfiniteScroll() {
   const sentinel = document.getElementById("scroll-end-sentinel");
   const spinner = document.getElementById("loading-spinner");
   if (!sentinel || !spinner) return;
 
-  const chapterIds = window.chapterList
-    .map((c) => parseInt(c.id, 10))
-    .sort((a, b) => a - b);
-
-  let loadedChapters = [window.currentChapterNumber];
-  let loadingLock = false;
-
-  const observer = new IntersectionObserver(
+  infiniteScrollObserver = new IntersectionObserver(
     async (entries) => {
-      if (entries[0].isIntersecting && !loadingLock) {
-        const lastLoadedChapter = loadedChapters[loadedChapters.length - 1];
-        const nextChapterIndex = chapterIds.indexOf(lastLoadedChapter) + 1;
+      if (entries[0].isIntersecting && !isLoading && !reachedEnd) {
+        isLoading = true;
+        spinner.style.display = "block";
 
-        if (nextChapterIndex < chapterIds.length) {
-          loadingLock = true;
-          spinner.style.display = "block";
+        const currentChapterIndex = chapterList.findIndex(
+          (c) => c.id === String(window.currentChapterNumber)
+        );
+        const nextChapter = chapterList[currentChapterIndex + 1];
 
-          const nextChapterId = chapterIds[nextChapterIndex];
-          console.log(`📖 محاولة تحميل الفصل التالي: ${nextChapterId}`);
-
-          await new Promise((resolve) => setTimeout(resolve, 500)); // ⏳ نصف ثانية تأخير
-
-          const success = await loadChapter(nextChapterId, true);
-
+        if (nextChapter) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          const success = await loadChapter(nextChapter.id, true);
           if (success) {
-            loadedChapters.push(nextChapterId);
-            window.currentChapterNumber = nextChapterId;
-
-            if (typeof window.updateButtonVisibility === "function") {
-              window.updateButtonVisibility();
-            }
-
-            console.log(`✅ تم تحميل الفصل ${nextChapterId}`);
-          } else {
-            console.warn(`⚠️ فشل تحميل الفصل ${nextChapterId}`);
-            observer.disconnect();
+            window.currentChapterNumber = parseInt(nextChapter.id, 10);
           }
-
-          spinner.style.display = "none";
-          loadingLock = false;
         } else {
-          console.log("📚 لا توجد فصول أخرى للتحميل.");
-          observer.disconnect();
+          reachedEnd = true;
         }
+
+        spinner.style.display = "none";
+        isLoading = false;
       }
     },
     { threshold: 1.0 }
   );
-
-  observer.observe(sentinel);
+  infiniteScrollObserver.observe(sentinel);
 }
 
 /**
- * عند تحميل الصفحة
- */
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadInitialChapter();
-  await infinityScrollManager();
-});
-
-/**
- * 🧭 نظام تتبع الفصول أثناء التمرير لتحديث العنوان في الزر العلوي (title-btn)
+ * ✨ [الحل المحسّن] ✨
+ * نظام تتبع الفصول الظاهرة على الشاشة مع كشف اتجاه التمرير.
  */
 function initChapterTracking() {
   const titleBtn = document.getElementById("title-btn");
   if (!titleBtn) return;
 
-  const chapters = document.querySelectorAll(".chapter-title");
-  if (!chapters.length) return;
+  if (chapterTrackingObserver) chapterTrackingObserver.disconnect();
 
-  let currentVisibleChapter = null;
-
-  const observer = new IntersectionObserver(
+  chapterTrackingObserver = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry) => {
-        const chapterId = entry.target.getAttribute("id");
-        const chapterNumber = chapterId?.split("-")[1];
-        const chapterData = window.chapterList.find(
-          (c) => c.id === chapterNumber
-        );
+      // تحديد اتجاه التمرير
+      const isScrollingDown = window.scrollY > lastScrollY;
+      lastScrollY = window.scrollY;
 
-        if (entry.isIntersecting) {
-          // ✅ هذا الفصل هو الآن المعروض في الشاشة
-          currentVisibleChapter = chapterNumber;
+      // فلترة العناصر التي تتقاطع مع منطقة العرض
+      const intersectingEntries = entries.filter((e) => e.isIntersecting);
+      if (intersectingEntries.length === 0) return;
 
-          const newTitle = chapterData
-            ? `${chapterData.id} – ${chapterData.title}`
-            : entry.target.textContent;
+      // اختيار الفصل المستهدف بناءً على اتجاه التمرير
+      let targetEntry;
+      if (isScrollingDown) {
+        // عند النزول، نختار آخر فصل في القائمة (الأحدث ظهورًا)
+        targetEntry = intersectingEntries[intersectingEntries.length - 1];
+      } else {
+        // عند الصعود، نختار أول فصل في القائمة
+        targetEntry = intersectingEntries[0];
+      }
 
-          // ✅ نحدث العنوان في الزر العلوي فورًا
-          titleBtn.textContent = newTitle;
+      const chapterId = targetEntry.target.getAttribute("data-chapter-id");
+
+      if (chapterId && chapterId !== currentlyTrackedChapterId) {
+        currentlyTrackedChapterId = chapterId;
+        console.log(`الفصل الحالي على الشاشة: ${chapterId}`);
+
+        const chapterData = chapterList.find((c) => c.id === chapterId);
+        if (chapterData) {
+          // 1. تحديث زر العنوان
+          titleBtn.textContent = `${chapterData.id} – ${chapterData.title}`;
           titleBtn.classList.add("visible");
         }
-      });
+        // 2. تحديث نظام التعليقات
+        updateCommentsSystem(chapterId);
+        // 3. تحديث آخر فصل تمت قراءته
+        localStorage.setItem("lastReadChapter", chapterId);
+      }
     },
     {
-      threshold: 0.4, // عندما يظهر 40% من الفصل في الشاشة
+      // هذا الهامش يحدد "خط" أفقي في أعلى الشاشة (عند 20% من الأعلى)
+      // يتم تفعيل المراقبة عندما يتجاوز العنصر هذا الخط
+      rootMargin: "0px 0px -80% 0px",
+      threshold: 0,
     }
   );
 
-  chapters.forEach((ch) => observer.observe(ch));
-
-  // 🔁 إعادة تفعيل المتابع بعد تحميل فصول جديدة
-  document.addEventListener("contentLoaded", () => {
-    observer.disconnect();
-    initChapterTracking();
-  });
+  // مراقبة كل حاويات الفصول الموجودة في الصفحة
+  const chapterBlocks = document.querySelectorAll(".chapter-block");
+  chapterBlocks.forEach((block) => chapterTrackingObserver.observe(block));
 }
 
-// ✅ تفعيل النظام بعد تحميل أول فصل
-document.addEventListener("DOMContentLoaded", () => {
-  document.addEventListener("chapterChanged", () => {
-    initChapterTracking();
-  });
+// =======================================================
+// تشغيل الأنظمة عند تحميل الصفحة
+// =======================================================
 
-  // كمان بعد أول تحميل
-  setTimeout(initChapterTracking, 1000);
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadInitialChapter();
+  initChapterTracking();
 });
 
-// /**
-//  * Fetches the HTML content of a specific chapter.
-//  * @param {string | number} chapterNumber - The chapter to fetch.
-//  * @returns {Promise<string>} - The HTML content of the chapter.
-//  */
-// async function fetchChapterHtml(chapterNumber) {
-//   const response = await fetch(`chapters/${chapterNumber}.html`);
-//   if (!response.ok) {
-//     throw new Error(
-//       `Failed to fetch chapter ${chapterNumber}: ${response.status}`
-//     );
-//   }
-//   return await response.text();
-// }
+document.addEventListener("contentUpdated", () => {
+  initChapterTracking();
+});
 
-// /**
-//  * Parses the chapter HTML to extract the title and content.
-//  * @param {string} chapterHtml - The HTML content of the chapter.
-//  * @param {string | number} chapterNumber - The chapter number.
-//  * @returns {{title: string, content: string}} - The chapter title and content.
-//  */
-// function parseChapter(chapterHtml, chapterNumber) {
-//   const tempDiv = document.createElement("div");
-//   tempDiv.innerHTML = chapterHtml;
-
-//   const newTitleElement = tempDiv.querySelector("#chapter-title-data");
-//   let title = `الفصل ${chapterNumber}`;
-//   if (newTitleElement) {
-//     title = newTitleElement.textContent;
-//     newTitleElement.remove();
-//   }
-//   return { title, content: tempDiv.innerHTML };
-// }
-
-// /**
-//  * Updates the DOM with the new chapter title and content.
-//  * @param {string} title - The new chapter title.
-//  * @param {string} content - The new chapter content.
-//  */
-// function updateChapterInDom(title, content, append = false) {
-//   const titleElement = document.getElementById("chapter-title");
-//   const paragraphContainer = document.getElementById("chapter-text");
-
-//   if (titleElement && !append) {
-//     titleElement.textContent = title;
-//   }
-
-//   if (paragraphContainer) {
-//     if (append) {
-//       const chapterWrapper = document.createElement("div");
-//       chapterWrapper.innerHTML = `<h2>${title}</h2>${content}`;
-//       paragraphContainer.appendChild(chapterWrapper);
-//     } else {
-//       paragraphContainer.innerHTML = content;
-//     }
-//   }
-// }
-
-// /**
-//  * Shows or hides the story description based on the chapter number.
-//  * @param {string | number} chapterNumber - The current chapter number.
-//  */
-// async function handleStoryDescriptionVisibility(chapterNumber) {
-//   const storyContainer = document.getElementById("story-description-container");
-//   if (!storyContainer) return;
-
-//   try {
-//     const chaptersResponse = await fetch("chapters.json");
-//     const chapters = await chaptersResponse.json();
-//     const firstChapter = Math.min(...chapters.map((c) => parseInt(c.id, 10)));
-
-//     storyContainer.style.display =
-//       parseInt(chapterNumber, 10) === firstChapter ? "block" : "none";
-//   } catch (error) {
-//     console.error("Error handling story description visibility:", error);
-//   }
-// }
-
-// /**
-//  * Updates the comments system with the current chapter ID.
-//  * @param {string | number} chapterNumber - The current chapter number.
-//  */
-// function updateCommentsSystem(chapterNumber) {
-//   if (
-//     window.CommentsSystem &&
-//     typeof window.CommentsSystem.setChapter === "function"
-//   ) {
-//     const chapterId = `chapter-${chapterNumber}`;
-//     window.CommentsSystem.setChapter(chapterId);
-//     console.log(`🚀 Comments system updated for chapter: ${chapterId}`);
-//   }
-// }
-
-// /**
-//  * Loads a chapter, updates the DOM, and handles related side effects.
-//  * @param {string | number} chapterNumber - The chapter to load.
-//  * @returns {Promise<boolean>} - True if the chapter was loaded successfully, false otherwise.
-//  */
-// async function loadChapter(chapterNumber, append = false) {
-//   try {
-//     const chapterHtml = await fetchChapterHtml(chapterNumber);
-//     const { title, content } = parseChapter(chapterHtml, chapterNumber);
-//     updateChapterInDom(title, content, append);
-
-//     await handleStoryDescriptionVisibility(chapterNumber);
-//     updateCommentsSystem(chapterNumber);
-
-//     localStorage.setItem("lastReadChapter", chapterNumber);
-//     window.currentChapterNumber = parseInt(chapterNumber, 10);
-
-//     document.dispatchEvent(new CustomEvent("contentLoaded"));
-
-//     // ✅ بعد كل تحميل فصل يدوي أو تلقائي، تأكد من إعادة تهيئة الـ scroll
-//     if (!append) {
-//       resetInfiniteScroll();
-//     }
-
-//     return true;
-//   } catch (error) {
-//     console.error(`Error loading chapter ${chapterNumber}:`, error);
-//     return false;
-//   }
-// }
-
-// /**
-//  * Fetches the list of chapters and loads the first one by default.
-//  */
-// async function loadInitialChapter() {
-//   try {
-//     const lastReadChapter = localStorage.getItem("lastReadChapter");
-//     const res = await fetch("chapters.json");
-//     const chapters = await res.json();
-
-//     let chapterToLoad;
-//     if (lastReadChapter) {
-//       chapterToLoad = chapters.find((c) => c.id === lastReadChapter);
-//     }
-
-//     if (!chapterToLoad) {
-//       chapterToLoad = chapters.reduce((first, chapter) => {
-//         const chapterId = parseInt(chapter.id, 10);
-//         return chapterId < (first ? parseInt(first.id, 10) : Infinity)
-//           ? chapter
-//           : first;
-//       }, null);
-//     }
-
-//     if (chapterToLoad) {
-//       await loadChapter(chapterToLoad.id);
-
-//       resetInfiniteScroll(); // ✅ تأكيد تهيئة النظام بعد أول فصل
-//     }
-//   } catch (error) {
-//     console.error("Failed to load initial chapter data:", error);
-//   }
-// }
-
-// /**
-//  * 🧩 Reset Infinite Scroll (عند الانتقال اليدوي أو بعد تحميل أول فصل)
-//  */
-// function resetInfiniteScroll() {
-//   console.log("♻️ إعادة تهيئة نظام التمرير اللانهائي...");
-//   window.isLoading = false;
-//   window.reachedEnd = false;
-
-//   if (window.infiniteObserver) {
-//     window.infiniteObserver.disconnect();
-//   }
-
-//   // إعادة إنشاء الـ observer
-//   setTimeout(() => {
-//     infinityScrollManager();
-//   }, 300);
-// }
-
-// /**
-//  * 🔄 Manages the infinite scroll feature.
-//  */
-// async function infinityScrollManager() {
-//   const sentinel = document.getElementById("scroll-end-sentinel");
-//   const spinner = document.getElementById("loading-spinner");
-//   if (!sentinel || !spinner) return;
-
-//   const chaptersResponse = await fetch("chapters.json");
-//   const chapters = await chaptersResponse.json();
-//   const chapterIds = chapters
-//     .map((c) => parseInt(c.id, 10))
-//     .sort((a, b) => a - b);
-
-//   let loadedChapters = [window.currentChapterNumber];
-//   let loadingLock = false;
-
-//   const observer = new IntersectionObserver(
-//     async (entries) => {
-//       if (entries[0].isIntersecting && !loadingLock) {
-//         const lastLoadedChapter = loadedChapters[loadedChapters.length - 1];
-//         const nextChapterIndex = chapterIds.indexOf(lastLoadedChapter) + 1;
-
-//         if (nextChapterIndex < chapterIds.length) {
-//           loadingLock = true;
-//           spinner.style.display = "block";
-
-//           const nextChapterId = chapterIds[nextChapterIndex];
-//           console.log(`📖 محاولة تحميل الفصل التالي: ${nextChapterId}`);
-
-//           await new Promise((resolve) => setTimeout(resolve, 500));
-
-//           const success = await loadChapter(nextChapterId, true);
-
-//           if (success) {
-//             loadedChapters.push(nextChapterId);
-//             console.log(`✅ تم تحميل الفصل ${nextChapterId}`);
-//           } else {
-//             console.warn(
-//               `⚠️ فشل تحميل الفصل ${nextChapterId} — سيتم إيقاف التحميل التلقائي.`
-//             );
-//             observer.disconnect();
-//             window.reachedEnd = true;
-//           }
-
-//           spinner.style.display = "none";
-//           loadingLock = false;
-//         } else {
-//           console.log("📚 لا توجد فصول أخرى للتحميل.");
-//           observer.disconnect();
-//           window.reachedEnd = true;
-//         }
-//       }
-//     },
-//     { threshold: 1.0 }
-//   );
-
-//   observer.observe(sentinel);
-//   window.infiniteObserver = observer;
-// }
-
-// document.addEventListener("DOMContentLoaded", async () => {
-//   await loadInitialChapter();
-// });
+// تعريض دالة تحميل الفصل عالميًا للملفات الأخرى
+window.loadChapter = loadChapter;
