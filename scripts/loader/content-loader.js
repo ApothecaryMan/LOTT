@@ -10,28 +10,54 @@
  * =======================================================================
  */
 
-// ========== الحالة العامة ==========
+// =======================================================================
+// 1. إدارة الحالة العامة (Global State)
+// -----------------------------------------------------------------------
+// هذا الكائن هو "عقل" النظام، حيث يتم تخزين كل المعلومات الحيوية
+// مثل قائمة الفصول، الفصل الحالي، وحالة التحميل.
+// =======================================================================
+
 const state = {
-  chapters: [],
-  currentChapterId: null,
-  isLoading: false,
-  reachedEnd: false,
+  chapters: [], // قائمة بكل فصول الرواية
+  currentChapterId: null, // الفصل النشط حالياً على الشاشة
+  isLoading: false, // لمنع التحميل المتعدد في نفس الوقت
+  reachedEnd: false, // لمعرفة الوصول لآخر فصل
+  reachedStart: false, // لمعرفة الوصول لأول فصل
   observers: {
-    infinite: null,
-    tracking: null,
+    infinite: null, // مراقب التمرير اللانهائي
+    infiniteUp: null, // مراقب التمرير للأعلى
+    tracking: null, // مراقب تتبع الفصول الذكي
   },
 };
 
-// ========== جلب وتحليل الفصول ==========
+// =======================================================================
+// 2. جلب وتحليل محتوى الفصول (Data Fetching & Parsing)
+// -----------------------------------------------------------------------
+// دوال مسؤولة عن طلب ملفات الفصول من الخادم، ثم معالجتها
+// وتنظيفها لتكون جاهزة للعرض في الصفحة.
+// =======================================================================
+
+/**
+ * جلب محتوى فصل معين من الخادم.
+ * @param {string} chapterId - رقم الفصل المطلوب.
+ * @returns {Promise<string>} - محتوى الفصل بصيغة HTML.
+ */
 async function fetchChapter(chapterId) {
   const response = await fetch(`chapters/${chapterId}.html`);
   if (!response.ok) throw new Error(`فشل تحميل الفصل ${chapterId}`);
   return response.text();
 }
 
+/**
+ * تحليل محتوى الفصل (HTML) واستخراج العنوان والمحتوى النظيف.
+ * @param {string} html - محتوى الفصل الخام.
+ * @param {string} chapterId - رقم الفصل للمعالجة.
+ * @returns {{title: string, content: string}} - كائن يحتوي على العنوان والمحتوى.
+ */
 function parseChapter(html, chapterId) {
   const temp = document.createElement("div");
   temp.innerHTML = html;
+  // إزالة أي عناصر غير مرغوب فيها، مثل عنوان مكرر
   temp.querySelector("#chapter-title-data")?.remove();
 
   const chapter = state.chapters.find((c) => c.id === chapterId);
@@ -41,7 +67,20 @@ function parseChapter(html, chapterId) {
   };
 }
 
-// ========== تحديث الواجهة ==========
+// =======================================================================
+// 3. تحديث واجهة المستخدم (UI Updates)
+// -----------------------------------------------------------------------
+// مجموعة دوال متخصصة في تعديل عناصر الصفحة لعرض المعلومات
+// الجديدة للمستخدم، مثل إضافة فصل، تحديث الأزرار، وإظهار/إخفاء أقسام.
+// =======================================================================
+
+/**
+ * إنشاء عنصر HTML جديد للفصل.
+ * @param {string} chapterId - رقم الفصل.
+ * @param {string} title - عنوان الفصل.
+ * @param {string} content - محتوى الفصل.
+ * @returns {HTMLElement} - عنصر div جاهز للإضافة للصفحة.
+ */
 function createChapterElement(chapterId, title, content) {
   const wrapper = document.createElement("div");
   wrapper.className = "chapter-block";
@@ -55,13 +94,22 @@ function createChapterElement(chapterId, title, content) {
   return wrapper;
 }
 
-function updateUI(chapterId, title, content, append = false) {
+/**
+ * تحديث واجهة المستخدم بإضافة محتوى الفصل.
+ * @param {string} chapterId - رقم الفصل.
+ * @param {string} title - عنوان الفصل.
+ * @param {string} content - محتوى الفصل.
+ * @param {boolean} [append=false] - إذا كانت true، سيتم إلحاق الفصل الجديد بدلاً من استبدال المحتوى.
+ */
+function updateUI(chapterId, title, content, position = "append") {
   const container = document.getElementById("chapter-text");
   if (!container) return;
 
   const element = createChapterElement(chapterId, title, content);
 
-  if (append) {
+  if (position === "prepend") {
+    container.prepend(element);
+  } else if (position === "append") {
     container.appendChild(element);
   } else {
     container.innerHTML = "";
@@ -69,6 +117,10 @@ function updateUI(chapterId, title, content, append = false) {
   }
 }
 
+/**
+ * تحديث الزر العلوي لعرض عنوان الفصل الحالي.
+ * @param {string} chapterId - رقم الفصل الحالي.
+ */
 function updateTitleButton(chapterId) {
   const btn = document.getElementById("title-btn");
   if (!btn) return;
@@ -80,6 +132,10 @@ function updateTitleButton(chapterId) {
   }
 }
 
+/**
+ * إظهار أو إخفاء وصف القصة (يظهر فقط مع الفصل الأول).
+ * @param {string} chapterId - رقم الفصل الحالي.
+ */
 function updateStoryDescription(chapterId) {
   const container = document.getElementById("story-description-container");
   if (!container) return;
@@ -88,61 +144,132 @@ function updateStoryDescription(chapterId) {
   container.style.display = isFirstChapter ? "block" : "none";
 }
 
+/**
+ * تحديث نظام التعليقات ليرتبط بالفصل الصحيح.
+ * @param {string} chapterId - رقم الفصل الحالي.
+ */
 function updateComments(chapterId) {
   if (window.CommentsSystem?.setChapter) {
     window.CommentsSystem.setChapter(`chapter-${chapterId}`);
   }
 }
 
-// دالة مركزية لتحديث الفصل الحالي
+/**
+ * إخفاء/إظهار الهيدر الرئيسي (يظهر فقط مع الفصل الأول).
+ * @param {string} chapterId - رقم الفصل الحالي.
+ */
+function updateMainHeaderVisibility(chapterId) {
+  const headerContainer = document.getElementById("main-header-container");
+  if (!headerContainer) return;
+
+  const isFirstChapter = chapterId === state.chapters[0]?.id;
+  headerContainer.style.display = isFirstChapter ? "block" : "none";
+}
+
+/**
+ * تحديث عداد الكلمات للفصل الحالي.
+ * @param {string} chapterId - رقم الفصل الحالي.
+ */
+function updateWordCount(chapterId) {
+  const wordCountBtn = document.getElementById("word-count");
+  if (!wordCountBtn) return;
+
+  const selector = `.chapter-block[data-chapter-id="${chapterId}"]`;
+  const chapterBlock = document.querySelector(selector);
+
+  if (chapterBlock) {
+    const textContent = chapterBlock.textContent || "";
+    const words = textContent
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0);
+    wordCountBtn.innerText = words.length + " كلمة";
+  } else {
+    console.warn(
+      `[عداد الكلمات] ⚠️ فشل: لم يتم العثور على العنصر بالـ selector التالي: ${selector}`
+    );
+    wordCountBtn.innerText = "--- كلمة";
+  }
+}
+
+// =======================================================================
+// 4. التحكم المركزي بالفصل الحالي (Central Chapter Logic)
+// -----------------------------------------------------------------------
+// دالة محورية مسؤولة عن تعيين الفصل الحالي وتفعيل كل التحديثات
+// المرتبطة به في واجهة المستخدم وحفظ التقدم.
+// =======================================================================
+
+/**
+ * تعيين الفصل الحالي وتحديث جميع الأجزاء المعتمدة عليه.
+ * @param {string} chapterId - رقم الفصل لتعيينه كحالي.
+ */
 function setCurrentChapter(chapterId) {
-  if (chapterId === state.currentChapterId) return;
+  if (chapterId === state.currentChapterId) return; // منع التحديثات غير الضرورية
 
   state.currentChapterId = chapterId;
 
+  // استدعاء جميع دوال التحديث
   updateTitleButton(chapterId);
   updateComments(chapterId);
   updateWordCount(chapterId);
-
   updateStoryDescription(chapterId);
   updateMainHeaderVisibility(chapterId);
 
+  // حفظ التقدم في المتصفح
   localStorage.setItem("lastReadChapter", chapterId);
 
   console.log(`📖 الفصل الحالي: ${chapterId}`);
 }
 
-// ========== تحميل الفصول ==========
-async function loadChapter(chapterId, append = false) {
+// =======================================================================
+// 5. آلية تحميل الفصول (Chapter Loading Mechanism)
+// -----------------------------------------------------------------------
+// دوال تدير عملية تحميل الفصل، سواء عند فتح الصفحة لأول مرة،
+// أو عند اختيار فصل من القائمة، أو عند التمرير لأسفل.
+// =======================================================================
+
+/**
+ * تحميل وعرض فصل معين.
+ * @param {string} chapterId - رقم الفصل المراد تحميله.
+ * @param {boolean} [append=false] - هل يجب إلحاق الفصل بنهاية المحتوى الحالي.
+ * @returns {Promise<boolean>} - إرجاع true عند النجاح.
+ */
+async function loadChapter(chapterId, position = "replace") {
   if (state.isLoading) return false;
+  state.isLoading = true;
 
   try {
-    state.isLoading = true;
-
     const html = await fetchChapter(chapterId);
     const { title, content } = parseChapter(html, chapterId);
 
-    updateUI(chapterId, title, content, append);
+    // يحافظ على ارتفاع الشاشة قبل إضافة المحتوى الجديد
+    const oldScrollHeight = document.documentElement.scrollHeight;
+    const oldScrollTop = document.documentElement.scrollTop;
 
-    if (!append) {
-      // 🔧 إصلاح: تحديث الفصل الحالي فوراً عند التحميل اليدوي
+    updateUI(chapterId, title, content, position);
+
+    if (position === "prepend") {
+      // استعادة مكان القراءة بعد إضافة المحتوى في الأعلى
+      const newScrollHeight = document.documentElement.scrollHeight;
+      window.scrollTo(0, oldScrollTop + (newScrollHeight - oldScrollHeight));
+    } else if (position === "replace") {
       setCurrentChapter(chapterId);
       window.currentChapterNumber = parseInt(chapterId, 10);
-
-      // إعادة تهيئة الأنظمة
       resetInfiniteScroll();
-
-      // الانتقال للأعلى بسلاسة
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    // إطلاق حدث مخصص لإعلام الأنظمة الأخرى باكتمال التحديث
     document.dispatchEvent(new CustomEvent("contentUpdated"));
     return true;
   } catch (error) {
     console.error(`خطأ في تحميل الفصل ${chapterId}:`, error);
-    if (append) {
-      state.reachedEnd = true;
+    if (position === "append") {
+      // state.reachedEnd = true; // لا تحتاج إلى هذا الخيار لأنه يتم تحديث الصفحة بعد التحميل بشكل دائم
       document.getElementById("loading-spinner").style.display = "none";
+    } else if (position === "prepend") {
+      state.reachedStart = true;
+      document.getElementById("loading-spinner-top").style.display = "none";
     }
     return false;
   } finally {
@@ -150,18 +277,24 @@ async function loadChapter(chapterId, append = false) {
   }
 }
 
+/**
+ * تحميل الفصل الأولي عند بدء تشغيل الصفحة.
+ */
 async function loadInitialChapter() {
   try {
     const response = await fetch("chapters.json");
     state.chapters = await response.json();
-    window.chapterList = state.chapters;
+    window.chapterList = state.chapters; // تعريضه عالميًا للاستخدامات الأخرى
 
+    // تحديد الفصل الذي يجب البدء به
     let chapterId = localStorage.getItem("lastReadChapter");
 
+    // التأكد من أن الفصل المحفوظ لا يزال موجودًا
     if (chapterId && !state.chapters.some((c) => c.id === chapterId)) {
       chapterId = null;
     }
 
+    // إذا لم يكن هناك فصل محفوظ، ابدأ من الأول
     chapterId = chapterId || state.chapters[0]?.id;
 
     if (chapterId) {
@@ -174,36 +307,50 @@ async function loadInitialChapter() {
   }
 }
 
-// ========== التمرير اللانهائي ==========
+// =======================================================================
+// 6. نظام التمرير اللانهائي (Infinite Scroll)
+// -----------------------------------------------------------------------
+// يستخدم IntersectionObserver لتحميل الفصل التالي تلقائيًا
+// عندما يصل القارئ إلى نهاية الصفحة.
+// =======================================================================
+
 function initInfiniteScroll() {
   const sentinel = document.getElementById("scroll-end-sentinel");
   const spinner = document.getElementById("loading-spinner");
   if (!sentinel || !spinner) return;
 
+  state.observers.infinite?.disconnect();
+
   state.observers.infinite = new IntersectionObserver(
     async (entries) => {
-      if (!entries[0].isIntersecting || state.isLoading || state.reachedEnd) {
-        return;
-      }
+      if (entries[0].isIntersecting && !state.isLoading && !state.reachedEnd) {
+        spinner.style.display = "block";
 
-      spinner.style.display = "block";
+        const currentIndex = state.chapters.findIndex(
+          (c) => c.id === state.currentChapterId
+        );
 
-      const currentIndex = state.chapters.findIndex(
-        (c) => c.id === String(window.currentChapterNumber)
-      );
-      const nextChapter = state.chapters[currentIndex + 1];
+        // ابحث عن الفصل التالي بناءً على آخر فصل تم تحميله
+        const lastLoadedChapterId = document
+          .querySelector(".chapter-block:last-child")
+          ?.dataset.chapterId.toString();
 
-      if (nextChapter) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        const success = await loadChapter(nextChapter.id, true);
-        if (success) {
-          window.currentChapterNumber = parseInt(nextChapter.id, 10);
+        const lastLoadedChapterIndex = state.chapters.findIndex(
+          (c) => c.id === lastLoadedChapterId
+        );
+
+        const nextChapter = state.chapters[lastLoadedChapterIndex + 1];
+
+        if (nextChapter) {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          await loadChapter(nextChapter.id, "append");
+        } else {
+          state.reachedEnd = true;
+          console.log("وصلت إلى نهاية الرواية.");
         }
-      } else {
-        state.reachedEnd = true;
-      }
 
-      spinner.style.display = "none";
+        spinner.style.display = "none";
+      }
     },
     { threshold: 1.0 }
   );
@@ -211,27 +358,76 @@ function initInfiniteScroll() {
   state.observers.infinite.observe(sentinel);
 }
 
+function initInfiniteScrollUp() {
+  const sentinel = document.getElementById("scroll-start-sentinel");
+  const spinner = document.getElementById("loading-spinner-top");
+  if (!sentinel || !spinner) return;
+
+  state.observers.infiniteUp?.disconnect();
+
+  state.observers.infiniteUp = new IntersectionObserver(
+    async (entries) => {
+      if (
+        entries[0].isIntersecting &&
+        !state.isLoading &&
+        !state.reachedStart
+      ) {
+        spinner.style.display = "block";
+
+        const firstLoadedChapterId = document
+          .querySelector(".chapter-block:first-child")
+          ?.dataset.chapterId.toString();
+
+        const firstLoadedChapterIndex = state.chapters.findIndex(
+          (c) => c.id === firstLoadedChapterId
+        );
+
+        const prevChapter = state.chapters[firstLoadedChapterIndex - 1];
+
+        if (prevChapter) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          await loadChapter(prevChapter.id, "prepend");
+        } else {
+          state.reachedStart = true;
+          console.log("وصلت إلى بداية الرواية.");
+        }
+
+        spinner.style.display = "none";
+      }
+    },
+    { threshold: 1.0 }
+  );
+
+  state.observers.infiniteUp.observe(sentinel);
+}
+
+/**
+ * إعادة تعيين نظام التمرير اللانهائي (مفيد عند التحميل اليدوي).
+ */
 function resetInfiniteScroll() {
   state.isLoading = false;
   state.reachedEnd = false;
+  state.reachedStart = false;
   state.observers.infinite?.disconnect();
+  state.observers.infiniteUp?.disconnect();
   initInfiniteScroll();
+  initInfiniteScrollUp();
 }
 
-// ========== 🎯 النظام الذكي لتتبع الفصول ==========
-/**
- * الطريقة الأذكى: استخدام intersectionRatio لتحديد الفصل الأكثر ظهوراً
- * بدلاً من الاعتماد على اتجاه التمرير فقط
- */
+// =======================================================================
+// 7. نظام تتبع الفصول الذكي (Smart Chapter Tracking)
+// -----------------------------------------------------------------------
+// الطريقة الأذكى لتحديد الفصل الحالي. تستخدم intersectionRatio
+// لتحديد الفصل الأكثر ظهوراً على الشاشة بدقة عالية.
+// =======================================================================
+
 function initChapterTracking() {
   state.observers.tracking?.disconnect();
 
-  // خريطة لحفظ نسبة الظهور لكل فصل
-  const visibilityMap = new Map();
+  const visibilityMap = new Map(); // خريطة لتخزين نسبة ظهور كل فصل
 
   state.observers.tracking = new IntersectionObserver(
     (entries) => {
-      // تحديث خريطة الظهور
       entries.forEach((entry) => {
         const chapterId = entry.target.dataset.chapterId;
         if (entry.isIntersecting) {
@@ -241,7 +437,7 @@ function initChapterTracking() {
         }
       });
 
-      // إيجاد الفصل الأكثر ظهوراً
+      // إيجاد الفصل صاحب أعلى نسبة ظهور
       if (visibilityMap.size > 0) {
         let maxRatio = 0;
         let mostVisibleChapter = null;
@@ -253,90 +449,41 @@ function initChapterTracking() {
           }
         });
 
-        // تحديث الفصل الحالي
+        // تحديث الفصل الحالي إذا تم العثور على فصل مهيمن
         if (mostVisibleChapter) {
           setCurrentChapter(mostVisibleChapter);
         }
       }
     },
     {
-      // منطقة مراقبة محسّنة للتمرير السريع
-      rootMargin: "0px 0px -30% 0px",
-      // نسب متعددة لدقة أعلى
-      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
+      rootMargin: "0px 0px -30% 0px", // منطقة مراقبة محسّنة
+      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0], // نسب متعددة لدقة أعلى
     }
   );
 
-  // مراقبة جميع الفصول
+  // مراقبة جميع عناصر الفصول الموجودة في الصفحة
   document.querySelectorAll(".chapter-block").forEach((block) => {
     state.observers.tracking.observe(block);
   });
 }
 
-// ========== التهيئة ==========
+// =======================================================================
+// 8. التهيئة ونقاط الدخول (Initialization & Entry Points)
+// -----------------------------------------------------------------------
+// ربط كل شيء معًا. يبدأ تحميل المحتوى عند جهوزية الصفحة،
+// ويستمع للأحداث لتحديث الأنظمة عند الحاجة.
+// =======================================================================
+
 document.addEventListener("DOMContentLoaded", async () => {
   await loadInitialChapter();
+  initInfiniteScroll();
+  initInfiniteScrollUp();
   initChapterTracking();
 });
 
+// عند إضافة محتوى جديد، يجب إعادة تشغيل نظام التتبع ليشمل العناصر الجديدة
 document.addEventListener("contentUpdated", initChapterTracking);
 
-// تعريض الدوال للاستخدام الخارجي
+// تعريض دالة `loadChapter` عالميًا حتى يمكن استدعاؤها من عناصر HTML
+// (مثل أزرار قائمة الفصول).
 window.loadChapter = loadChapter;
-
-/**
- * @param {string} chapterId رقم الفصل
- */
-function updateWordCount(chapterId) {
-  // --- خطوة تصحيح 1: هل يتم استدعاء الدالة؟ ---
-  console.log(`[عداد الكلمات] محاولة تحديث الفصل: ${chapterId}`);
-
-  const wordCountBtn = document.getElementById("word-count");
-  if (!wordCountBtn) {
-    console.error("[عداد الكلمات] خطأ: لم يتم العثور على عنصر #word-count.");
-    return;
-  }
-
-  // بناء الـ selector للعثور على عنصر الفصل المحدد
-  const selector = `.chapter-block[data-chapter-id="${chapterId}"]`;
-  const chapterBlock = document.querySelector(selector);
-
-  // --- خطوة تصحيح 2: هل تم العثور على عنصر الفصل؟ ---
-  if (chapterBlock) {
-    console.log(`[عداد الكلمات] ✔️ تم العثور على العنصر:`, chapterBlock);
-
-    // استخراج النص وحساب الكلمات
-    const textContent = chapterBlock.textContent || "";
-    const words = textContent
-      .trim()
-      .split(/\s+/)
-      .filter((word) => word.length > 0);
-    const wordCount = words.length;
-
-    // --- خطوة تصحيح 3: ما هو عدد الكلمات المحسوب؟ ---
-    console.log(`[عداد الكلمات] عدد الكلمات المحسوب: ${wordCount}`);
-
-    wordCountBtn.innerText = wordCount + " كلمة";
-  } else {
-    // هذه هي الرسالة الأهم إذا كان هناك خطأ
-    console.warn(
-      `[عداد الكلمات] ⚠️ فشل: لم يتم العثور على العنصر بالـ selector التالي: ${selector}`
-    );
-    wordCountBtn.innerText = "--- كلمة"; // عرض قيمة افتراضية عند الفشل
-  }
-}
-/**
- * إخفاء/إظهار الهيدر الرئيسي بناءً على الفصل الحالي.
- * يظهر الهيدر فقط عند عرض الفصل الأول.
- * @param {string} chapterId - رقم الفصل الحالي.
- */
-function updateMainHeaderVisibility(chapterId) {
-  const headerContainer = document.getElementById("main-header-container");
-  if (!headerContainer) return;
-
-  // التحقق مما إذا كان الفصل الحالي هو الفصل الأول في الرواية
-  const isFirstChapter = chapterId === state.chapters[0]?.id;
-
-  // تطبيق النمط: 'block' للفصل الأول, 'none' لباقي الفصول
-  headerContainer.style.display = isFirstChapter ? "block" : "none";
-}
