@@ -1,6 +1,7 @@
 #chapter-list-container {
   position: relative;
   overflow: hidden;
+  min-width: 95%;
   /* position: sticky; */
   top: 10px;
   /* --- Default State: Hidden --- */
@@ -86,7 +87,7 @@ body.list-is-open {
   border-radius: 12px;
   padding: 15px;
   display: flex;
-  gap: 15px;
+  gap: 20px;
   align-items: center;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.15s ease-out;
@@ -101,8 +102,8 @@ body.list-is-open {
 
 /* --- Chapter Image --- */
 .chapter-item-img {
-  width: 80px; /* Adjust size as needed */
-  height: 80px; /* Adjust size as needed */
+  width: 90px; /* Adjust size as needed */
+  height: 90px; /* Adjust size as needed */
   object-fit: cover;
   border-radius: 8px;
   flex-shrink: 0; /* Prevent image from shrinking */
@@ -112,7 +113,6 @@ body.list-is-open {
 .chapter-item-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
   width: 100%;
 }
 

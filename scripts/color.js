@@ -61,7 +61,7 @@ function changeTheme(event) {
     #font-selector button:hover, body.light-theme #font-selector button:hover,
     #align-formate button:hover, body.light-theme #align-formate button:hover,
     #list:hover, #list:active, body.light-theme #list:hover, body.light-theme #list:active, #comments-btn:hover, #comments-btn:active,#comments-btn.active,
-    .auth-submit-btn, .auth-prompt-btn, .edit-submit-btn, .comment-submit-btn, .reply-submit-btn {
+    .auth-submit-btn, .auth-prompt-btn, .edit-submit-btn, .comment-submit-btn, .reply-submit-btn, .expanded-slider-content input[type="range"] {
         background-color: ${newColor};
     }
     .carousel-item#font-selector button.active,
