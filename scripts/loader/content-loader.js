@@ -1,299 +1,342 @@
 /**
  * =======================================================================
- * 📘 نظام قراءة الرواية - نسخة 3.0 (تتبع ذكي ثنائي الاتجاه)
+ * 📘 نظام قراءة الرواية - نسخة 3.2 (الأذكى والأدق)
  * =======================================================================
- * المميزات:
- * ✅ تحميل تدريجي للفصول (Infinity Scroll).
- * ✅ نظام تتبع ذكي يكتشف اتجاه التمرير لتحديث أكثر منطقية.
- *    - عند النزول: التحديث عند ظهور عنوان الفصل الجديد.
- *    - عند الصعود: التحديث فور دخول محتوى الفصل السابق.
- * ✅ تحديث فوري لزر العنوان (title-btn) والتعليقات وآخر فصل مقروء.
- * ✅ إعادة تهيئة النظام تلقائيًا عند الانتقال اليدوي لفصل جديد.
+ * التحسينات:
+ * ✅ نظام تتبع ذكي يستخدم IntersectionRatio لتحديد الفصل الأكثر ظهوراً
+ * ✅ إصلاح مشكلة التحميل اليدوي من القائمة
+ * ✅ تتبع دقيق حتى مع التمرير السريع جداً
+ * ✅ أداء محسّن بدون throttle معقد
  * =======================================================================
  */
 
-// متغيرات عامة لإدارة الحالة
-let chapterList = [];
-let isLoading = false;
-let reachedEnd = false;
-let infiniteScrollObserver;
-let chapterTrackingObserver;
-let currentlyTrackedChapterId = null; // لمنع التحديثات المتكررة
-let lastScrollY = window.scrollY; // لتحديد اتجاه التمرير
+// ========== الحالة العامة ==========
+const state = {
+  chapters: [],
+  currentChapterId: null,
+  isLoading: false,
+  reachedEnd: false,
+  observers: {
+    infinite: null,
+    tracking: null,
+  },
+};
 
-/**
- * جلب محتوى HTML لفصل معين.
- * @param {string} chapterNumber رقم الفصل
- * @returns {Promise<string>} محتوى الفصل
- */
-async function fetchChapterHtml(chapterNumber) {
-  const response = await fetch(`chapters/${chapterNumber}.html`);
-  if (!response.ok) {
-    throw new Error(`فشل تحميل الفصل ${chapterNumber}: ${response.status}`);
-  }
-  return await response.text();
+// ========== جلب وتحليل الفصول ==========
+async function fetchChapter(chapterId) {
+  const response = await fetch(`chapters/${chapterId}.html`);
+  if (!response.ok) throw new Error(`فشل تحميل الفصل ${chapterId}`);
+  return response.text();
 }
 
-/**
- * تحليل محتوى الفصل واستخراج العنوان من قائمة الفصول.
- * @param {string} chapterHtml محتوى الفصل
- * @param {string} chapterNumber رقم الفصل
- * @returns {{title: string, content: string}}
- */
-function parseChapter(chapterHtml, chapterNumber) {
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = chapterHtml;
+function parseChapter(html, chapterId) {
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+  temp.querySelector("#chapter-title-data")?.remove();
 
-  const oldTitle = tempDiv.querySelector("#chapter-title-data");
-  if (oldTitle) oldTitle.remove();
-
-  const chapterData = chapterList.find((c) => c.id === chapterNumber);
-  const title = chapterData ? chapterData.title : `الفصل ${chapterNumber}`;
-
-  return { title, content: tempDiv.innerHTML };
+  const chapter = state.chapters.find((c) => c.id === chapterId);
+  return {
+    title: chapter?.title || `الفصل ${chapterId}`,
+    content: temp.innerHTML,
+  };
 }
 
-/**
- * تحديث واجهة المستخدم بالفصل الجديد.
- * @param {string} title عنوان الفصل
- * @param {string} content محتوى الفصل
- * @param {boolean} append هل يتم إلحاق الفصل أم استبدال المحتوى
- * @param {string} chapterNumber رقم الفصل
- */
-function updateChapterInDom(title, content, append = false, chapterNumber) {
-  const paragraphContainer = document.getElementById("chapter-text");
-  if (!paragraphContainer) return;
-
-  const fullTitle = `الفصل ${chapterNumber} – ${title}`;
-
-  const chapterWrapper = document.createElement("div");
-  chapterWrapper.className = "chapter-block";
-  chapterWrapper.setAttribute("data-chapter-id", chapterNumber);
-  chapterWrapper.innerHTML = `
-    <h2 id="chapter-title-${chapterNumber}" class="chapter-title">${fullTitle}</h2>
+// ========== تحديث الواجهة ==========
+function createChapterElement(chapterId, title, content) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "chapter-block";
+  wrapper.dataset.chapterId = chapterId;
+  wrapper.innerHTML = `
+    <h2 id="chapter-title-${chapterId}" class="chapter-title">
+      ${chapterId} – ${title}
+    </h2>
     ${content}
   `;
+  return wrapper;
+}
+
+function updateUI(chapterId, title, content, append = false) {
+  const container = document.getElementById("chapter-text");
+  if (!container) return;
+
+  const element = createChapterElement(chapterId, title, content);
 
   if (append) {
-    paragraphContainer.appendChild(chapterWrapper);
+    container.appendChild(element);
   } else {
-    paragraphContainer.innerHTML = "";
-    paragraphContainer.appendChild(chapterWrapper);
+    container.innerHTML = "";
+    container.appendChild(element);
   }
 }
 
-/**
- * إظهار أو إخفاء وصف القصة (يظهر فقط مع الفصل الأول).
- * @param {string} chapterNumber رقم الفصل
- */
-async function handleStoryDescriptionVisibility(chapterNumber) {
-  const storyContainer = document.getElementById("story-description-container");
-  if (!storyContainer) return;
+function updateTitleButton(chapterId) {
+  const btn = document.getElementById("title-btn");
+  if (!btn) return;
 
-  const firstChapterId = chapterList[0]?.id;
-  storyContainer.style.display =
-    chapterNumber === firstChapterId ? "block" : "none";
-}
-
-/**
- * تحديث نظام التعليقات بالاعتماد على رقم الفصل.
- * @param {string} chapterNumber رقم الفصل
- */
-function updateCommentsSystem(chapterNumber) {
-  if (
-    window.CommentsSystem &&
-    typeof window.CommentsSystem.setChapter === "function"
-  ) {
-    const chapterId = `chapter-${chapterNumber}`;
-    window.CommentsSystem.setChapter(chapterId);
-    console.log(`💬 تم تحديث التعليقات للفصل: ${chapterId}`);
+  const chapter = state.chapters.find((c) => c.id === chapterId);
+  if (chapter) {
+    btn.textContent = `${chapter.id} – ${chapter.title}`;
+    btn.classList.add("visible");
   }
 }
 
-/**
- * تحميل فصل معين وتحديث الصفحة وكل الأنظمة التابعة له.
- * @param {string} chapterNumber رقم الفصل للتحميل
- * @param {boolean} append هل هو تحميل إضافي (للتمرير اللانهائي)
- * @returns {Promise<boolean>}
- */
-async function loadChapter(chapterNumber, append = false) {
+function updateStoryDescription(chapterId) {
+  const container = document.getElementById("story-description-container");
+  if (!container) return;
+
+  const isFirstChapter = chapterId === state.chapters[0]?.id;
+  container.style.display = isFirstChapter ? "block" : "none";
+}
+
+function updateComments(chapterId) {
+  if (window.CommentsSystem?.setChapter) {
+    window.CommentsSystem.setChapter(`chapter-${chapterId}`);
+  }
+}
+
+// دالة مركزية لتحديث الفصل الحالي
+function setCurrentChapter(chapterId) {
+  if (chapterId === state.currentChapterId) return;
+
+  state.currentChapterId = chapterId;
+
+  updateTitleButton(chapterId);
+  updateComments(chapterId);
+  updateWordCount(chapterId);
+
+  updateStoryDescription(chapterId);
+  updateMainHeaderVisibility(chapterId);
+
+  localStorage.setItem("lastReadChapter", chapterId);
+
+  console.log(`📖 الفصل الحالي: ${chapterId}`);
+}
+
+// ========== تحميل الفصول ==========
+async function loadChapter(chapterId, append = false) {
+  if (state.isLoading) return false;
+
   try {
-    const chapterHtml = await fetchChapterHtml(chapterNumber);
-    const { title, content } = parseChapter(chapterHtml, chapterNumber);
+    state.isLoading = true;
 
-    updateChapterInDom(title, content, append, chapterNumber);
+    const html = await fetchChapter(chapterId);
+    const { title, content } = parseChapter(html, chapterId);
+
+    updateUI(chapterId, title, content, append);
 
     if (!append) {
-      await handleStoryDescriptionVisibility(chapterNumber);
-      localStorage.setItem("lastReadChapter", chapterNumber);
-      window.currentChapterNumber = parseInt(chapterNumber, 10);
+      // 🔧 إصلاح: تحديث الفصل الحالي فوراً عند التحميل اليدوي
+      setCurrentChapter(chapterId);
+      window.currentChapterNumber = parseInt(chapterId, 10);
+
+      // إعادة تهيئة الأنظمة
       resetInfiniteScroll();
+
+      // الانتقال للأعلى بسلاسة
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     document.dispatchEvent(new CustomEvent("contentUpdated"));
-
     return true;
   } catch (error) {
-    console.error(`خطأ في تحميل الفصل ${chapterNumber}:`, error);
+    console.error(`خطأ في تحميل الفصل ${chapterId}:`, error);
     if (append) {
-      reachedEnd = true;
+      state.reachedEnd = true;
       document.getElementById("loading-spinner").style.display = "none";
     }
     return false;
+  } finally {
+    state.isLoading = false;
   }
 }
 
-/**
- * تحميل الفصل الأول أو آخر فصل تمت قراءته عند فتح الصفحة.
- */
 async function loadInitialChapter() {
   try {
-    const res = await fetch("chapters.json");
-    chapterList = await res.json();
-    window.chapterList = chapterList;
+    const response = await fetch("chapters.json");
+    state.chapters = await response.json();
+    window.chapterList = state.chapters;
 
-    const lastReadChapter = localStorage.getItem("lastReadChapter");
-    let chapterToLoadId = lastReadChapter;
+    let chapterId = localStorage.getItem("lastReadChapter");
 
-    if (chapterToLoadId && !chapterList.some((c) => c.id === chapterToLoadId)) {
-      chapterToLoadId = null;
+    if (chapterId && !state.chapters.some((c) => c.id === chapterId)) {
+      chapterId = null;
     }
 
-    if (!chapterToLoadId) {
-      chapterToLoadId = chapterList[0]?.id;
-    }
+    chapterId = chapterId || state.chapters[0]?.id;
 
-    if (chapterToLoadId) {
-      await loadChapter(chapterToLoadId);
+    if (chapterId) {
+      await loadChapter(chapterId);
     } else {
-      console.error("لا توجد فصول متاحة للتحميل.");
+      console.error("لا توجد فصول متاحة");
     }
   } catch (error) {
-    console.error("فشل في تحميل بيانات الفصول الأولية:", error);
+    console.error("فشل في تحميل الفصول:", error);
   }
 }
 
-/**
- * إعادة تهيئة نظام التمرير اللانهائي (عند الانتقال اليدوي).
- */
-function resetInfiniteScroll() {
-  isLoading = false;
-  reachedEnd = false;
-  if (infiniteScrollObserver) infiniteScrollObserver.disconnect();
-  initInfiniteScroll();
-}
-
-/**
- * نظام التمرير اللانهائي لتحميل الفصول التالية.
- */
+// ========== التمرير اللانهائي ==========
 function initInfiniteScroll() {
   const sentinel = document.getElementById("scroll-end-sentinel");
   const spinner = document.getElementById("loading-spinner");
   if (!sentinel || !spinner) return;
 
-  infiniteScrollObserver = new IntersectionObserver(
+  state.observers.infinite = new IntersectionObserver(
     async (entries) => {
-      if (entries[0].isIntersecting && !isLoading && !reachedEnd) {
-        isLoading = true;
-        spinner.style.display = "block";
-
-        const currentChapterIndex = chapterList.findIndex(
-          (c) => c.id === String(window.currentChapterNumber)
-        );
-        const nextChapter = chapterList[currentChapterIndex + 1];
-
-        if (nextChapter) {
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          const success = await loadChapter(nextChapter.id, true);
-          if (success) {
-            window.currentChapterNumber = parseInt(nextChapter.id, 10);
-          }
-        } else {
-          reachedEnd = true;
-        }
-
-        spinner.style.display = "none";
-        isLoading = false;
+      if (!entries[0].isIntersecting || state.isLoading || state.reachedEnd) {
+        return;
       }
+
+      spinner.style.display = "block";
+
+      const currentIndex = state.chapters.findIndex(
+        (c) => c.id === String(window.currentChapterNumber)
+      );
+      const nextChapter = state.chapters[currentIndex + 1];
+
+      if (nextChapter) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const success = await loadChapter(nextChapter.id, true);
+        if (success) {
+          window.currentChapterNumber = parseInt(nextChapter.id, 10);
+        }
+      } else {
+        state.reachedEnd = true;
+      }
+
+      spinner.style.display = "none";
     },
     { threshold: 1.0 }
   );
-  infiniteScrollObserver.observe(sentinel);
+
+  state.observers.infinite.observe(sentinel);
 }
 
+function resetInfiniteScroll() {
+  state.isLoading = false;
+  state.reachedEnd = false;
+  state.observers.infinite?.disconnect();
+  initInfiniteScroll();
+}
+
+// ========== 🎯 النظام الذكي لتتبع الفصول ==========
 /**
- * ✨ [الحل المحسّن] ✨
- * نظام تتبع الفصول الظاهرة على الشاشة مع كشف اتجاه التمرير.
+ * الطريقة الأذكى: استخدام intersectionRatio لتحديد الفصل الأكثر ظهوراً
+ * بدلاً من الاعتماد على اتجاه التمرير فقط
  */
 function initChapterTracking() {
-  const titleBtn = document.getElementById("title-btn");
-  if (!titleBtn) return;
+  state.observers.tracking?.disconnect();
 
-  if (chapterTrackingObserver) chapterTrackingObserver.disconnect();
+  // خريطة لحفظ نسبة الظهور لكل فصل
+  const visibilityMap = new Map();
 
-  chapterTrackingObserver = new IntersectionObserver(
+  state.observers.tracking = new IntersectionObserver(
     (entries) => {
-      // تحديد اتجاه التمرير
-      const isScrollingDown = window.scrollY > lastScrollY;
-      lastScrollY = window.scrollY;
-
-      // فلترة العناصر التي تتقاطع مع منطقة العرض
-      const intersectingEntries = entries.filter((e) => e.isIntersecting);
-      if (intersectingEntries.length === 0) return;
-
-      // اختيار الفصل المستهدف بناءً على اتجاه التمرير
-      let targetEntry;
-      if (isScrollingDown) {
-        // عند النزول، نختار آخر فصل في القائمة (الأحدث ظهورًا)
-        targetEntry = intersectingEntries[intersectingEntries.length - 1];
-      } else {
-        // عند الصعود، نختار أول فصل في القائمة
-        targetEntry = intersectingEntries[0];
-      }
-
-      const chapterId = targetEntry.target.getAttribute("data-chapter-id");
-
-      if (chapterId && chapterId !== currentlyTrackedChapterId) {
-        currentlyTrackedChapterId = chapterId;
-        console.log(`الفصل الحالي على الشاشة: ${chapterId}`);
-
-        const chapterData = chapterList.find((c) => c.id === chapterId);
-        if (chapterData) {
-          // 1. تحديث زر العنوان
-          titleBtn.textContent = `${chapterData.id} – ${chapterData.title}`;
-          titleBtn.classList.add("visible");
+      // تحديث خريطة الظهور
+      entries.forEach((entry) => {
+        const chapterId = entry.target.dataset.chapterId;
+        if (entry.isIntersecting) {
+          visibilityMap.set(chapterId, entry.intersectionRatio);
+        } else {
+          visibilityMap.delete(chapterId);
         }
-        // 2. تحديث نظام التعليقات
-        updateCommentsSystem(chapterId);
-        // 3. تحديث آخر فصل تمت قراءته
-        localStorage.setItem("lastReadChapter", chapterId);
+      });
+
+      // إيجاد الفصل الأكثر ظهوراً
+      if (visibilityMap.size > 0) {
+        let maxRatio = 0;
+        let mostVisibleChapter = null;
+
+        visibilityMap.forEach((ratio, chapterId) => {
+          if (ratio > maxRatio) {
+            maxRatio = ratio;
+            mostVisibleChapter = chapterId;
+          }
+        });
+
+        // تحديث الفصل الحالي
+        if (mostVisibleChapter) {
+          setCurrentChapter(mostVisibleChapter);
+        }
       }
     },
     {
-      // هذا الهامش يحدد "خط" أفقي في أعلى الشاشة (عند 20% من الأعلى)
-      // يتم تفعيل المراقبة عندما يتجاوز العنصر هذا الخط
-      rootMargin: "0px 0px -80% 0px",
-      threshold: 0,
+      // منطقة مراقبة محسّنة للتمرير السريع
+      rootMargin: "0px 0px -30% 0px",
+      // نسب متعددة لدقة أعلى
+      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
     }
   );
 
-  // مراقبة كل حاويات الفصول الموجودة في الصفحة
-  const chapterBlocks = document.querySelectorAll(".chapter-block");
-  chapterBlocks.forEach((block) => chapterTrackingObserver.observe(block));
+  // مراقبة جميع الفصول
+  document.querySelectorAll(".chapter-block").forEach((block) => {
+    state.observers.tracking.observe(block);
+  });
 }
 
-// =======================================================
-// تشغيل الأنظمة عند تحميل الصفحة
-// =======================================================
-
+// ========== التهيئة ==========
 document.addEventListener("DOMContentLoaded", async () => {
   await loadInitialChapter();
   initChapterTracking();
 });
 
-document.addEventListener("contentUpdated", () => {
-  initChapterTracking();
-});
+document.addEventListener("contentUpdated", initChapterTracking);
 
-// تعريض دالة تحميل الفصل عالميًا للملفات الأخرى
+// تعريض الدوال للاستخدام الخارجي
 window.loadChapter = loadChapter;
+
+/**
+ * @param {string} chapterId رقم الفصل
+ */
+function updateWordCount(chapterId) {
+  // --- خطوة تصحيح 1: هل يتم استدعاء الدالة؟ ---
+  console.log(`[عداد الكلمات] محاولة تحديث الفصل: ${chapterId}`);
+
+  const wordCountBtn = document.getElementById("word-count");
+  if (!wordCountBtn) {
+    console.error("[عداد الكلمات] خطأ: لم يتم العثور على عنصر #word-count.");
+    return;
+  }
+
+  // بناء الـ selector للعثور على عنصر الفصل المحدد
+  const selector = `.chapter-block[data-chapter-id="${chapterId}"]`;
+  const chapterBlock = document.querySelector(selector);
+
+  // --- خطوة تصحيح 2: هل تم العثور على عنصر الفصل؟ ---
+  if (chapterBlock) {
+    console.log(`[عداد الكلمات] ✔️ تم العثور على العنصر:`, chapterBlock);
+
+    // استخراج النص وحساب الكلمات
+    const textContent = chapterBlock.textContent || "";
+    const words = textContent
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0);
+    const wordCount = words.length;
+
+    // --- خطوة تصحيح 3: ما هو عدد الكلمات المحسوب؟ ---
+    console.log(`[عداد الكلمات] عدد الكلمات المحسوب: ${wordCount}`);
+
+    wordCountBtn.innerText = wordCount + " كلمة";
+  } else {
+    // هذه هي الرسالة الأهم إذا كان هناك خطأ
+    console.warn(
+      `[عداد الكلمات] ⚠️ فشل: لم يتم العثور على العنصر بالـ selector التالي: ${selector}`
+    );
+    wordCountBtn.innerText = "--- كلمة"; // عرض قيمة افتراضية عند الفشل
+  }
+}
+/**
+ * إخفاء/إظهار الهيدر الرئيسي بناءً على الفصل الحالي.
+ * يظهر الهيدر فقط عند عرض الفصل الأول.
+ * @param {string} chapterId - رقم الفصل الحالي.
+ */
+function updateMainHeaderVisibility(chapterId) {
+  const headerContainer = document.getElementById("main-header-container");
+  if (!headerContainer) return;
+
+  // التحقق مما إذا كان الفصل الحالي هو الفصل الأول في الرواية
+  const isFirstChapter = chapterId === state.chapters[0]?.id;
+
+  // تطبيق النمط: 'block' للفصل الأول, 'none' لباقي الفصول
+  headerContainer.style.display = isFirstChapter ? "block" : "none";
+}

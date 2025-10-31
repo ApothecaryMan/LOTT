@@ -115,3 +115,13 @@
 .comment-author {
   color: rgb(120, 120, 120);
 }
+h2 {
+  font-family: Lalezar;
+  font-size: 30px;
+}
+/* DESCRIPTION */
+.story-description p {
+  text-align: center;
+  color: rgb(166, 166, 166);
+  font-weight: bold;
+}

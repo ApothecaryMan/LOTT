@@ -93,8 +93,6 @@
       opacity 0.3s ease 0.1s; */
 
     /* Internal layout */
-    display: flex;
-    flex-direction: column;
   }
 
   /* Open state */

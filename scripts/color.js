@@ -135,6 +135,9 @@ function changeTheme(event) {
       body.light-theme .card{ background-color: ${newColor
         .replace("rgb", "rgba")
         .replace(")", ", 0.8)")}; }
+      .spinner{
+        border-top-color: ${newColor};           
+      }
     `;
 
   if (isLightTheme) {
@@ -165,6 +168,10 @@ function changeTheme(event) {
             body.light-theme .chapter-title-in-list, body.light-theme .dash { color: #555; }
              body.light-theme .auth-modal-content{
              background-color: ${bodyBgColor}}
+            .spinner{
+              border: 4px solid ${containerBgColor}; 
+              border-top-color: ${newColor};         
+            }
             `;
     }
   } else {
@@ -188,6 +195,10 @@ function changeTheme(event) {
             .chapter-item:hover { background-color: ${hoverBgColor}; }
             .novel-title { color: #e0e0e0; }
             .chapter-title-in-list, .dash { color: #b0b0b0; }
+            .spinner{
+              border: 4px solid ${containerBgColor}; 
+              border-top-color: ${newColor};         
+            }
             `;
     }
   }
