@@ -120,16 +120,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setupFontSizeSlider() {
     if (sizeToggleBtn && sizeSlider) {
+      // Function to close the slider and update the text
+      const closeSlider = () => {
+        sizeToggleBtn.classList.remove("expanded");
+        if (collapsedText) {
+          collapsedText.textContent = currentBaseSize + "px";
+        }
+      };
+
       // 1. فتح وإغلاق الزر/السلايدر
       sizeToggleBtn.addEventListener("click", (e) => {
-        // إذا كان خط النسخ مفعّلاً، لا تسمح بالفتح
-        if (currentActiveFontFamily.includes("Naskh")) {
-          sizeToggleBtn.classList.remove("expanded");
+        // If the click is inside the expanded slider content, prevent toggling the button state
+        if (sizeToggleBtn.classList.contains('expanded') && e.target.closest('.expanded-slider-content')) {
+          e.stopPropagation();
           return;
         }
 
-        // منع الإغلاق إذا كان النقر داخل شريط التمرير نفسه
-        if (e.target.closest("#size-slider")) {
+        // إذا كان خط النسخ مفعّلاً، لا تسمح بالفتح
+        if (currentActiveFontFamily.includes("Naskh")) {
+          closeSlider(); // Close if Naskh font is active
           return;
         }
 
@@ -141,6 +150,16 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           // عند الإغلاق، نحدث النص المصغر
           if (collapsedText) collapsedText.textContent = currentBaseSize + "px";
+        }
+      });
+
+      // Add a global listener to close the slider when clicking outside sizeToggleBtn
+      document.addEventListener('click', (e) => {
+        if (
+          sizeToggleBtn.classList.contains('expanded') &&
+          !sizeToggleBtn.contains(e.target)
+        ) {
+          closeSlider();
         }
       });
     }

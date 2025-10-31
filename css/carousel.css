@@ -117,7 +117,7 @@
 /* ============================================== */
 
 #font-size-control-group {
-  padding: 0 5px 0 5px;
+  padding: 0 5px;
 }
 
 #size-toggle-btn {
@@ -171,7 +171,6 @@
   -webkit-appearance: none;
   width: 100%;
   height: 3px;
-  background: #1b7ffa;
   border-radius: 25px;
 }
 
