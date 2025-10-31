@@ -120,7 +120,9 @@ function changeTheme(event) {
     #chapter-list button:hover .chapter-number,
     #chapter-list button:focus .chapter-number,
     #chapter-list button:hover .chapter-title-in-list,
-    #chapter-list button:focus .chapter-title-in-list, .comment-author, body.light-theme .auth-modal-content h3, body.light-theme .auth-modal-close {
+    #chapter-list button:focus .chapter-title-in-list, .comment-author, body.light-theme .auth-modal-content h3, body.light-theme .auth-modal-close,
+    h2
+     {
        color: ${newColor};
     }
     .like-btn.liked svg { fill: ${newColor}; }
@@ -146,7 +148,7 @@ function changeTheme(event) {
 
   if (isLightTheme) {
     // =================================================================
-    // ✅ قسم الثيم الفاتح - تم إعادته إلى القيم الأصلية الصحيحة
+    // قسم الثيم الفاتح
     // =================================================================
     if (clickedButton.id !== "default") {
       const [h, s, l] = rgbToHsl(newColor);
@@ -176,7 +178,7 @@ function changeTheme(event) {
     }
   } else {
     // =================================================================
-    // 🌑 قسم الثيم الداكن - يبقى كما هو بالمنطق الديناميكي الصحيح
+    //قسم الثيم الداكن ح
     // =================================================================
     if (clickedButton.id !== "default") {
       const [h, s, l] = rgbToHsl(newColor);
