@@ -17,8 +17,8 @@
 }
 
 .card {
-  width: 320px;
-  height: 500px;
+  width: 256px;
+  height: 400px;
   /* background: linear-gradient(135deg, #3c4a88, #232c52); */
   border-radius: 20px;
   padding: 15px;
@@ -73,7 +73,7 @@
   width: 100%;
   margin: 0;
   color: white;
-  font-size: 40px;
+  font-size: 30px;
 }
 .card-info .title {
   font-weight: 700;
