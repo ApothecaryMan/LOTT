@@ -33,7 +33,7 @@ function expand(expandBtnId, expandContentId) {
   });
 }
 
-expand("expand-info", "info-wrapper");
+// expand("expand-info", "info-wrapper");
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //SOUND EFFECT

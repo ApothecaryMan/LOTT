@@ -76,34 +76,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (listToggleButton) listToggleButton.classList.remove("active");
       }
 
-      // --- Chapter Loading Logic ---
-      const chapterToLoad = chapterItem.dataset.chapterId; // Get the chapter number from the data attribute
-      const paragraphContainer = document.getElementById("chapter-text");
-
-      if (!paragraphContainer) return;
-
-      // Fade out current content for a smooth transition
-      paragraphContainer.classList.add("is-loading");
-      await new Promise((resolve) => setTimeout(resolve, 300)); // Wait for fade animation
-
-      // Use the global function to load the new chapter content
-      const success = await window.loadChapter(chapterToLoad);
-
-      if (success) {
-        window.currentChapterNumber = parseInt(chapterToLoad, 10); // Update global chapter number
-
-        // Fade in new content
-        paragraphContainer.classList.remove("is-loading");
-
-        // Update the visibility of next/previous buttons if the function exists
-        if (typeof window.updateButtonVisibility === "function") {
-          await window.updateButtonVisibility();
-        }
-      } else {
-        console.error(`Failed to load chapter ${chapterToLoad} from list.`);
-        // Revert loading state if the chapter failed to load
-        paragraphContainer.classList.remove("is-loading");
+      const chapterToLoad = chapterItem.dataset.chapterId;
+      if (chapterToLoad) {
+        localStorage.setItem("lastReadChapter", chapterToLoad);
+        location.reload();
       }
+
     });
   } catch (error) {
     console.error("Error loading or setting up chapter list:", error);

@@ -118,6 +118,72 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // --- Dynamic Visual Anchor (Updated for CSS Transitions) ---
+  function maintainScrollPosition(changeFunction) {
+    const viewportCenterY = window.innerHeight / 2;
+    const container = paragraph; // The scrolling container
+
+    if (!container) {
+      changeFunction();
+      return;
+    }
+
+    // 1. Find the element to anchor to
+    let elementAtCenter = document.elementFromPoint(
+      window.innerWidth / 2,
+      viewportCenterY
+    );
+
+    // If the very center is not within our text container, don't anchor
+    if (!container.contains(elementAtCenter)) {
+      elementAtCenter = null;
+    }
+
+    const initialTop = elementAtCenter
+      ? elementAtCenter.getBoundingClientRect().top
+      : null;
+
+    // 2. Apply the font change
+    changeFunction();
+
+    // If we don't have an anchor, we're done
+    if (!elementAtCenter || initialTop === null) {
+      return;
+    }
+
+    // 3. Wait for the change to be rendered
+    const transitionDuration = 300; // Must match the CSS transition duration
+    let transitionendFired = false;
+
+    const onTransitionEnd = (event) => {
+      // We only care about the font-size transition on our specific container
+      if (event.target !== container || event.propertyName !== "font-size") {
+        return;
+      }
+      transitionendFired = true;
+      container.removeEventListener("transitionend", onTransitionEnd);
+
+      // 4. Adjust scroll position
+      const newTop = elementAtCenter.getBoundingClientRect().top;
+      const topDifference = newTop - initialTop;
+      window.scrollBy(0, topDifference);
+    };
+
+    container.addEventListener("transitionend", onTransitionEnd);
+
+    // Fallback: If transitionend doesn't fire (e.g., no actual style change, or font-family change without transition)
+    setTimeout(() => {
+      if (!transitionendFired) {
+        container.removeEventListener("transitionend", onTransitionEnd);
+        const newTop = elementAtCenter.getBoundingClientRect().top;
+        const topDifference = newTop - initialTop;
+        if (topDifference !== 0) {
+          window.scrollBy(0, topDifference);
+        }
+      }
+    }, transitionDuration + 50); // A safety margin
+  }
+
   function setupFontSizeSlider() {
     if (sizeToggleBtn && sizeSlider) {
       // Function to close the slider and update the text
@@ -131,7 +197,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // 1. فتح وإغلاق الزر/السلايدر
       sizeToggleBtn.addEventListener("click", (e) => {
         // If the click is inside the expanded slider content, prevent toggling the button state
-        if (sizeToggleBtn.classList.contains('expanded') && e.target.closest('.expanded-slider-content')) {
+        if (
+          sizeToggleBtn.classList.contains("expanded") &&
+          e.target.closest(".expanded-slider-content")
+        ) {
           e.stopPropagation();
           return;
         }
@@ -154,9 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       // Add a global listener to close the slider when clicking outside sizeToggleBtn
-      document.addEventListener('click', (e) => {
+      document.addEventListener("click", (e) => {
         if (
-          sizeToggleBtn.classList.contains('expanded') &&
+          sizeToggleBtn.classList.contains("expanded") &&
           !sizeToggleBtn.contains(e.target)
         ) {
           closeSlider();
@@ -171,8 +240,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const sliderIndex = parseInt(event.target.value);
         currentBaseSize = SIZE_MAP[sliderIndex];
 
-        // التغيير السلس للحجم سيتم تنفيذه هنا بفضل CSS transition في main.css
-        applyFontSize();
+        maintainScrollPosition(() => {
+          applyFontSize();
+        });
+
         saveFontSettings();
       });
 
@@ -196,8 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
         currentActiveFontFamily =
           window.getComputedStyle(clickedButton).fontFamily;
 
-        applyFontFamily();
-        applyFontSize();
+        maintainScrollPosition(() => {
+          applyFontFamily();
+          applyFontSize();
+        });
 
         // إغلاق السلايدر إذا تم اختيار خط النسخ
         if (currentActiveFontFamily.includes("Naskh") && sizeToggleBtn) {

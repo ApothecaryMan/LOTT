@@ -94,7 +94,7 @@ strong {
 }
 
 .info-container .info {
-  max-height: 40px;
+  max-height: auto;
 
   /* إخفاء أي محتوى يتجاوز الـ 100px */
   overflow: hidden;
