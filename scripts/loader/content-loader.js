@@ -218,7 +218,7 @@ function setCurrentChapter(chapterId) {
   // -- تحديث عنوان الصفحة --
   const chapter = state.chapters.find((c) => c.id === chapterId);
   if (chapter) {
-    document.title = `الفصل ${chapter.id}`;
+    document.title = `${chapter.id} - ${chapter.title}`;
   }
   // -- نهاية تحديث عنوان الصفحة --
 
