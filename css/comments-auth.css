@@ -379,10 +379,12 @@ button:focus-visible {
   gap: 6px;
   font-size: 12px;
   font-weight: bold;
+  margin-bottom: -2px;
 }
 
 .comment-body {
-  padding: 2px 0;
+  padding: 0px 0;
+  overflow-wrap: break-word;
 }
 .comment-time {
   font-size: 10px;
