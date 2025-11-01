@@ -270,23 +270,25 @@ async function loadChapter(chapterId, position = "replace") {
       resetInfiniteScroll();
 
       // Scroll to the chapter title, accounting for the sticky header
-      const chapterTitleElement = document.getElementById(
-        `chapter-title-${chapterId}`
-      );
-      if (chapterTitleElement) {
-        const stickyHeader = document.querySelector(".body");
-        const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
-        const elementPosition = chapterTitleElement.getBoundingClientRect().top;
-        const offsetPosition =
-          elementPosition + window.scrollY - headerHeight;
+      setTimeout(() => {
+        const chapterTitleElement = document.getElementById(
+          `chapter-title-${chapterId}`
+        );
+        if (chapterTitleElement) {
+          const stickyHeader = document.querySelector(".body");
+          const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
+          const elementPosition = chapterTitleElement.getBoundingClientRect().top;
+          const offsetPosition =
+            elementPosition + window.scrollY - headerHeight;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "auto",
-        });
-      } else {
-        window.scrollTo({ top: 0, behavior: "auto" });
-      }
+          // Use a more direct scrolling method
+          document.documentElement.scrollTop = offsetPosition;
+
+        } else {
+          // Fallback to scroll to top
+          document.documentElement.scrollTop = 0;
+        }
+      }, 100); // Increased delay to ensure rendering is complete
     }
 
     // إطلاق حدث مخصص لإعلام الأنظمة الأخرى باكتمال التحديث

@@ -78,8 +78,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const chapterToLoad = chapterItem.dataset.chapterId;
       if (chapterToLoad) {
-        localStorage.setItem("lastReadChapter", chapterToLoad);
-        location.reload();
+        // استدعاء دالة تحميل الفصل مباشرة بدلاً من إعادة تحميل الصفحة
+        window.loadChapter(chapterToLoad);
       }
 
     });
