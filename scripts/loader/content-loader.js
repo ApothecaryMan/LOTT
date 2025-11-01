@@ -225,6 +225,11 @@ function setCurrentChapter(chapterId) {
   // حفظ التقدم في المتصفح
   localStorage.setItem("lastReadChapter", chapterId);
 
+  // تحديث الـ URL
+  const newUrl = `#chapter-${chapterId}`;
+  // تغيير الـ URL بدون إعادة تحميل الصفحة
+  history.pushState(null, "", newUrl);
+
   console.log(`📖 الفصل الحالي: ${chapterId}`);
 }
 
@@ -311,16 +316,32 @@ async function loadInitialChapter() {
     state.chapters = await response.json();
     window.chapterList = state.chapters; // تعريضه عالميًا للاستخدامات الأخرى
 
-    // تحديد الفصل الذي يجب البدء به
-    let chapterId = localStorage.getItem("lastReadChapter");
+    // -- منطق تحديد الفصل --
+    let chapterId = null;
 
-    // التأكد من أن الفصل المحفوظ لا يزال موجودًا
-    if (chapterId && !state.chapters.some((c) => c.id === chapterId)) {
-      chapterId = null;
+    // 1. التحقق من وجود هاش في الرابط
+    const hash = window.location.hash;
+    if (hash && hash.startsWith("#chapter-")) {
+      const idFromHash = hash.substring(9); // استخراج الرقم من #chapter-...
+      if (state.chapters.some((c) => c.id === idFromHash)) {
+        chapterId = idFromHash;
+        console.log(`تحميل الفصل من الرابط: ${chapterId}`);
+      }
     }
 
-    // إذا لم يكن هناك فصل محفوظ، ابدأ من الأول
-    chapterId = chapterId || state.chapters[0]?.id;
+    // 2. إذا لم يوجد فصل من الرابط، تحقق من التخزين المحلي
+    if (!chapterId) {
+      const idFromStorage = localStorage.getItem("lastReadChapter");
+      if (idFromStorage && state.chapters.some((c) => c.id === idFromStorage)) {
+        chapterId = idFromStorage;
+      }
+    }
+
+    // 3. إذا لم يتوفر أي مما سبق، ابدأ من الفصل الأول
+    if (!chapterId) {
+      chapterId = state.chapters[0]?.id;
+    }
+    // -- نهاية منطق تحديد الفصل --
 
     if (chapterId) {
       await loadChapter(chapterId);
