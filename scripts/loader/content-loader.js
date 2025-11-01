@@ -215,6 +215,13 @@ function setCurrentChapter(chapterId) {
   updateStoryDescription(chapterId);
   updateMainHeaderVisibility(chapterId);
 
+  // -- تحديث عنوان الصفحة --
+  const chapter = state.chapters.find((c) => c.id === chapterId);
+  if (chapter) {
+    document.title = `الفصل ${chapter.id}`;
+  }
+  // -- نهاية تحديث عنوان الصفحة --
+
   // حفظ التقدم في المتصفح
   localStorage.setItem("lastReadChapter", chapterId);
 
