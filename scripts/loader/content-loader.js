@@ -271,22 +271,26 @@ async function loadChapter(chapterId, position = "replace") {
 
       // Scroll to the chapter title, accounting for the sticky header
       setTimeout(() => {
-        const chapterTitleElement = document.getElementById(
-          `chapter-title-${chapterId}`
-        );
-        if (chapterTitleElement) {
-          const stickyHeader = document.querySelector(".body");
-          const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
-          const elementPosition = chapterTitleElement.getBoundingClientRect().top;
-          const offsetPosition =
-            elementPosition + window.scrollY - headerHeight;
+        const isFirstChapter = chapterId === state.chapters[0]?.id;
 
-          // Use a more direct scrolling method
-          document.documentElement.scrollTop = offsetPosition;
-
-        } else {
-          // Fallback to scroll to top
+        if (isFirstChapter) {
+          // For the first chapter, simply scroll to the top of the document.
           document.documentElement.scrollTop = 0;
+        } else {
+          // For all other chapters, use the existing logic
+          const chapterTitleElement = document.getElementById(
+            `chapter-title-${chapterId}`
+          );
+          if (chapterTitleElement) {
+            const stickyHeader = document.querySelector(".body");
+            const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
+            const elementPosition = chapterTitleElement.getBoundingClientRect().top;
+            const offsetPosition =
+              elementPosition + window.scrollY - headerHeight;
+            document.documentElement.scrollTop = offsetPosition;
+          } else {
+            document.documentElement.scrollTop = 0;
+          }
         }
       }, 100); // Increased delay to ensure rendering is complete
     }
