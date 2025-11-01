@@ -37,12 +37,10 @@
 
 /* إضافة الانتقال السلس لحجم الخط هنا */
 #chapter-text {
-  #chapter-text {
-  }
-  transition: font-size 0.3s ease-in-out;
+  /* transition: font-size 0.3s ease-in-out; */
 }
 #info-wrapper {
-  transition: font-size 0.3s ease-in-out;
+  /* transition: font-size 0.3s ease-in-out; */
 }
 /* ------------------------------------------- */
 

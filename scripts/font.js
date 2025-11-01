@@ -1,4 +1,4 @@
-// --- START: Updated font.js with Integrated Discrete Slider ---
+// --- START: Updated font.js with Integrated Discrete Slider + Dynamic Visual Anchor ---
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- 1. Get Elements ---
@@ -37,9 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // تحويل حجم الخط (بالبكسل) إلى مؤشر السلايدر (0-3)
   function sizeToSliderIndex(size) {
-    let index = 1; // Default to M (index 1 = 18px, closest to 16px default)
-
-    // البحث عن أقرب نقطة توقف
+    let index = 1; // Default to M
     let minDiff = Infinity;
     for (const key in SIZE_MAP) {
       const diff = Math.abs(SIZE_MAP[key] - size);
@@ -51,10 +49,22 @@ document.addEventListener("DOMContentLoaded", () => {
     return index;
   }
 
+  // ✅ هنا ندمج طريقة "المرجع البصري الديناميكي"
   function applyFontSize() {
     if (!paragraph) return;
 
-    // A. منطق خط النسخ (Fixed Size Logic)
+    // --- 1. تحديد نقطة المرجع البصري قبل تغيير الحجم ---
+    const viewportCenterX = window.innerWidth / 2;
+    const viewportCenterY = window.innerHeight / 2;
+    const anchorElement = document.elementFromPoint(
+      viewportCenterX,
+      viewportCenterY
+    );
+    const oldRect = anchorElement
+      ? anchorElement.getBoundingClientRect()
+      : null;
+
+    // --- 2. تطبيق التغيير في الحجم ---
     if (currentActiveFontFamily.includes("Naskh")) {
       paragraph.style.fontSize = "30px";
       if (infoText) infoText.style.fontSize = "17px";
@@ -65,23 +75,28 @@ document.addEventListener("DOMContentLoaded", () => {
         if (collapsedText) collapsedText.textContent = "ثابت";
       }
     } else {
-      // B. منطق الخطوط القابلة للتعديل (Scalable Size Logic)
       const newSize = currentBaseSize + "px";
 
       paragraph.style.fontSize = newSize;
       if (infoText) infoText.style.fontSize = newSize;
       if (chapterTitle) chapterTitle.style.fontSize = "";
 
-      // تحديث حالة السلايدر وقيمة النص المصغر
       if (sizeSlider) {
-        // تحديث قيمة السلايدر لتعكس الحجم الحالي
         sizeSlider.value = sizeToSliderIndex(currentBaseSize);
         sizeSlider.disabled = false;
       }
       if (collapsedText) {
-        // عرض الحجم الحالي (مثلاً 18) أو كلمة حجم الخط
         collapsedText.textContent = currentBaseSize + "px";
       }
+    }
+
+    // --- 3. بعد إعادة رسم الصفحة نعيد ضبط التمرير ---
+    if (oldRect && anchorElement) {
+      requestAnimationFrame(() => {
+        const newRect = anchorElement.getBoundingClientRect();
+        const deltaY = newRect.top - oldRect.top;
+        window.scrollBy(0, deltaY);
+      });
     }
   }
 
@@ -118,75 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- Dynamic Visual Anchor (Updated for CSS Transitions) ---
-  function maintainScrollPosition(changeFunction) {
-    const viewportCenterY = window.innerHeight / 2;
-    const container = paragraph; // The scrolling container
-
-    if (!container) {
-      changeFunction();
-      return;
-    }
-
-    // 1. Find the element to anchor to
-    let elementAtCenter = document.elementFromPoint(
-      window.innerWidth / 2,
-      viewportCenterY
-    );
-
-    // If the very center is not within our text container, don't anchor
-    if (!container.contains(elementAtCenter)) {
-      elementAtCenter = null;
-    }
-
-    const initialTop = elementAtCenter
-      ? elementAtCenter.getBoundingClientRect().top
-      : null;
-
-    // 2. Apply the font change
-    changeFunction();
-
-    // If we don't have an anchor, we're done
-    if (!elementAtCenter || initialTop === null) {
-      return;
-    }
-
-    // 3. Wait for the change to be rendered
-    const transitionDuration = 300; // Must match the CSS transition duration
-    let transitionendFired = false;
-
-    const onTransitionEnd = (event) => {
-      // We only care about the font-size transition on our specific container
-      if (event.target !== container || event.propertyName !== "font-size") {
-        return;
-      }
-      transitionendFired = true;
-      container.removeEventListener("transitionend", onTransitionEnd);
-
-      // 4. Adjust scroll position
-      const newTop = elementAtCenter.getBoundingClientRect().top;
-      const topDifference = newTop - initialTop;
-      window.scrollBy(0, topDifference);
-    };
-
-    container.addEventListener("transitionend", onTransitionEnd);
-
-    // Fallback: If transitionend doesn't fire (e.g., no actual style change, or font-family change without transition)
-    setTimeout(() => {
-      if (!transitionendFired) {
-        container.removeEventListener("transitionend", onTransitionEnd);
-        const newTop = elementAtCenter.getBoundingClientRect().top;
-        const topDifference = newTop - initialTop;
-        if (topDifference !== 0) {
-          window.scrollBy(0, topDifference);
-        }
-      }
-    }, transitionDuration + 50); // A safety margin
-  }
-
   function setupFontSizeSlider() {
     if (sizeToggleBtn && sizeSlider) {
-      // Function to close the slider and update the text
       const closeSlider = () => {
         sizeToggleBtn.classList.remove("expanded");
         if (collapsedText) {
@@ -194,9 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       };
 
-      // 1. فتح وإغلاق الزر/السلايدر
       sizeToggleBtn.addEventListener("click", (e) => {
-        // If the click is inside the expanded slider content, prevent toggling the button state
         if (
           sizeToggleBtn.classList.contains("expanded") &&
           e.target.closest(".expanded-slider-content")
@@ -205,24 +151,19 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // إذا كان خط النسخ مفعّلاً، لا تسمح بالفتح
         if (currentActiveFontFamily.includes("Naskh")) {
-          closeSlider(); // Close if Naskh font is active
+          closeSlider();
           return;
         }
 
         const isExpanded = sizeToggleBtn.classList.toggle("expanded");
-
-        // عند الفتح، تأكد من تحديث قيمة السلايدر لتعكس الحجم الحالي
         if (isExpanded) {
           sizeSlider.value = sizeToSliderIndex(currentBaseSize);
         } else {
-          // عند الإغلاق، نحدث النص المصغر
           if (collapsedText) collapsedText.textContent = currentBaseSize + "px";
         }
       });
 
-      // Add a global listener to close the slider when clicking outside sizeToggleBtn
       document.addEventListener("click", (e) => {
         if (
           sizeToggleBtn.classList.contains("expanded") &&
@@ -233,21 +174,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // 2. تحديث الحجم عند تغيير نقطة التوقف
     if (sizeSlider) {
-      // نستخدم 'input' ليتم التحديث أثناء السحب
       sizeSlider.addEventListener("input", (event) => {
         const sliderIndex = parseInt(event.target.value);
         currentBaseSize = SIZE_MAP[sliderIndex];
-
-        maintainScrollPosition(() => {
-          applyFontSize();
-        });
-
+        applyFontSize();
         saveFontSettings();
       });
-
-      // تحديث قيمة السلايدر الافتراضية عند التحميل
       sizeSlider.value = sizeToSliderIndex(currentBaseSize);
     }
   }
@@ -267,12 +200,9 @@ document.addEventListener("DOMContentLoaded", () => {
         currentActiveFontFamily =
           window.getComputedStyle(clickedButton).fontFamily;
 
-        maintainScrollPosition(() => {
-          applyFontFamily();
-          applyFontSize();
-        });
+        applyFontFamily();
+        applyFontSize();
 
-        // إغلاق السلايدر إذا تم اختيار خط النسخ
         if (currentActiveFontFamily.includes("Naskh") && sizeToggleBtn) {
           sizeToggleBtn.classList.remove("expanded");
         }
@@ -282,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- 4. Text Alignment (كما هو) ---
+  // --- 4. Text Alignment ---
   const alignContainer = document.getElementById("align-formate");
   const ltrBtn = document.getElementById("ltr-btn");
   const middleBtn = document.getElementById("middle-btn");
@@ -292,46 +222,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const elementsToAlign = [paragraph, chapterTitle, supportText, infoText];
 
     elementsToAlign.forEach((el) => {
-      if (el) {
-        el.style.textAlign = currentTextAlign;
-      }
+      if (el) el.style.textAlign = currentTextAlign;
     });
 
     const dateContainer = document.querySelector(
       ".main-header-container .date"
     );
     if (dateContainer) {
-      if (currentTextAlign === "left") {
+      if (currentTextAlign === "left")
         dateContainer.style.justifyContent = "flex-end";
-      } else if (currentTextAlign === "center") {
+      else if (currentTextAlign === "center")
         dateContainer.style.justifyContent = "center";
-      } else {
-        dateContainer.style.justifyContent = "flex-start";
-      }
+      else dateContainer.style.justifyContent = "flex-start";
     }
 
     const preNexContainer = document.querySelector(".pre-nex");
     if (preNexContainer) {
-      if (currentTextAlign === "left") {
+      if (currentTextAlign === "left")
         preNexContainer.style.justifyContent = "flex-end";
-      } else if (currentTextAlign === "center") {
+      else if (currentTextAlign === "center")
         preNexContainer.style.justifyContent = "center";
-      } else {
-        preNexContainer.style.justifyContent = "flex-start";
-      }
+      else preNexContainer.style.justifyContent = "flex-start";
     }
 
     if (alignContainer) {
       const allAlignButtons = alignContainer.querySelectorAll("button");
       allAlignButtons.forEach((btn) => btn.classList.remove("active"));
 
-      if (currentTextAlign === "left" && ltrBtn) {
-        ltrBtn.classList.add("active");
-      } else if (currentTextAlign === "center" && middleBtn) {
+      if (currentTextAlign === "left" && ltrBtn) ltrBtn.classList.add("active");
+      else if (currentTextAlign === "center" && middleBtn)
         middleBtn.classList.add("active");
-      } else if (rtlBtn) {
-        rtlBtn.classList.add("active");
-      }
+      else if (rtlBtn) rtlBtn.classList.add("active");
     }
   }
 
@@ -341,9 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function loadTextAlign() {
     const savedAlign = localStorage.getItem(TEXT_ALIGN_KEY);
-    if (savedAlign) {
-      currentTextAlign = savedAlign;
-    }
+    if (savedAlign) currentTextAlign = savedAlign;
   }
 
   function setupAlignmentSelection() {
@@ -352,13 +271,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const clickedButton = event.target.closest("button");
         if (!clickedButton) return;
 
-        if (clickedButton.id === "ltr-btn") {
-          currentTextAlign = "left";
-        } else if (clickedButton.id === "middle-btn") {
-          currentTextAlign = "center";
-        } else {
-          currentTextAlign = "right";
-        }
+        if (clickedButton.id === "ltr-btn") currentTextAlign = "left";
+        else if (clickedButton.id === "middle-btn") currentTextAlign = "center";
+        else currentTextAlign = "right";
+
         applyTextAlign();
         saveTextAlign();
       });
@@ -366,15 +282,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- 5. Initialization ---
-
   loadFontSettings();
   loadTextAlign();
-
   applyFontFamily();
   setupFontSizeSlider();
   applyFontSize();
   applyTextAlign();
-
   setupFontSelection();
   setupAlignmentSelection();
 
