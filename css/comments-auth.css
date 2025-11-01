@@ -360,24 +360,24 @@
 /* تصميم متجاوب للشاشات الصغيرة (الموبايل) */
 @media (max-width: 480px) {
   .auth-modal-content {
-    padding: 20px;
-    width: 80%;
+    padding: 15px; /* Compact */
+    width: 85%;
   }
 
   .auth-form h3 {
-    font-size: 18px;
+    font-size: 16px; /* Compact */
   }
 
   .form-group input {
-    padding: 10px 10px;
-    font-size: 13px;
+    padding: 8px 10px; /* Compact */
+    font-size: 12px; /* Compact */
     width: 95%;
   }
 
   .auth-submit-btn {
-    padding: 10px 16px;
-    font-size: 14px;
-    width: 100px;
+    padding: 8px 14px; /* Compact */
+    font-size: 13px; /* Compact */
+    width: auto; /* Compact */
   }
 }
 
@@ -423,30 +423,31 @@ button:focus-visible {
 .comments-container {
   flex-grow: 1; /* تجعلها تملأ المساحة المتاحة عمودياً */
   overflow-y: auto; /* تضيف شريط تمرير عند الحاجة */
-  padding: 15px 20px;
+  padding: 10px 15px; /* Compact */
   background-color: transparent;
 }
 
 /* قسم التعليق الواحد */
 .comment-section {
-  padding-top: 10px;
+  padding-top: 8px; /* Compact */
   margin-bottom: 0px;
   background-color: transparent;
   color: rgb(166, 166, 166);
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 11px; /* Compact */
+  line-height: 1.4; /* Compact */
 }
 
 /* المحتوى الرئيسي للتعليق (الصورة + التفاصيل) */
 .comment-main-content {
   display: flex;
-  gap: 15px;
+  gap: 12px; /* Compact */
   text-align: right;
 }
 
 /* تفاصيل التعليق (الاسم والنص والأزرار) */
 .comment-details {
   width: 100%;
+  gap: 0;
 }
 
 /* رأس التعليق (الاسم والوقت) */
@@ -455,19 +456,19 @@ button:focus-visible {
   flex-direction: row;
   align-items: center;
   justify-content: right;
-  gap: 15px;
-  font-size: 14px;
+  gap: 8px; /* Compact */
+  font-size: 13px; /* Compact */
   font-weight: bold;
 }
 
 /* نص التعليق (المحتوى) */
 .comment-body {
-  padding: 5px 0;
+  padding: 4px 0; /* Compact */
 }
 
 /* وقت التعليق (مثل "منذ 5 دقائق") */
 .comment-time {
-  font-size: 10px;
+  font-size: 9px; /* Compact */
   font-weight: normal;
   color: #aaa;
 }
@@ -478,8 +479,9 @@ button:focus-visible {
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: 20px;
-  padding: 5px 0;
+  gap: 16px; /* Compact */
+  padding: 0 0 10px 0;
+  height: 20px;
 }
 
 /* تصميم زر القلب وزر الرد */
@@ -487,7 +489,7 @@ button:focus-visible {
 .reply {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px; /* Compact */
   font-weight: bolder;
 }
 
@@ -497,9 +499,9 @@ button:focus-visible {
   border: none;
   color: #aaa;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 3px 6px; /* Compact */
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 12px; /* Compact */
   font-family: inherit;
 }
 .reply-btn:hover {
@@ -508,10 +510,10 @@ button:focus-visible {
 
 /* صورة المستخدم صاحب التعليق */
 .author-image {
-  width: 35px;
-  height: 35px;
+  width: 30px; /* Compact */
+  height: 30px; /* Compact */
   border-radius: 50%;
-  margin-top: 5px;
+  margin-top: 4px; /* Compact */
 }
 
 .comment-footer svg {
@@ -544,13 +546,18 @@ button:focus-visible {
 
 /* تصميم الرد (لإعطاء مسافة بادئة لليمين) */
 .is-reply {
-  margin-right: 55px;
+  margin-right: 45px; /* Compact */
+}
+
+.is-reply .author-image {
+  width: 24px;
+  height: 24px;
 }
 
 /* زر "عرض/إخفاء الردود" */
 .replies-toggle {
-  margin-right: 55px;
-  margin-top: 10px;
+  margin-right: 0px; /* Compact */
+  margin-top: 8px; /* Compact */
 }
 
 .toggle-replies-btn {
@@ -559,13 +566,13 @@ button:focus-visible {
   color: #3ea6ff;
   font-weight: bold;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 18px;
+  padding: 6px 10px; /* Compact */
+  border-radius: 16px; /* Compact */
   display: inline-flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Compact */
   gap: 4px;
-  font-size: 14px;
+  font-size: 13px; /* Compact */
 }
 .toggle-replies-btn:hover {
   background-color: rgba(62, 166, 255, 0.1);
@@ -573,8 +580,8 @@ button:focus-visible {
 
 /* أيقونة السهم في زر عرض الردود */
 .toggle-replies-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 22px; /* Compact */
+  height: 22px; /* Compact */
   fill: #3ea6ff;
   transition: transform 0.2s ease-out;
 }
@@ -597,8 +604,8 @@ button:focus-visible {
 /* حاوية فورم التعليق الرئيسي (أعلى اللوحة) */
 .main-comment-input-container {
   display: flex;
-  gap: 16px;
-  padding: 15px 20px;
+  gap: 12px; /* Compact */
+  padding: 10px 15px; /* Compact */
   border-bottom: 1px solid #3f3f3f;
   flex-shrink: 0; /* Prevents it from shrinking */
 }
@@ -606,9 +613,9 @@ button:focus-visible {
 /* حاوية فورم الرد (الصورة + الصندوق) */
 .reply-form-container {
   display: flex;
-  gap: 16px;
-  margin-top: 15px;
-  margin-right: 55px;
+  gap: 12px; /* Compact */
+  margin-top: 12px; /* Compact */
+  margin-right: 45px; /* Compact */
 }
 
 /* صورة المستخدم الحالي في فورم الرد (صورة مصغرة) */

@@ -349,6 +349,16 @@
       const randomAvatar = avatars[userIdNumber % avatars.length];
       const avatarUrl = comment.avatar_url || randomAvatar;
 
+      let footerControls = "";
+      if (state.isAuthenticated) {
+        footerControls = `
+          <div class="reply"><button class="reply-btn" data-comment-id="${comment.id}">رد</button></div>
+          ${toggleRepliesButtonHTML}
+        `;
+      } else {
+        footerControls = toggleRepliesButtonHTML;
+      }
+
       commentElement.innerHTML = `
         <div class="comment-main-content">
           <img src="${avatarUrl}" class="author-image" alt="Author Image" />
@@ -370,15 +380,10 @@
                 </button>
                 <p class="likes-count">${comment.likes_count || 0}</p>
               </div>
-              ${
-                state.isAuthenticated
-                  ? `<div class="reply"><button class="reply-btn" data-comment-id="${comment.id}">رد</button></div>`
-                  : ""
-              }
+              ${footerControls}
             </div>
           </div>
         </div>
-        ${toggleRepliesButtonHTML}
         <div class="replies-container ${repliesCount > 0 ? "" : "empty"}">
           ${
             comment.replies
@@ -576,8 +581,8 @@
       if (event.target.closest(".toggle-replies-btn")) {
         const toggleBtn = event.target.closest(".toggle-replies-btn");
         toggleBtn.classList.toggle("open");
-        const repliesContainer =
-          toggleBtn.closest(".replies-toggle").nextElementSibling;
+        const commentSection = toggleBtn.closest(".comment-section");
+        const repliesContainer = commentSection.querySelector(".replies-container");
         repliesContainer.classList.toggle("open");
         return;
       }
