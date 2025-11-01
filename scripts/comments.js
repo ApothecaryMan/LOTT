@@ -27,6 +27,16 @@
     "img/avatar/male-3.webp",
   ];
 
+  const getUserIdNumber = (userId) => {
+    if (!userId) return 0;
+    let hash = 0;
+    for (let i = 0; i < userId.length; i++) {
+      hash = (hash << 5) - hash + userId.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
+    }
+    return Math.abs(hash);
+  };
+
   // ========================================================================
   // Configuration
   // ========================================================================
@@ -335,7 +345,8 @@
         ? `<div class="comment-actions"><button class="edit-comment-btn" data-comment-id="${comment.id}" title="تعديل"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button><button class="delete-comment-btn" data-comment-id="${comment.id}" title="حذف"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div>`
         : "";
 
-      const randomAvatar = avatars[Math.floor(Math.random() * avatars.length)];
+      const userIdNumber = getUserIdNumber(comment.user_id);
+      const randomAvatar = avatars[userIdNumber % avatars.length];
       const avatarUrl = comment.avatar_url || randomAvatar;
 
       commentElement.innerHTML = `
