@@ -257,7 +257,7 @@
   margin-top: 6px;
 }
 .edit-textarea {
-  width: 100%;
+  width: 96%;
   background-color: #0f0f0f;
   border: 1px solid #3ea6ff;
   border-radius: 6px;
@@ -266,8 +266,9 @@
   padding: 6px;
   outline: none;
   resize: vertical;
-  min-height: 28px;
+  min-height: auto;
 }
+
 .edit-form-actions {
   display: flex;
   justify-content: flex-end;
