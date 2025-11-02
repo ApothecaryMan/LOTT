@@ -41,6 +41,65 @@
   src: url("fonts/gun4fc.ttf");
 }
 
+
+
+@font-face {
+  font-family: "Chiwer";
+  src: url("fonts/Chiwer.ttf");
+}
+@font-face {
+  font-family: "Fred Fredburger";
+  src: url("fonts/Fred Fredburger.ttf");
+}
+@font-face {
+  font-family: "Hagrid";
+  src: url("fonts/Hagrid.ttf");
+}
+@font-face {
+  font-family: "Iran";
+  src: url("fonts/Iran.ttf");
+}
+@font-face {
+  font-family: "Kesme";
+  src: url("fonts/Kesme.ttf");
+}
+@font-face {
+  font-family: "Kufi-1";
+  src: url("fonts/Kufi-1.ttf");
+}
+@font-face {
+  font-family: "Kufi-2";
+  src: url("fonts/Kufi-2.ttf");
+}
+@font-face {
+  font-family: "Merdane";
+  src: url("fonts/Merdane.ttf");
+}
+@font-face {
+  font-family: "Plex";
+  src: url("fonts/Plex.ttf");
+}
+@font-face {
+  font-family: "Polygl";
+  src: url("fonts/Polygl.ttf");
+}
+@font-face {
+  font-family: "Qara";
+  src: url("fonts/Qara.ttf");
+}
+@font-face {
+  font-family: "Qelem";
+  src: url("fonts/Qelem.ttf");
+}
+@font-face {
+  font-family: "Title";
+  src: url("fonts/Title.ttf");
+}
+@font-face {
+  font-family: "titr";
+  src: url("fonts/titr.ttf");
+}
+
 /* -------------------------------
    1. عناصر بخط "Ink"
 --------------------------------*/
