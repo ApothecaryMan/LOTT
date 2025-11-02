@@ -1,7 +1,7 @@
 // --- START: Updated theme.js ---
 
 document.addEventListener("DOMContentLoaded", () => {
-  const themeToggleBtn = document.getElementById("toggle-theme-btn");
+  const themeToggleBtn = document.getElementById("mode-selector");
   const body = document.body;
   const themeKey = "theme-preference";
 

@@ -183,7 +183,17 @@ h2 {
   color: var(--text-color);
   cursor: pointer;
 }
-
+#tools-header {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+#mode-selector {
+  position: absolute;
+  top: 55px;
+  left: 30px;
+}
 .font-tools-content {
   padding: 10px;
   overflow-y: auto;
@@ -223,11 +233,12 @@ h2 {
 #font-size-control-group {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
 }
 
 #font-size-control-group #size-slider {
-  width: 100%;
+  width: 70%;
   margin: 0;
   -webkit-appearance: none;
   height: 5px;
