@@ -61,7 +61,7 @@ function changeTheme(event) {
     #font-selector button:hover, body.light-theme #font-selector button:hover,
     #align-formate button:hover, body.light-theme #align-formate button:hover,
     #list:hover, #list:active, body.light-theme #list:hover, body.light-theme #list:active, #comments-btn:hover, #comments-btn:active,#comments-btn.active,
-    .auth-submit-btn, .auth-prompt-btn, .edit-submit-btn, .comment-submit-btn, .reply-submit-btn, .expanded-slider-content input[type="range"] {
+    .auth-submit-btn, .auth-prompt-btn, .edit-submit-btn, .comment-submit-btn, .reply-submit-btn, #size-slider {
         background-color: ${newColor};
     }
     .carousel-item#font-selector button.active,
@@ -69,7 +69,7 @@ function changeTheme(event) {
     .carousel-item#align-formate button.active,
     body.light-theme .carousel-item#align-formate button.active,
     .carousel-item button#list.active,
-    body.light-theme .carousel-item button#list.active,body.light-theme #comments-btn:hover {
+    body.light-theme .carousel-item button#list.active,body.light-theme #comments-btn:hover, #font-size-control-group #size-slider   {
         background-color: ${newColor};
     }
     #increase-font-size:hover, #increase-font-size:active,
@@ -139,6 +139,7 @@ function changeTheme(event) {
       .spinner{
         border-top-color: ${newColor};           
       }
+      .font-tools-popup svg { fill: white; }
     `;
 
   if (isLightTheme) {
@@ -167,12 +168,11 @@ function changeTheme(event) {
             body.light-theme .chapter-item:hover { background-color: ${hoverBgColor}; }
             body.light-theme .novel-title { color: #333; }
             body.light-theme .chapter-title-in-list, body.light-theme .dash { color: #555; }
-             body.light-theme .auth-modal-content{
-             background-color: ${bodyBgColor}}
             .spinner{
               border: 4px solid ${containerBgColor}; 
               border-top-color: ${newColor};         
             }
+            body.light-theme .font-tools-popup svg { fill: #222; }
             `;
     }
   } else {
@@ -194,7 +194,7 @@ function changeTheme(event) {
                 background-color: ${containerBgColor};
             }
             .chapter-item:hover { background-color: ${hoverBgColor}; }
-            .novel-title { color: #e0e0e0; }
+            .novel-title, .font-tools-popup { color: #e0e0e0; }
             .chapter-title-in-list, .dash { color: #b0b0b0; }
             .spinner{
               border: 4px solid ${containerBgColor}; 

@@ -1,6 +1,8 @@
 // --- START: Updated font.js with Integrated Discrete Slider + Dynamic Visual Anchor ---
 
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOMContentLoaded fired in font.js"); // Debug log
+
   // --- 1. Get Elements ---
   const paragraph = document.getElementById("chapter-text");
   const chapterTitle = document.getElementById("chapter-title");
@@ -9,11 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const fontContainer = document.getElementById("font-selector");
 
   // *** عناصر التحكم الجديدة بالحجم ***
-  const sizeToggleBtn = document.getElementById("size-toggle-btn");
   const sizeSlider = document.getElementById("size-slider");
-  const collapsedText = sizeToggleBtn
-    ? sizeToggleBtn.querySelector(".collapsed-text")
-    : null;
 
   // --- 2. State Variables & Storage Keys ---
   const FONT_SETTINGS_KEY = "userFontSettings";
@@ -70,10 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (infoText) infoText.style.fontSize = "17px";
 
       if (sizeSlider) sizeSlider.disabled = true;
-      if (sizeToggleBtn) {
-        sizeToggleBtn.classList.remove("expanded");
-        if (collapsedText) collapsedText.textContent = "ثابت";
-      }
     } else {
       const newSize = currentBaseSize + "px";
 
@@ -84,9 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (sizeSlider) {
         sizeSlider.value = sizeToSliderIndex(currentBaseSize);
         sizeSlider.disabled = false;
-      }
-      if (collapsedText) {
-        collapsedText.textContent = currentBaseSize + "px";
       }
     }
 
@@ -134,46 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setupFontSizeSlider() {
-    if (sizeToggleBtn && sizeSlider) {
-      const closeSlider = () => {
-        sizeToggleBtn.classList.remove("expanded");
-        if (collapsedText) {
-          collapsedText.textContent = currentBaseSize + "px";
-        }
-      };
-
-      sizeToggleBtn.addEventListener("click", (e) => {
-        if (
-          sizeToggleBtn.classList.contains("expanded") &&
-          e.target.closest(".expanded-slider-content")
-        ) {
-          e.stopPropagation();
-          return;
-        }
-
-        if (currentActiveFontFamily.includes("Naskh")) {
-          closeSlider();
-          return;
-        }
-
-        const isExpanded = sizeToggleBtn.classList.toggle("expanded");
-        if (isExpanded) {
-          sizeSlider.value = sizeToSliderIndex(currentBaseSize);
-        } else {
-          if (collapsedText) collapsedText.textContent = currentBaseSize + "px";
-        }
-      });
-
-      document.addEventListener("click", (e) => {
-        if (
-          sizeToggleBtn.classList.contains("expanded") &&
-          !sizeToggleBtn.contains(e.target)
-        ) {
-          closeSlider();
-        }
-      });
-    }
-
     if (sizeSlider) {
       sizeSlider.addEventListener("input", (event) => {
         const sliderIndex = parseInt(event.target.value);
@@ -202,10 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         applyFontFamily();
         applyFontSize();
-
-        if (currentActiveFontFamily.includes("Naskh") && sizeToggleBtn) {
-          sizeToggleBtn.classList.remove("expanded");
-        }
 
         saveFontSettings();
       });
@@ -296,4 +243,36 @@ document.addEventListener("DOMContentLoaded", () => {
     applyFontSize();
     applyTextAlign();
   });
+
+  // --- Font Tools Pop-up Logic ---
+  const fontPanelBtn = document.getElementById('font-panel-btn');
+  const fontToolsPopup = document.getElementById('font-tools-popup');
+  const closeFontToolsBtn = document.getElementById('close-font-tools-btn');
+
+  console.log("fontPanelBtn:", fontPanelBtn); // Debug log
+  console.log("fontToolsPopup:", fontToolsPopup); // Debug log
+  console.log("closeFontToolsBtn:", closeFontToolsBtn); // Debug log
+
+  if (fontPanelBtn && fontToolsPopup && closeFontToolsBtn) {
+    console.log("All font tool elements found. Attaching event listeners."); // Debug log
+    fontPanelBtn.addEventListener('click', () => {
+      console.log("fontPanelBtn clicked!"); // Debug log
+      fontToolsPopup.classList.add('show');
+    });
+
+    closeFontToolsBtn.addEventListener('click', () => {
+      console.log("closeFontToolsBtn clicked!"); // Debug log
+      fontToolsPopup.classList.remove('show');
+    });
+
+    // Close when clicking outside the popup
+    document.addEventListener('click', (event) => {
+      if (!fontToolsPopup.contains(event.target) && !fontPanelBtn.contains(event.target) && fontToolsPopup.classList.contains('show')) {
+        console.log("Clicked outside popup, closing."); // Debug log
+        fontToolsPopup.classList.remove('show');
+      }
+    });
+  } else {
+    console.error("One or more font tool elements not found!"); // Debug log
+  }
 });
