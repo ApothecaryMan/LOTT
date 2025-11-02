@@ -69,7 +69,7 @@ function changeTheme(event) {
     .carousel-item#align-formate button.active,
     body.light-theme .carousel-item#align-formate button.active,
     .carousel-item button#list.active,
-    body.light-theme .carousel-item button#list.active,body.light-theme #comments-btn:hover, #font-size-control-group #size-slider   {
+    body.light-theme .carousel-item button#list.active,body.light-theme #comments-btn:hover, #font-size-control-group #size-slider {
         background-color: ${newColor};
     }
     #increase-font-size:hover, #increase-font-size:active,
@@ -140,6 +140,12 @@ function changeTheme(event) {
         border-top-color: ${newColor};           
       }
       .font-tools-popup svg { fill: white; }
+      #size-slider::-webkit-slider-thumb:hover{
+      background-color: ${newColor
+        .replace("rgb", "rgba")
+        .replace(")", ", 0.1)")};
+        color: ${newColor.replace("rgb", "rgba").replace(")", ", 0.8)")}; } }
+      }
     `;
 
   if (isLightTheme) {
