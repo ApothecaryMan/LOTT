@@ -37,8 +37,8 @@
   /* --- Visible State (Slide Down) --- */
   opacity: 1;
   padding: 20px;
-  min-width: 95%; /* Expand it vertically */
   /* margin-bottom: 6px; */
+  min-width: 95%;
   border-width: 1px;
 }
 

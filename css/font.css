@@ -189,8 +189,8 @@ h2 {
 .font-tools-popup {
   position: fixed;
   bottom: 5px;
-  left: 20px;
-  right: 20px;
+  left: 5%;
+  right: 5%;
   height: 0; /* Initially hidden */
   border-radius: 25px;
   background-color: rgba(var(--bg-color-dark-rgb), 0.9);
@@ -256,6 +256,9 @@ h2 {
   padding: 10px;
   overflow-y: auto;
   flex-grow: 1;
+}
+.font-tools-content::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar */
 }
 
 .font-tool-section {

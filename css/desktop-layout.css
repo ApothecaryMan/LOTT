@@ -1,46 +1,37 @@
 /* ========================================================================== */
-/* == DESKTOP SPLIT LAYOUT WITH SHARP CORNERS (1081px+)                   == */
+/* == DESKTOP SPLIT LAYOUT WITH SHARP CORNERS (1000px+)                    == */
 /* ========================================================================== */
 /* Author: Your Name */
-/* OS support: Fedora with GNOME */
 /* Description: Professional split-screen layout for desktop with sharp design */
 
-@media (min-width: 1081px) {
-  /* ====================================================================== */
-  /* REMOVE ALL ROUNDED CORNERS (SHARP DESIGN)                            */
-  /* ====================================================================== */
-  /* *,
-  *::before,
-  *::after {
-    border-radius: 0 !important;
-  } */
-
+@media (min-width: 1000px) {
   /* ====================================================================== */
   /* MAIN LAYOUT STRUCTURE                                                 */
   /* ====================================================================== */
 
-  /* Center everything on page */
   body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: all 0.25s ease-in-out; /* نفس الزمن بالظبط */
+    transition: all 0.25s ease-in-out;
   }
 
-  /* Wrapper for split layout */
   .main-content-wrapper {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 0;
     width: 95%;
     max-width: 1600px;
     margin: 0 auto;
     padding: 0 20px;
+    gap: 0;
     transition: gap 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Add gap when comments are active */
+  body.comments-open {
+    overflow: auto !important;
+  }
+
   .main-content-wrapper.comments-active {
     gap: 2px;
   }
@@ -52,11 +43,10 @@
   .main-content-area {
     flex: 1;
     max-width: 64.8%;
-    min-width: 0; /* Prevent flex item overflow */
+    min-width: 0;
     transition: max-width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Shrink content when comments are open */
   .main-content-wrapper.comments-active .main-content-area {
     max-width: 65%;
   }
@@ -66,33 +56,23 @@
   /* ====================================================================== */
 
   #comments-panel {
-    /* Reset mobile styles */
     position: sticky;
     top: 51px;
-    transition: all 0.25s ease-in-out; /* حركة أسرع ومتزامنة */
     z-index: 100;
+    transition: all 0.25s ease-in-out;
     transform: none;
     box-shadow: none;
+    border-radius: 0;
+    background-color: rgb(24, 24, 24);
 
-    /* Desktop layout */
+    /* الأساسيات */
     width: 0;
     max-width: 0;
     opacity: 0;
     overflow: hidden;
-    /* height: auto; */
-    min-height: calc(100vh - 0px);
-    /* max-height: calc(100vh - 100px); */
-    border-radius: 0;
-
-    /* Styling */
-    background-color: rgb(24, 24, 24);
-
-    /* Smooth transitions */
-    /* transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      max-width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      opacity 0.3s ease 0.1s; */
-
-    /* Internal layout */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Open state */
@@ -100,6 +80,8 @@
     width: 30%;
     max-width: 550px;
     opacity: 1;
+    height: calc(100vh - 51px);
+    overflow: hidden; /* نخلي السكول جوه الكونتينر مش البانل نفسه */
   }
 
   /* Comments panel header */
@@ -110,35 +92,47 @@
     z-index: 10;
     background-color: rgb(24, 24, 24);
     border-bottom: 1px solid #3f3f3f;
+    padding: 10px 15px;
   }
 
-  /* Comments container scrolling */
+  /* Comments container (scrolling area) */
   .comments-container {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    max-height: calc(100vh - 102px); /* الهيدر + المارجنز */
+    padding: 10px 15px;
   }
 
-  /* Custom scrollbar for comments */
+  /* Scrollbar customization */
   .comments-container::-webkit-scrollbar {
     width: 8px;
   }
 
-  .comments-container::-webkit-scrollbar-track {
-    /* backgroun */
+  .comments-container::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
   }
-  .main-header-container {
-    /* border-radius: 25px 0 0 0; */
+
+  .comments-container::-webkit-scrollbar-thumb:hover {
+    background: #777;
   }
-  #info-wrapper {
-    /* border-radius: 0 0 0 25px; */
-  }
-  #chapter-text,
+
+  /* ====================================================================== */
+  /* MISC UI ADJUSTMENTS                                                   */
+  /* ====================================================================== */
+
+  .main-header-container,
   #info-wrapper,
-  .main-header-container {
+  #chapter-text {
     border-radius: 0;
   }
+
   .info-container .info {
     margin-bottom: 0;
+  }
+
+  #chapter-list-container.visible {
+    min-width: 95%;
   }
 }
