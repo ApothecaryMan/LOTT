@@ -1,5 +1,11 @@
 # Changelog
 
+## November 2, 2025
+
+### Fixes
+- Prevent the background from scrolling when interacting with the font panel.
+- The `wheel` and `touchmove` events are now stopped from propagating to the document.
+
 ## October 24, 2025
 
 ### Feature: Display Current Chapter Name
