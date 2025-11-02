@@ -332,9 +332,11 @@
       const commentElement = document.createElement("div");
       commentElement.className = `comment-section ${isReply ? "is-reply" : ""}`;
       commentElement.dataset.commentId = comment.id;
+      if (comment.parent_id)
+        commentElement.dataset.parentId = comment.parent_id;
       const isOwner =
         state.currentUser && state.currentUser.id === comment.user_id;
-      const repliesCount = comment.replies ? comment.replies.length : 0;
+      const repliesCount = this.getTotalRepliesCount(comment);
       const toggleRepliesButtonHTML =
         repliesCount > 0
           ? `<div class="replies-toggle"><button class="toggle-replies-btn"><svg viewBox="0 0 24 24"><path d="M12 16.42L6.29 10.71L7.71 9.29L12 13.59L16.29 9.29L17.71 10.71L12 16.42Z"></path></svg>${repliesCount} ${
@@ -423,6 +425,16 @@
       const div = document.createElement("div");
       div.textContent = text;
       return div.innerHTML;
+    },
+
+    getTotalRepliesCount(comment) {
+      let count = comment.replies ? comment.replies.length : 0;
+      if (comment.replies) {
+        comment.replies.forEach(reply => {
+          count += this.getTotalRepliesCount(reply);
+        });
+      }
+      return count;
     },
 
     showAuthModal() {
@@ -838,4 +850,180 @@
       commentManager.setupRealtimeSubscription();
     },
   };
+  /* ===== Connectors: رسم خطوط منحنيه بين التعليق والوالد ===== */
+  (function () {
+    const Connector = {
+      svg: null,
+      container: null,
+      pathClass: "connector-path",
+      init() {
+        this.container = document.querySelector(".comments-container");
+        if (!this.container) return;
+        // اجعل ال container relative (لو مش موجود)
+        const compStyle = getComputedStyle(this.container).position;
+        if (compStyle === "static") this.container.style.position = "relative";
+
+        // أنشئ الـSVG لو مش موجود
+        this.svg = this.container.querySelector(".comments-connector-svg");
+        if (!this.svg) {
+          this.svg = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg"
+          );
+          this.svg.classList.add("comments-connector-svg");
+          this.svg.setAttribute("aria-hidden", "true");
+          this.container.prepend(this.svg);
+        }
+
+        // مراقب تغيُّر DOM لرسم تلقائي
+        this.observeMutations();
+        // رسم أولي
+        this.redrawDebounced();
+
+        // إعادة الرسم عند تغيير الحجم
+        window.addEventListener("resize", this.redrawDebounced.bind(this));
+      },
+
+      // debounce
+      redrawDebounced: (function () {
+        let t;
+        return function () {
+          clearTimeout(t);
+          t = setTimeout(() => Connector.redraw(), 80);
+        };
+      })(),
+
+      observeMutations() {
+        if (this._observer) this._observer.disconnect();
+        const obs = new MutationObserver(() => this.redrawDebounced());
+        obs.observe(this.container, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: [
+            "class",
+            "style",
+            "data-parent-id",
+            "data-comment-id",
+          ],
+        });
+        this._observer = obs;
+      },
+
+      clearSVG() {
+        while (this.svg.firstChild) this.svg.removeChild(this.svg.firstChild);
+      },
+
+      redraw() {
+        if (!this.container || !this.svg) return;
+        // حجم الـSVG يطابق حجم الـcontainer
+        const rect = this.container.getBoundingClientRect();
+        this.svg.setAttribute("width", rect.width);
+        this.svg.setAttribute("height", rect.height);
+        this.svg.setAttribute("viewBox", `0 0 ${rect.width} ${rect.height}`);
+
+        this.clearSVG();
+
+        // اجمع كل التعليقات اللي لها parent
+        const comments = Array.from(
+          this.container.querySelectorAll(".comment-section[data-comment-id]")
+        );
+
+        // خرائط: id -> element, id-> avatar center (relative to container)
+        const idToEl = new Map();
+        const idToAvatar = new Map();
+
+        comments.forEach((c) => {
+          const id = c.dataset.commentId;
+          idToEl.set(id, c);
+          const avatar = c.querySelector(".author-image");
+          if (avatar) {
+            const aRect = avatar.getBoundingClientRect();
+            // نحسب مركز الصورة بالنسبة للـcontainer
+            const cx = aRect.left - rect.left + aRect.width / 2;
+            const cy = aRect.top - rect.top + aRect.height / 2;
+            idToAvatar.set(id, { cx, cy, w: aRect.width, h: aRect.height });
+          }
+        });
+
+        // الآن لكل تعليق عنده parent نرسم مسار
+        comments.forEach((childEl) => {
+          const childId = childEl.dataset.commentId;
+          const parentId = childEl.dataset.parentId;
+          if (!parentId) return;
+          const childAvatar = idToAvatar.get(childId);
+          const parentAvatar = idToAvatar.get(parentId);
+          // لو الأب مش ظاهِر مثلاً مخفي أو في صفحة مختلفة نتجاهل
+          if (!childAvatar || !parentAvatar) return;
+
+          // نقاط البداية والنهاية (نحو يمين/يسار بناءً على اتجاه)
+          const x1 = childAvatar.cx;
+          const y1 = childAvatar.cy;
+          const x2 = parentAvatar.cx;
+          const y2 = parentAvatar.cy;
+
+          // لو المسافة صغيرة جداً نتخطى الرسم
+          const dy = y2 - y1;
+          const dx = x2 - x1;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 20) return;
+
+          // نحدد اتجاه الانحناء: لو x2 < x1 (يعني الأب على اليسار) نفرد منحنى يسار
+          // نحسب نقاط التحكم لعمل منحنى سلس - نعتمد على dy و dx
+          const curvature = Math.min(
+            120,
+            Math.abs(dy) * 0.6 + Math.abs(dx) * 0.3
+          );
+          // تحكمات على محور X بتدفع المنحنى ناحية الأب
+          const cx1 = x1;
+          const cy1 = y1 + (dy < 0 ? -curvature * 0.2 : curvature * 0.4);
+          const cx2 = x2;
+          const cy2 = y2 - (dy < 0 ? -curvature * 0.4 : curvature * 0.2);
+
+          // خلق المسار بصيغة cubic Bezier
+          const pathD = `M ${x1.toFixed(1)} ${y1.toFixed(1)}
+                       C ${cx1.toFixed(1)} ${cy1.toFixed(1)}, ${cx2.toFixed(
+            1
+          )} ${cy2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+
+          const path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+          path.setAttribute("d", pathD);
+          path.setAttribute("class", this.pathClass + " draw");
+          // ضبط سمك/لون لو حبيت تغير من هنا
+          path.setAttribute("stroke-width", 2);
+          path.setAttribute("stroke", "rgba(255,255,255,0.12)");
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke-linecap", "round");
+          path.setAttribute("stroke-linejoin", "round");
+          this.svg.appendChild(path);
+
+          // لو عايز نقطة/دائرة صغيرة عند بداية المسار (اختياري)
+          /*
+        const circle = document.createElementNS("http://www.w3.org/2000/svg","circle");
+        circle.setAttribute("cx", x1);
+        circle.setAttribute("cy", y1);
+        circle.setAttribute("r", 2.2);
+        circle.setAttribute("fill", "rgba(255,255,255,0.12)");
+        this.svg.appendChild(circle);
+        */
+        });
+      },
+    };
+
+    // بداية التشغيل لما DOM يكون جاهز أو لو CommentsSystem جاهز
+    document.addEventListener("DOMContentLoaded", () => {
+      // انتظار وجود .comments-container
+      const waitForContainer = setInterval(() => {
+        if (document.querySelector(".comments-container")) {
+          clearInterval(waitForContainer);
+          Connector.init();
+        }
+      }, 120);
+      // safety stop بعد 5 ثواني
+      setTimeout(() => clearInterval(waitForContainer), 5000);
+    });
+  })();
 })();
