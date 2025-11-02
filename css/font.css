@@ -191,8 +191,9 @@ h2 {
 }
 #mode-selector {
   position: absolute;
-  top: 55px;
-  left: 30px;
+  top: 15px;
+  left: 15px;
+  cursor: pointer;
 }
 .font-tools-content {
   padding: 10px;
@@ -254,6 +255,11 @@ h2 {
 
   /* --- Core Glass Effect --- */
   background: rgb(255, 255, 255);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.3),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
 
   /* --- "Liquid" Shape & Style --- */
   color: rgb(255, 255, 255);

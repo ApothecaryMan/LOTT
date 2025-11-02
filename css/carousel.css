@@ -87,7 +87,7 @@
 }
 #font-panel-btn {
   border-radius: 25px;
-  padding: 0 20px;
+  padding: 0 5px;
 }
 
 #font-naskh {
@@ -350,4 +350,7 @@
 #comments-btn:active {
   border-radius: 25px;
   transition: border-radius 0.5s ease-in-out;
+}
+.carousel-btn-middle svg {
+  fill: black;
 }

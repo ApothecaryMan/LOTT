@@ -249,30 +249,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const fontToolsPopup = document.getElementById('font-tools-popup');
   const closeFontToolsBtn = document.getElementById('close-font-tools-btn');
 
-  console.log("fontPanelBtn:", fontPanelBtn); // Debug log
-  console.log("fontToolsPopup:", fontToolsPopup); // Debug log
-  console.log("closeFontToolsBtn:", closeFontToolsBtn); // Debug log
-
   if (fontPanelBtn && fontToolsPopup && closeFontToolsBtn) {
-    console.log("All font tool elements found. Attaching event listeners."); // Debug log
-    fontPanelBtn.addEventListener('click', () => {
-      console.log("fontPanelBtn clicked!"); // Debug log
-      fontToolsPopup.classList.add('show');
+    fontPanelBtn.addEventListener('click', (event) => {
+      // Stop the click from bubbling up to the document
+      event.stopPropagation();
+      // Toggle the 'show' class to open/close the popup
+      fontToolsPopup.classList.toggle('show');
     });
 
     closeFontToolsBtn.addEventListener('click', () => {
-      console.log("closeFontToolsBtn clicked!"); // Debug log
       fontToolsPopup.classList.remove('show');
     });
 
-    // Close when clicking outside the popup
-    document.addEventListener('click', (event) => {
-      if (!fontToolsPopup.contains(event.target) && !fontPanelBtn.contains(event.target) && fontToolsPopup.classList.contains('show')) {
-        console.log("Clicked outside popup, closing."); // Debug log
+    // Prevent clicks inside the popup from closing it
+    fontToolsPopup.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+
+    // Add a listener to the whole document to close the popup when clicking outside
+    document.addEventListener('click', () => {
+      if (fontToolsPopup.classList.contains('show')) {
         fontToolsPopup.classList.remove('show');
       }
     });
-  } else {
-    console.error("One or more font tool elements not found!"); // Debug log
   }
 });
