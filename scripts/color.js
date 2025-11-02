@@ -187,6 +187,7 @@ function changeTheme(event) {
       body.light-theme .chapter-item:hover { background-color: ${hoverBgColor}; }
       .spinner { border: 4px solid ${containerBgColor}; border-top-color: ${newColor}; }
       body.light-theme .font-tools-popup svg { fill: #222; }
+      body.light-theme .card-title { color: ${newColor}; }
     `;
   } else {
     // ================== قسم الثيم الداكن (Dark Theme) ==================
