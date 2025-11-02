@@ -67,7 +67,6 @@ function applyColor(triggerTheme = false) {
     lightness
   )}%)`;
   btn.style.background = color;
-
   localStorage.setItem("userHue", hue);
   localStorage.setItem("userLightness", lightness);
   localStorage.setItem("userCustomColorPreferenceValue", color);

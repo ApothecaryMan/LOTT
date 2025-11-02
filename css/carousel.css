@@ -332,13 +332,13 @@
   /* display: none; */
 }
 #middle-btn {
-  border-radius: 25px 3px 3px 25px;
-  transition: border-radius 0.2s ease-in-out;
+  border-radius: 3px;
+  transition: border-radius 0.4s ease-in-out;
 }
-#middle-btn:active {
-  border-radius: 25px;
-}
-#middle-btn.active {
+#middle-btn:active,
+#ltr-btn:active,
+#rtl-btn:active,
+#font-selector button:active {
   border-radius: 25px;
 }
 

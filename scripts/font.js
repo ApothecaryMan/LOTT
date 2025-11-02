@@ -19,10 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // نقاط التوقف الثابتة (0=Small, 3=XL)
   const SIZE_MAP = {
-    0: 15, // S
-    1: 18, // M
-    2: 22, // L
-    3: 25, // XL
+    0: 15, // XS
+    1: 16, // S
+    2: 18, // M
+    3: 20, // L
+    4: 22, // XL
+    5: 23, // XXL
+    6: 24, // XXXL
+    7: 25, // XXXXL
   };
 
   let currentBaseSize = 16;
@@ -126,13 +130,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setupFontSizeSlider() {
     if (sizeSlider) {
-      sizeSlider.addEventListener("input", (event) => {
+      // دالة مشتركة لتطبيق التغييرات
+      const handleSliderChange = (event) => {
+        // نستخدم event.target للحصول على السلايدر نفسه
         const sliderIndex = parseInt(event.target.value);
         currentBaseSize = SIZE_MAP[sliderIndex];
         applyFontSize();
+        // الحفظ يتم فقط عند انتهاء الحركة لتجنب الكتابة المستمرة على localStorage
+      };
+
+      const saveSettingsOnEnd = () => {
         saveFontSettings();
-      });
-      sizeSlider.value = sizeToSliderIndex(currentBaseSize);
+      };
+
+      // يستجيب للحركة المستمرة على الكمبيوتر واللمس
+      sizeSlider.addEventListener("input", handleSliderChange);
+
+      // يستجيب لانتهاء الحركة (عند رفع الفأرة أو الإصبع) ليقوم بالحفظ
+      sizeSlider.addEventListener("change", saveSettingsOnEnd);
     }
   }
 
@@ -245,31 +260,31 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Font Tools Pop-up Logic ---
-  const fontPanelBtn = document.getElementById('font-panel-btn');
-  const fontToolsPopup = document.getElementById('font-tools-popup');
-  const closeFontToolsBtn = document.getElementById('close-font-tools-btn');
+  const fontPanelBtn = document.getElementById("font-panel-btn");
+  const fontToolsPopup = document.getElementById("font-tools-popup");
+  const closeFontToolsBtn = document.getElementById("close-font-tools-btn");
 
   if (fontPanelBtn && fontToolsPopup && closeFontToolsBtn) {
-    fontPanelBtn.addEventListener('click', (event) => {
+    fontPanelBtn.addEventListener("click", (event) => {
       // Stop the click from bubbling up to the document
       event.stopPropagation();
       // Toggle the 'show' class to open/close the popup
-      fontToolsPopup.classList.toggle('show');
+      fontToolsPopup.classList.toggle("show");
     });
 
-    closeFontToolsBtn.addEventListener('click', () => {
-      fontToolsPopup.classList.remove('show');
+    closeFontToolsBtn.addEventListener("click", () => {
+      fontToolsPopup.classList.remove("show");
     });
 
     // Prevent clicks inside the popup from closing it
-    fontToolsPopup.addEventListener('click', (event) => {
+    fontToolsPopup.addEventListener("click", (event) => {
       event.stopPropagation();
     });
 
     // Add a listener to the whole document to close the popup when clicking outside
-    document.addEventListener('click', () => {
-      if (fontToolsPopup.classList.contains('show')) {
-        fontToolsPopup.classList.remove('show');
+    document.addEventListener("click", () => {
+      if (fontToolsPopup.classList.contains("show")) {
+        fontToolsPopup.classList.remove("show");
       }
     });
   }
