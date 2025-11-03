@@ -16,6 +16,9 @@ body {
 
   -webkit-tap-highlight-color: transparent;
 }
+body::-webkit-scrollbar {
+  display: none;
+}
 p {
   color: rgb(166, 166, 166);
   line-height: 2;

@@ -3,16 +3,16 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Adds or updates a chapter in chapters.json.
+ * Adds or updates a chapter in novels.json.
  * @param {string} chapterId - The ID of the chapter.
  * @param {string} chapterTitle - The title of the chapter.
  */
 function addOrUpdateChapter(chapterId, chapterTitle) {
-  const chaptersFilePath = path.join(__dirname, '..', 'chapters.json');
+  const chaptersFilePath = path.join(__dirname, '..', 'novels.json');
 
   fs.readFile(chaptersFilePath, 'utf8', (err, data) => {
     if (err && err.code !== 'ENOENT') { // ENOENT means file doesn't exist, which is fine for the first run.
-      console.error('Error reading chapters.json:', err);
+      console.error('Error reading novels.json:', err);
       return;
     }
 
@@ -21,7 +21,7 @@ function addOrUpdateChapter(chapterId, chapterTitle) {
       try {
         chapters = JSON.parse(data);
       } catch (parseErr) {
-        console.error('Error parsing chapters.json:', parseErr);
+        console.error('Error parsing novels.json:', parseErr);
         return;
       }
     }
@@ -44,7 +44,7 @@ function addOrUpdateChapter(chapterId, chapterTitle) {
 
     fs.writeFile(chaptersFilePath, updatedData, 'utf8', (writeErr) => {
       if (writeErr) {
-        console.error('Error writing to chapters.json:', writeErr);
+        console.error('Error writing to novels.json:', writeErr);
         return;
       }
       console.log(`Successfully added/updated chapter ${chapterId}: "${chapterTitle}"`);

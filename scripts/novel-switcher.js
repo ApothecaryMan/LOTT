@@ -1,20 +1,53 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  let novels = [];
-  let currentNovelIndex = 0;
+function createChapterListItem(chapter, novelData, novelId) {
+  const chapterItem = document.createElement("a");
+  chapterItem.href = "#";
+  chapterItem.className = "chapter-item";
+  chapterItem.dataset.chapterId = chapter.id;
+  chapterItem.dataset.novelId = novelId;
 
-  async function initialize() {
-    try {
-      const response = await fetch("chapters.json");
-      if (!response.ok) {
-        throw new Error(`Failed to load novels data: ${response.status}`);
-      }
-      novels = await response.json();
-      await loadNovel(novels[currentNovelIndex].id);
-    } catch (error) {
-      console.error("Error initializing novel switcher:", error);
-    }
+  chapterItem.innerHTML = `
+    <img class="chapter-item-img" src="${novelData.novel.image}" alt="Chapter Image">
+    <div class="chapter-item-details">
+      <div class="chapter-item-header">
+        <p class="novel-title">${novelData.novel.title}</p>
+      </div>
+      <div class="chapter-item-body">
+        <span class="chapter-number">${chapter.id}</span>
+        <span class="dash">-</span>
+        <span class="chapter-title-in-list">${chapter.title}</span>
+      </div>
+    </div>
+  `;
+  return chapterItem;
+}
+
+function renderChapterList(novelData, novelId) {
+  const chapterListDiv = document.getElementById("chapter-list");
+  if (chapterListDiv) {
+    chapterListDiv.innerHTML = ""; // Clear existing chapters
+    novelData.chapters.forEach((chapter) => {
+      const chapterItem = createChapterListItem(chapter, novelData, novelId);
+      chapterListDiv.appendChild(chapterItem);
+    });
   }
+}
 
+  document.addEventListener("DOMContentLoaded", async () => {
+    let novels = [];
+    let currentNovelIndex = 0;
+
+    async function initialize() {
+      try {
+        const response = await fetch("novels.json");
+        if (!response.ok) {
+          throw new Error(`Failed to load novels data: ${response.status}`);
+        }
+        novels = await response.json();
+        await loadNovel(novels[currentNovelIndex].id);
+      } catch (error) {
+        console.error("Error initializing novel switcher:", error);
+      }
+    }
   async function loadNovel(novelId) {
     if (window.resetReaderState) {
       window.resetReaderState();
@@ -50,32 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       // Update chapter list
-      const chapterListDiv = document.getElementById("chapter-list");
-      if (chapterListDiv) {
-        chapterListDiv.innerHTML = ""; // Clear existing chapters
-        novelData.chapters.forEach((chapter) => {
-          const chapterItem = document.createElement("a");
-          chapterItem.href = "#";
-          chapterItem.className = "chapter-item";
-          chapterItem.dataset.chapterId = chapter.id;
-          chapterItem.dataset.novelId = novelId; // Add novelId for loading chapter
-
-          chapterItem.innerHTML = `
-            <img class="chapter-item-img" src="${novelData.novel.image}" alt="Chapter Image">
-            <div class="chapter-item-details">
-              <div class="chapter-item-header">
-                <p class="novel-title">${novelData.novel.title}</p>
-              </div>
-              <div class="chapter-item-body">
-                <span class="chapter-number">${chapter.id}</span>
-                <span class="dash">-</span>
-                <span class="chapter-title-in-list">${chapter.title}</span>
-              </div>
-            </div>
-          `;
-          chapterListDiv.appendChild(chapterItem);
-        });
-      }
+      renderChapterList(novelData, novelId);
 
       // Determine chapter to load
       let chapterToLoad = localStorage.getItem(`lastReadChapter_${novelId}`);

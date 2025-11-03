@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.body.appendChild(clone);
-    mainTitle.classList.add("hidden");
     titleBtn.textContent = newTitle;
     titleBtn.classList.add("visible");
 

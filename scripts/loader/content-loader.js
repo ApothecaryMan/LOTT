@@ -44,7 +44,7 @@ const state = {
  * @returns {Promise<string>} - محتوى الفصل بصيغة HTML.
  */
 async function fetchChapter(novelId, chapterId) {
-  const path = novelId === "LordOfTheTruth" ? `chapters/${chapterId}.html` : `chapters/${novelId}/${chapterId}.html`;
+  const path = novelId === "LordOfTheTruth" ? `chapters/Lord of The Truth/${chapterId}.html` : `chapters/${novelId}/${chapterId}.html`;
   const response = await fetch(path);
   if (!response.ok) throw new Error(`فشل تحميل الفصل ${chapterId} من الرواية ${novelId}`);
   return response.text();
