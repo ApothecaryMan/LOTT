@@ -58,6 +58,10 @@ export class NovelListUI {
       carouselContainer.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
+    if (window.populateNovelListContent) {
+      window.populateNovelListContent();
+    }
+
     setTimeout(() => {
       this.container.classList.add("visible");
       this._adjustHeight();

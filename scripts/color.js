@@ -126,7 +126,7 @@ function changeTheme(event) {
   const typographyAndSelectionRules = `
     ::selection { background-color: ${newColor}; color: white; }
     #chapter-title, #chapter-list-container h3, .chapter-item .chapter-number,
-    .comment-author, h2, .toggle-replies-btn, .auth-tab.active, .sort-by-btn .current-sort-value {
+    .comment-author, h2, #novel-list-container h3, .toggle-replies-btn, .auth-tab.active, .sort-by-btn .current-sort-value {
         color: ${newColor};
     }
   `;
@@ -179,7 +179,7 @@ function changeTheme(event) {
       body.light-theme .body { background-color: ${bodyBgColor}; box-shadow: none; }
       body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
       body.light-theme .chapter, body.light-theme #info-wrapper, body.light-theme .main-header-container,
-      body.light-theme #chapter-list-container, body.light-theme #comments-panel, body.light-theme .auth-modal-content,
+      body.light-theme #chapter-list-container, body.light-theme #novel-list-container, body.light-theme #comments-panel, body.light-theme .auth-modal-content,
       body.light-theme input, body.light-theme .auth-modal-close:hover, body.light-theme .carousel-item button, 
       body.light-theme .chapter-item {
           background-color: ${containerBgColor};
@@ -202,11 +202,11 @@ function changeTheme(event) {
       body { background-color: ${bodyBgColor}; }
       .body, .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
       .chapter, #info-wrapper, .main-header-container, #chapter-list-container, 
-      #comments-panel, .auth-modal-content, .chapter-item {
+      #novel-list-container, #comments-panel, .auth-modal-content, .chapter-item {
           background-color: ${containerBgColor};
       }
       .chapter-item:hover { background-color: ${hoverBgColor}; }
-      .spinner { border: 4px solid ${containerBgColor}; border-top-color: ${newColor}; }
+      .spinner { border: 44px solid ${containerBgColor}; border-top-color: ${newColor}; }
       .font-tools-popup svg { fill: #eee; }
       .font-tools-popup button{color: white; }
       .font-tools-popup h4, .font-tools-popup h5 { color: white; }

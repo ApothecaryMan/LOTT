@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const listLoader = new ListLoader();
   const novelListLoader = new NovelListLoader();
   const listUI = new ListUI();
-  const novelListUI = new NovelListUI();
+  window.novelListUI = new NovelListUI();
 
   await listLoader.init();
   await novelListLoader.init();

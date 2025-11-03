@@ -115,50 +115,38 @@ function renderChapterList(novelData, novelId) {
     switchToPreviousNovel,
   };
 
-  function hideNovelList() {
-    const novelListContainer = document.getElementById("novel-list-container");
-    const mainContentWrapper = document.querySelector(".main-content-wrapper");
-    if (novelListContainer) {
-      novelListContainer.style.maxHeight = '0';
-      novelListContainer.style.opacity = '0';
-      novelListContainer.classList.remove('visible');
-      setTimeout(() => {
-        novelListContainer.style.display = "none";
-      }, 500); // Match the transition duration
+  async function populateNovelListContent() {
+    console.log("populateNovelListContent called.");
+    const novelListContainer = document.getElementById("novel-list");
+    if (!novelListContainer) {
+      console.error("❌ novelListContainer (#novel-list) not found.");
+      return;
     }
-    if (mainContentWrapper) {
-      mainContentWrapper.style.display = "block";
-    }
-    document.body.classList.remove('list-is-open');
-  }
-
-  async function renderNovelList() {
-    const novelListContainer = document.getElementById("novel-list-container");
-    const mainContentWrapper = document.querySelector(".main-content-wrapper");
-
-    if (!novelListContainer || !mainContentWrapper) return;
-
-    novelListContainer.innerHTML = "<h3>قائمة الروايات</h3>"; // Clear existing list and add title
-    novelListContainer.style.display = "block";
-    novelListContainer.style.maxHeight = '1000px'; // Set a large enough max-height for the transition
-    novelListContainer.style.opacity = '1';
-    novelListContainer.classList.add('visible');
-    mainContentWrapper.style.display = "none";
-    document.body.classList.add('list-is-open');
+    console.log("✅ novelListContainer (#novel-list) found.");
 
     if (novels.length === 0) {
+      console.log("novels array is empty, attempting to fetch novels.json...");
       try {
         const response = await fetch("novels.json");
         if (!response.ok) {
           throw new Error(`Failed to load novels data: ${response.status}`);
         }
         novels = await response.json();
+        console.log("✅ novels.json fetched successfully. Novels:", novels);
       } catch (error) {
-        console.error("Error loading novels for list:", error);
+        console.error("❌ Error loading novels for list:", error);
         return;
       }
+    } else {
+      console.log("novels array already populated. Novels:", novels);
     }
 
+    novelListContainer.innerHTML = ""; // Clear existing list
+    if (novels.length === 0) {
+      console.log("No novels to display after fetch.");
+      return;
+    }
+    console.log(`Populating ${novels.length} novel items.`);
     novels.forEach(novel => {
       const novelItem = document.createElement("a");
       novelItem.href = "#";
@@ -178,19 +166,18 @@ function renderChapterList(novelData, novelId) {
       `;
       novelItem.addEventListener("click", async () => {
         await loadNovel(novel.id);
-        hideNovelList();
+        // The NovelListUI will handle hiding the list
+        if (window.novelListUI && window.novelListUI._hideList) {
+          window.novelListUI._hideList();
+        }
       });
       novelListContainer.appendChild(novelItem);
+      console.log(`Appended novel: ${novel.title}`);
     });
   }
 
-  const titleFontElement = document.getElementById("title-font");
-  if (titleFontElement) {
-    titleFontElement.style.cursor = "pointer"; // Indicate it's clickable
-    titleFontElement.addEventListener("click", renderNovelList);
-  }
-
   await initialize();
+
+  window.populateNovelListContent = populateNovelListContent;
+  window.loadNovel = loadNovel;
 });
-
-
