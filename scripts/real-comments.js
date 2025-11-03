@@ -807,8 +807,6 @@
 
     ui.showMainCommentForm();
 
-    await commentManager.loadComments();
-
     document.addEventListener("click", handlers.handleDocumentClick);
     document.addEventListener("submit", handlers.handleFormSubmit);
     document.addEventListener("input", handlers.handleTextareaInput);

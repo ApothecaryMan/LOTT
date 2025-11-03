@@ -152,7 +152,9 @@ function updateStoryDescription(chapterId) {
  */
 function updateComments(chapterId) {
   if (window.CommentsSystem?.setChapter) {
-    window.CommentsSystem.setChapter(`chapter-${chapterId}`);
+    const novelId = window.currentNovelId;
+    const uniqueChapterId = `${novelId}-${chapterId}`;
+    window.CommentsSystem.setChapter(uniqueChapterId);
   }
 }
 
