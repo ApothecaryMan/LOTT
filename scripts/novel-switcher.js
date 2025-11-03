@@ -146,8 +146,27 @@ function renderChapterList(novelData, novelId) {
       console.log("No novels to display after fetch.");
       return;
     }
-    console.log(`Populating ${novels.length} novel items.`);
-    novels.forEach(novel => {
+
+    console.log(`Fetching chapter counts for ${novels.length} novels.`);
+    const novelDataPromises = novels.map(async (novel) => {
+      try {
+        const response = await fetch(novel.path);
+        if (!response.ok) {
+          console.warn(`Failed to load chapter data for ${novel.title}: ${response.status}`);
+          return { ...novel, chapterCount: 0 }; // Return novel with 0 chapters on error
+        }
+        const data = await response.json();
+        return { ...novel, chapterCount: data.chapters.length };
+      } catch (error) {
+        console.error(`Error fetching chapter data for ${novel.title}:`, error);
+        return { ...novel, chapterCount: 0 }; // Return novel with 0 chapters on error
+      }
+    });
+
+    const novelsWithChapterCounts = await Promise.all(novelDataPromises);
+    console.log(`Populating ${novelsWithChapterCounts.length} novel items with chapter counts.`);
+
+    novelsWithChapterCounts.forEach(novel => {
       const novelItem = document.createElement("a");
       novelItem.href = "#";
       novelItem.className = "chapter-item"; // Reusing chapter-item class for styling
@@ -160,7 +179,7 @@ function renderChapterList(novelData, novelId) {
             <p class="novel-title">${novel.title}</p>
           </div>
           <div class="chapter-item-body">
-            <span class="chapter-title-in-list">${novel.title}</span>
+            <span class="novel-chapter-count">${novel.chapterCount} فصول</span>
           </div>
         </div>
       `;
@@ -172,7 +191,7 @@ function renderChapterList(novelData, novelId) {
         }
       });
       novelListContainer.appendChild(novelItem);
-      console.log(`Appended novel: ${novel.title}`);
+      console.log(`Appended novel: ${novel.title} with ${novel.chapterCount} chapters.`);
     });
   }
 
