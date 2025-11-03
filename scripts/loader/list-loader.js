@@ -1,4 +1,3 @@
-// This part handles fetching the list content and loading chapters when an item is clicked.
 document.addEventListener("DOMContentLoaded", async () => {
   // The container where the list will be injected
   const listContainer = document.getElementById("chapter-list-container");
@@ -21,42 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 2. Inject the fetched HTML into its container.
     listContainer.innerHTML = listHtml;
 
-    // 3. Fetch chapter data from the JSON file.
-    const chaptersResponse = await fetch("chapters.json");
-    if (!chaptersResponse.ok) {
-      throw new Error(
-        `Failed to load chapters data: ${chaptersResponse.status}`
-      );
-    }
-    const chapters = await chaptersResponse.json();
-
-    // 4. Generate and inject chapter items.
-    const chapterListDiv = document.getElementById("chapter-list");
-    if (chapterListDiv) {
-      chapters.forEach((chapter) => {
-        const chapterItem = document.createElement("a");
-        chapterItem.href = "#";
-        chapterItem.className = "chapter-item";
-        chapterItem.dataset.chapterId = chapter.id;
-
-        chapterItem.innerHTML = `
-          <img class="chapter-item-img" src="img/card.jpg" alt="Chapter Image">
-          <div class="chapter-item-details">
-            <div class="chapter-item-header">
-              <p class="novel-title">سيد الحقيقة</p>
-            </div>
-            <div class="chapter-item-body">
-              <span class="chapter-number">${chapter.id}</span>
-              <span class="dash">-</span>
-              <span class="chapter-title-in-list">${chapter.title}</span>
-            </div>
-          </div>
-        `;
-        chapterListDiv.appendChild(chapterItem);
-      });
-    }
-
-    // 5. Use event delegation to handle clicks on any chapter button inside the list.
+    // 3. Use event delegation to handle clicks on any chapter button inside the list.
     listContainer.addEventListener("click", async (event) => {
       // Find the chapter item that was clicked
       const chapterItem = event.target.closest("a.chapter-item");
@@ -77,11 +41,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const chapterToLoad = chapterItem.dataset.chapterId;
-      if (chapterToLoad) {
-        // استدعاء دالة تحميل الفصل مباشرة بدلاً من إعادة تحميل الصفحة
-        window.loadChapter(chapterToLoad);
+      const novelId = chapterItem.dataset.novelId;
+      if (chapterToLoad && novelId) {
+        // Call the loadChapter function with novelId and chapterId
+        window.loadChapter(novelId, chapterToLoad);
       }
-
     });
   } catch (error) {
     console.error("Error loading or setting up chapter list:", error);
