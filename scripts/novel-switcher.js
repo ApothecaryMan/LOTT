@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p class="novel-title">${novel.title}</p>
           </div>
           <div class="chapter-item-body">
-            <span class="novel-chapter-count">${localStorage.getItem(`lastReadChapter_${novel.id}`) || 1}/${novel.chapterCount}</span>
+            <span class="novel-chapter-count">${getReadChapters(novel.id).size}/${novel.chapterCount}</span>
           </div>
         </div>
       `;

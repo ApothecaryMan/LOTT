@@ -1,4 +1,4 @@
-import { markChapterAsRead } from "../utils.js";
+import { startChapterReadTimer } from "../utils.js";
 
 /**
  * =======================================================================
@@ -234,7 +234,7 @@ function setCurrentChapter(chapterId) {
 
   // حفظ التقدم في المتصفح
   localStorage.setItem(`lastReadChapter_${window.currentNovelId}`, chapterId);
-  markChapterAsRead(window.currentNovelId, chapterId); // Mark chapter as read
+  startChapterReadTimer(window.currentNovelId, chapterId); // Start timer to mark chapter as read
 
   // تحديث الـ URL
   const newUrl = `#chapter-${chapterId}`;
