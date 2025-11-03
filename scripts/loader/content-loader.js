@@ -1,3 +1,5 @@
+import { markChapterAsRead } from "../utils.js";
+
 /**
  * =======================================================================
  * 📘 نظام قراءة الرواية - نسخة 3.2 (الأذكى والأدق)
@@ -232,6 +234,7 @@ function setCurrentChapter(chapterId) {
 
   // حفظ التقدم في المتصفح
   localStorage.setItem(`lastReadChapter_${window.currentNovelId}`, chapterId);
+  markChapterAsRead(window.currentNovelId, chapterId); // Mark chapter as read
 
   // تحديث الـ URL
   const newUrl = `#chapter-${chapterId}`;

@@ -3,7 +3,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  animation: spin 1s ease infinite;
+  animation: spin 0s ease infinite;
   margin: 20px auto;
   display: none; /* Hidden by default */
 }

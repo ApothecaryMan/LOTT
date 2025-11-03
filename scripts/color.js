@@ -125,7 +125,7 @@ function changeTheme(event) {
   // 4.2: قواعد خاصة بالنصوص، التحديد (selection)، والعناوين.
   const typographyAndSelectionRules = `
     ::selection { background-color: ${newColor}; color: white; }
-    #chapter-title, #chapter-list-container h3, .chapter-item .chapter-number,
+    #chapter-title, #chapter-list-container h3, .chapter-item ,
     .comment-author, h2, #novel-list-container h3, .toggle-replies-btn, .auth-tab.active, .sort-by-btn .current-sort-value {
         color: ${newColor};
     }
@@ -145,7 +145,7 @@ function changeTheme(event) {
 
   // 4.4: قواعد خاصة بحالات Hover وتأثيرات أخرى.
   const hoverAndMiscRules = `
-    .like-btn.liked svg, .toggle-replies-btn svg { fill: ${newColor}; }
+    .like-btn.liked svg, .toggle-replies-btn svg,  { fill: ${newColor}; }
     .toggle-replies-btn:hover, .reply-btn:hover { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.1)")}; }
@@ -185,9 +185,11 @@ function changeTheme(event) {
           background-color: ${containerBgColor};
       }
       body.light-theme .chapter-item:hover { background-color: ${hoverBgColor}; }
-      .spinner { border: 4px solid ${containerBgColor}; border-top-color: ${newColor}; }
+      .spinner { border: 3px solid ${containerBgColor}; border-top-color: ${newColor}; }
       body.light-theme .font-tools-popup svg { fill: #222; }
       body.light-theme .card-title { color: ${newColor}; }
+      body.light-theme .chapter-item .novel-chapter-count { color: #444;}
+
     `;
   } else {
     // ================== قسم الثيم الداكن (Dark Theme) ==================
@@ -206,7 +208,7 @@ function changeTheme(event) {
           background-color: ${containerBgColor};
       }
       .chapter-item:hover { background-color: ${hoverBgColor}; }
-      .spinner { border: 44px solid ${containerBgColor}; border-top-color: ${newColor}; }
+      .spinner { border: 3px solid ${containerBgColor}; border-top-color: ${newColor}; }
       .font-tools-popup svg { fill: #eee; }
       .font-tools-popup button{color: white; }
       .font-tools-popup h4, .font-tools-popup h5 { color: white; }
