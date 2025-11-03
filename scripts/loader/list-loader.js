@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const listContainer = document.getElementById("chapter-list-container");
       const body = document.body;
-      const listToggleButton = document.getElementById("list");
+      const listToggleButton = document.getElementById("title-btn");
       if (listContainer && body) {
         listContainer.style.maxHeight = "0";
         listContainer.classList.remove("visible");
@@ -58,13 +58,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // This part handles the UI for opening and closing the chapter list container.
 document.addEventListener("DOMContentLoaded", () => {
-  const listToggleButton = document.getElementById("list");
+  const listToggleButton = document.getElementById("title-btn");
   const listContainer = document.getElementById("chapter-list-container");
   const body = document.body;
 
   if (!listToggleButton || !listContainer) {
     console.error(
-      "List toggle button (#list) or container (#chapter-list-container) not found."
+      "List toggle button (#title-btn) or container (#chapter-list-container) not found."
     );
     return;
   }

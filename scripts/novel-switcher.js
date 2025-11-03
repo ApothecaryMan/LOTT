@@ -37,6 +37,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (cardImg) cardImg.src = novelData.novel.image;
       if (cardTitle) cardTitle.textContent = novelData.novel.title;
 
+      // Update logo titles
+      const logoTitle = document.querySelector(".header .title");
+      const carouselLogoTitle = document.getElementById("logo");
+      if (logoTitle) logoTitle.textContent = novelData.novel.title;
+      if (carouselLogoTitle) carouselLogoTitle.textContent = novelData.novel.title;
+
       // Update story description
       const storyDescription = document.getElementById("story-description-text");
       if (storyDescription) {

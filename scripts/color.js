@@ -104,20 +104,20 @@ function changeTheme(event) {
     #increase-font-size:hover, #increase-font-size:active,
     #decrease-font-size:hover, #decrease-font-size:active,
     #font-selector button:hover, #align-formate button:hover,
-    #list:hover, #list:active, #comments-btn:hover, #comments-btn:active, #comments-btn.active,
+    #title-btn:hover, #title-btn:active, #comments-btn:hover, #comments-btn:active, #comments-btn.active,
     .carousel-item#font-selector button.active,
     .carousel-item#align-formate button.active,
-    .carousel-item button#list.active,
+    .carousel-item button#title-btn.active,
     #size-slider {
         background-color: ${newColor};
         color: white; /* غالبًا ما يكون اللون الأبيض هو الأفضل فوق خلفية ملونة */
     }
 
     /* تغيير لون أيقونات SVG داخل الأزرار التفاعلية إلى الأبيض عند التفعيل */
-    #increase-font-size:hover svg, #decrease-font-size:hover svg, #list:hover svg,
+    #increase-font-size:hover svg, #decrease-font-size:hover svg, #title-btn:hover svg,
     #align-formate button:hover svg, #comments-btn:hover svg, #comments-btn.active svg,
     .carousel-item#align-formate button.active svg,
-    .carousel-item button#list.active svg, .carousel-btn-middle:hover svg {
+    .carousel-item button#title-btn.active svg, .carousel-btn-middle:hover svg {
         fill: white;
     }
   `;
