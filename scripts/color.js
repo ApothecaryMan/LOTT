@@ -103,7 +103,6 @@ function changeTheme(event) {
     .auth-submit-btn, .auth-prompt-btn, .edit-submit-btn, .comment-submit-btn, .reply-submit-btn,
     #increase-font-size:hover, #increase-font-size:active,
     #decrease-font-size:hover, #decrease-font-size:active,
-    #font-selector button:hover, #align-formate button:hover,
     #title-btn:hover, #title-btn:active, #comments-btn:hover, #comments-btn:active, #comments-btn.active,
     .carousel-item#font-selector button.active,
     .carousel-item#align-formate button.active,
@@ -153,7 +152,13 @@ function changeTheme(event) {
     .sort-option.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.2)")}; }
-
+    .font-tools-content button.active { background-color: ${newColor
+      .replace("rgb", "rgba")
+      .replace(")", ", 0.1)")};
+      box-shadow: 0 0px 10px ${newColor
+        .replace("rgb", "rgba")
+        .replace(")", ", 0.1)")};
+    }
     
   `;
 
