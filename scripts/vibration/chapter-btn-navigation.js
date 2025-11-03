@@ -6,6 +6,36 @@ document.addEventListener("DOMContentLoaded", () => {
   window.hasNextChapter = true;
   window.hasPrevChapter = true;
 
+  // --- Helper function to get novel title and chapter number from URL ---
+  function getNovelAndChapterInfo() {
+    const pathParts = window.location.pathname.split('/');
+    const chaptersIndex = pathParts.indexOf('chapters');
+    if (chaptersIndex > -1 && chaptersIndex + 2 < pathParts.length) {
+      const novelTitle = pathParts[chaptersIndex + 1];
+      const chapterFileName = pathParts[chaptersIndex + 2];
+      const chapterNumber = parseInt(chapterFileName.replace('.html', ''), 10);
+      return { novelTitle, chapterNumber };
+    }
+    return { novelTitle: null, chapterNumber: null };
+  }
+
+  // --- Function to mark chapter as read ---
+  function markChapterAsRead(novelTitle, chapterNumber) {
+    if (novelTitle && chapterNumber) {
+      const key = `read_chapter_${novelTitle}_${chapterNumber}`;
+      localStorage.setItem(key, Date.now().toString());
+      console.log(`Chapter ${chapterNumber} of ${novelTitle} marked as read.`);
+    }
+  }
+
+  // --- Mark chapter as read after 1 minute ---
+  const { novelTitle, chapterNumber } = getNovelAndChapterInfo();
+  if (novelTitle && chapterNumber) {
+    setTimeout(() => {
+      markChapterAsRead(novelTitle, chapterNumber);
+    }, 60 * 1000); // 1 minute in milliseconds
+  }
+
   // --- Get DOM Elements ---
   const nextBtn = document.querySelector(".next");
   const prevBtn = document.querySelector(".previous");
