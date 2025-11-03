@@ -115,5 +115,82 @@ function renderChapterList(novelData, novelId) {
     switchToPreviousNovel,
   };
 
+  function hideNovelList() {
+    const novelListContainer = document.getElementById("novel-list-container");
+    const mainContentWrapper = document.querySelector(".main-content-wrapper");
+    if (novelListContainer) {
+      novelListContainer.style.maxHeight = '0';
+      novelListContainer.style.opacity = '0';
+      novelListContainer.classList.remove('visible');
+      setTimeout(() => {
+        novelListContainer.style.display = "none";
+      }, 500); // Match the transition duration
+    }
+    if (mainContentWrapper) {
+      mainContentWrapper.style.display = "block";
+    }
+    document.body.classList.remove('list-is-open');
+  }
+
+  async function renderNovelList() {
+    const novelListContainer = document.getElementById("novel-list-container");
+    const mainContentWrapper = document.querySelector(".main-content-wrapper");
+
+    if (!novelListContainer || !mainContentWrapper) return;
+
+    novelListContainer.innerHTML = "<h3>قائمة الروايات</h3>"; // Clear existing list and add title
+    novelListContainer.style.display = "block";
+    novelListContainer.style.maxHeight = '1000px'; // Set a large enough max-height for the transition
+    novelListContainer.style.opacity = '1';
+    novelListContainer.classList.add('visible');
+    mainContentWrapper.style.display = "none";
+    document.body.classList.add('list-is-open');
+
+    if (novels.length === 0) {
+      try {
+        const response = await fetch("novels.json");
+        if (!response.ok) {
+          throw new Error(`Failed to load novels data: ${response.status}`);
+        }
+        novels = await response.json();
+      } catch (error) {
+        console.error("Error loading novels for list:", error);
+        return;
+      }
+    }
+
+    novels.forEach(novel => {
+      const novelItem = document.createElement("a");
+      novelItem.href = "#";
+      novelItem.className = "chapter-item"; // Reusing chapter-item class for styling
+      novelItem.dataset.novelId = novel.id;
+
+      novelItem.innerHTML = `
+        <img class="chapter-item-img" src="${novel.image}" alt="${novel.title}">
+        <div class="chapter-item-details">
+          <div class="chapter-item-header">
+            <p class="novel-title">${novel.title}</p>
+          </div>
+          <div class="chapter-item-body">
+            <span class="chapter-title-in-list">${novel.title}</span>
+          </div>
+        </div>
+      `;
+      novelItem.addEventListener("click", async () => {
+        await loadNovel(novel.id);
+        hideNovelList();
+      });
+      novelListContainer.appendChild(novelItem);
+    });
+  }
+
+  const titleFontElement = document.getElementById("title-font");
+  if (titleFontElement) {
+    titleFontElement.style.cursor = "pointer"; // Indicate it's clickable
+    titleFontElement.addEventListener("click", renderNovelList);
+  }
+
   await initialize();
 });
+
+

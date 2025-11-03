@@ -1,10 +1,14 @@
 [
   {
     "id": "LordOfTheTruth",
-    "path": "chapters/Lord of The Truth/LordOfTheTruth.json"
+    "path": "chapters/Lord of The Truth/LordOfTheTruth.json",
+    "title": "Lord Of The Truth",
+    "image": "img/novels/LordOfTheTruth.jpg"
   },
   {
     "id": "TalesOfHerdingGods",
-    "path": "chapters/TalesOfHerdingGods/TalesOfHerdingGods.json"
+    "path": "chapters/TalesOfHerdingGods/TalesOfHerdingGods.json",
+    "title": "Tales Of Herding Gods",
+    "image": "img/novels/TalesOfHerdingGods.webp"
   }
 ]

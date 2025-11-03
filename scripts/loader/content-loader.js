@@ -44,9 +44,13 @@ const state = {
  * @returns {Promise<string>} - محتوى الفصل بصيغة HTML.
  */
 async function fetchChapter(novelId, chapterId) {
-  const path = novelId === "LordOfTheTruth" ? `chapters/Lord of The Truth/${chapterId}.html` : `chapters/${novelId}/${chapterId}.html`;
+  const path =
+    novelId === "LordOfTheTruth"
+      ? `chapters/Lord of The Truth/${chapterId}.html`
+      : `chapters/${novelId}/${chapterId}.html`;
   const response = await fetch(path);
-  if (!response.ok) throw new Error(`فشل تحميل الفصل ${chapterId} من الرواية ${novelId}`);
+  if (!response.ok)
+    throw new Error(`فشل تحميل الفصل ${chapterId} من الرواية ${novelId}`);
   return response.text();
 }
 
@@ -289,7 +293,8 @@ async function loadChapter(novelId, chapterId, position = "replace") {
           if (chapterTitleElement) {
             const stickyHeader = document.querySelector(".body");
             const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
-            const elementPosition = chapterTitleElement.getBoundingClientRect().top;
+            const elementPosition =
+              chapterTitleElement.getBoundingClientRect().top;
             const offsetPosition =
               elementPosition + window.scrollY - headerHeight;
             document.documentElement.scrollTop = offsetPosition;
@@ -350,10 +355,11 @@ function initInfiniteScroll() {
           (c) => c.id === lastLoadedChapterId
         );
 
-        const nextChapter = window.currentNovelChapters[lastLoadedChapterIndex + 1];
+        const nextChapter =
+          window.currentNovelChapters[lastLoadedChapterIndex + 1];
 
         if (nextChapter) {
-          await new Promise((resolve) => setTimeout(resolve, 300));
+          // await new Promise((resolve) => setTimeout(resolve, 500));
           await loadChapter(window.currentNovelId, nextChapter.id, "append");
         } else {
           state.reachedEnd = true;
@@ -393,7 +399,8 @@ function initInfiniteScrollUp() {
           (c) => c.id === firstLoadedChapterId
         );
 
-        const prevChapter = window.currentNovelChapters[firstLoadedChapterIndex - 1];
+        const prevChapter =
+          window.currentNovelChapters[firstLoadedChapterIndex - 1];
 
         if (prevChapter) {
           await new Promise((resolve) => setTimeout(resolve, 500));
