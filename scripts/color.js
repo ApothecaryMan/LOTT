@@ -104,8 +104,8 @@ function changeTheme(event) {
     #increase-font-size:hover, #increase-font-size:active,
     #decrease-font-size:hover, #decrease-font-size:active,
     #title-btn:hover, #title-btn:active, #comments-btn:hover, #comments-btn:active, #comments-btn.active,
-    .carousel-item#font-selector button.active,
-    .carousel-item#align-formate button.active,
+    .carousel-item #font-selector button.active,
+    .carousel-item #align-formate button.active,
     .carousel-item button#title-btn.active,
     #size-slider {
         background-color: ${newColor};
@@ -115,8 +115,8 @@ function changeTheme(event) {
     /* تغيير لون أيقونات SVG داخل الأزرار التفاعلية إلى الأبيض عند التفعيل */
     #increase-font-size:hover svg, #decrease-font-size:hover svg, #title-btn:hover svg,
     #align-formate button:hover svg, #comments-btn:hover svg, #comments-btn.active svg,
-    .carousel-item#align-formate button.active svg,
-    .carousel-item button#title-btn.active svg, .carousel-btn-middle:hover svg {
+    .carousel-item #align-formate button.active svg,
+    .carousel-item button #title-btn.active svg, .carousel-btn-middle:hover svg {
         fill: white;
     }
   `;
@@ -152,7 +152,7 @@ function changeTheme(event) {
     .sort-option.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.2)")}; }
-    .font-tools-content button.active { background-color: ${newColor
+    .body, .font-tools-content button.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.1)")};
       box-shadow: 0 0px 10px ${newColor
@@ -181,7 +181,14 @@ function changeTheme(event) {
 
     dynamicCSS += `
       body.light-theme { background-color: ${bodyBgColor}; }
-      body.light-theme .body { background-color: ${bodyBgColor}; box-shadow: none; }
+      body.light-theme .body { background-color: ${newColor
+        .replace("rgb", "rgba")
+        .replace(")", ", 0.1)")};
+      box-shadow: 0 0px 10px ${newColor
+        .replace("rgb", "rgba")
+        .replace(")", ", 0.1)")};
+        border:1px solid rgba(0, 0, 0, 0.1);
+        }
       body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
       body.light-theme .chapter, body.light-theme #info-wrapper, body.light-theme .main-header-container,
       body.light-theme #chapter-list-container, body.light-theme #novel-list-container, body.light-theme #comments-panel, body.light-theme .auth-modal-content,
@@ -207,7 +214,7 @@ function changeTheme(event) {
 
     dynamicCSS += `
       body { background-color: ${bodyBgColor}; }
-      .body, .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
+      .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
       .chapter, #info-wrapper, .main-header-container, #chapter-list-container, 
       #novel-list-container, #comments-panel, .auth-modal-content, .chapter-item {
           background-color: ${containerBgColor};
