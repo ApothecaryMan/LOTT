@@ -59,20 +59,37 @@ button {
   margin-bottom: 2px;
 }
 
-/* GLOBAL GLASS EFFECT */
+h3,
 .chapter-item,
-.font-tools-popup,
 .novel-item,
-.novel-chapter-count,
-.main-header-container h3,
-.carousel-container .body,
-#font-selector button:hover,
-#align-formate button:hover,
-.font-tools-content button.active {
+.novel-chapter-count {
+  /* GLASS EFFECT 3D */
+  border: 1px solid rgba(255, 255, 255, 0.068);
+  background-color: rgba(var(--bg-color-dark-rgb), 0.9);
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.068);
   box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3),
     inset -2px -2px 2px 1px rgba(255, 255, 255, 0.3),
     0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
+  /* FROSTED EFFECT 2D */
+  /* background-color: rgba(var(--bg-color-dark-rgb), 0.9);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.3),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); */
+
+  /* DARK GLASS EFFECT 2D */
+  /* border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+
+  background: rgba(20, 20, 20, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.6);
+
+  overflow: hidden; */
 }
