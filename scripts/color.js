@@ -152,7 +152,7 @@ function changeTheme(event) {
     .sort-option.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.2)")}; }
-    .bodyy, .font-tools-content button.active { background-color: ${newColor
+    .body, .font-tools-content button.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.1)")};
       box-shadow: 0 0px 10px ${newColor
@@ -180,29 +180,48 @@ function changeTheme(event) {
     const hoverBgColor = `hsl(${h}, ${safeS - 5}%, 92%)`;
 
     dynamicCSS += `
-      body.light-theme { background-color: ${bodyBgColor}; }
-      body.light-theme .body { background-color: ${newColor
-        .replace("rgb", "rgba")
-        .replace(")", ", 0.1)")};
-      box-shadow: 0 0px 10px ${newColor
-        .replace("rgb", "rgba")
-        .replace(")", ", 0.1)")};
-        border:1px solid rgba(0, 0, 0, 0.1);
-        }
-      body.light-theme .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
-      body.light-theme .chapter, body.light-theme #info-wrapper, body.light-theme .main-header-container,
-      body.light-theme #chapter-list-container, body.light-theme #novel-list-container, body.light-theme #comments-panel, body.light-theme .auth-modal-content,
-      body.light-theme input, body.light-theme .auth-modal-close:hover, body.light-theme .carousel-item button, 
-      body.light-theme .chapter-item {
-          background-color: ${containerBgColor};
-      }
-      body.light-theme .chapter-item:hover { background-color: ${hoverBgColor}; }
-      .spinner { border: 3px solid ${containerBgColor}; border-top-color: ${newColor}; }
-      body.light-theme .font-tools-popup svg { fill: #222; }
-      body.light-theme .card-title { color: ${newColor}; }
-      body.light-theme .chapter-item .novel-chapter-count { color: #444;}
+  body.light-theme { background-color: ${bodyBgColor}; }
 
-    `;
+  body.light-theme .body {
+    background-color: ${newColor.replace("rgb", "rgba").replace(")", ", 0.1)")};
+    box-shadow: 0 0px 10px ${newColor
+      .replace("rgb", "rgba")
+      .replace(")", ", 0.1)")};
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .carousel-nav-btn {
+    background-color: ${bodyBgColor};
+  }
+
+  body.light-theme .chapter,
+  body.light-theme #info-wrapper,
+  body.light-theme .main-header-container,
+  body.light-theme #chapter-list-container,
+  body.light-theme #novel-list-container,
+  body.light-theme #comments-panel,
+  body.light-theme .auth-modal-content,
+  body.light-theme input,
+  body.light-theme .auth-modal-close:hover,
+  body.light-theme .carousel-item button,
+  body.light-theme .chapter-item {
+    background-color: ${containerBgColor};
+  }
+
+  body.light-theme .chapter-item:hover,
+  body.light-theme .novel-item:hover {
+    background-color: ${hoverBgColor};
+  }
+
+  .spinner {
+    border: 3px solid ${containerBgColor};
+    border-top-color: ${newColor};
+  }
+
+  body.light-theme .font-tools-popup svg { fill: #222; }
+  body.light-theme .card-title { color: ${newColor}; }
+  body.light-theme .chapter-item .novel-chapter-count { color: #444; }
+`;
   } else {
     // ================== قسم الثيم الداكن (Dark Theme) ==================
     const [h, s, l] = rgbToHsl(newColor);
@@ -214,13 +233,13 @@ function changeTheme(event) {
 
     dynamicCSS += `
       body { background-color: ${bodyBgColor}; }
-      .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
-      .chapter, #info-wrapper, .main-header-container, ###chapter-list-container
-      , 
+      .carousel-container .carousel-nav-btn { background-color: ${bodyBgColor}; }
+      .chapter, #info-wrapper, .main-header-container,
+ 
       #novel-list-container, #comments-panel, .auth-modal-content, .chapter-item {
           background-color: ${containerBgColor};
       }
-      .chapter-item:hover { background-color: ${hoverBgColor}; }
+      .chapter-item:hover, .novel-item:hover { background-color: ${hoverBgColor}; }
       .spinner { border: 3px solid ${containerBgColor}; border-top-color: ${newColor}; }
       .font-tools-popup svg { fill: #eee; }
       .font-tools-popup button{color: white; }

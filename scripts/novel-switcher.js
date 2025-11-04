@@ -191,16 +191,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     novelsWithChapterCounts.forEach((novel) => {
       const novelItem = document.createElement("a");
       novelItem.href = "#";
-      novelItem.className = "chapter-item"; // Reusing chapter-item class for styling
+      novelItem.className = "novel-item"; // Reusing chapter-item class for styling
       novelItem.dataset.novelId = novel.id;
 
       novelItem.innerHTML = `
-      <img class="chapter-item-img" src="${novel.image}" alt="${novel.title}">  
-        <div class="chapter-item-details">
-          <div class="chapter-item-header">
+      <img class="novel-item-img" src="${novel.image}" alt="${novel.title}">  
+        <div class="novel-item-details">
+          <div class="novel-item-header">
             <p class="novel-title">${novel.title}</p>
           </div>
-          <div class="chapter-item-body">
+          <div class="novel-item-body">
             <span class="novel-chapter-count">${
               getReadChapters(novel.id).size
             }/${novel.chapterCount}</span>

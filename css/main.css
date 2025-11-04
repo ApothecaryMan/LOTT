@@ -142,11 +142,9 @@ strong {
     padding 0.5s ease-in-out, visibility 0s linear 0s;
 
   /* --- Keep your existing styles --- */
-  background-color: rgb(36, 36, 36);
   border-radius: 25px;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid #555; /* Base border color */
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -162,7 +160,7 @@ strong {
   min-width: 95%;
   border-width: 1px;
   max-height: 1000px; /* Ensure it can expand */
-  margin-bottom: 6px; /* Consistent with chapter list */
+  margin-bottom: 15px; /* Consistent with chapter list */
 }
 
 #novel-list-container h3 {
@@ -202,4 +200,73 @@ body.list-is-open .info-container    /* Added */ {
 }
 body.list-is-open {
   overflow: hidden; /* Hide the main page scrollbar */
+}
+
+/* --- Individual Novel Item --- */
+.novel-item {
+  border-radius: 30px;
+  padding: 15px 30px 15px 15px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease-out;
+  text-decoration: none;
+
+  background-color: rgba(var(--bg-color-dark-rgb), 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.068);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.3),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
+  /* --- "Liquid" Shape & Style --- */
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.novel-item:hover {
+  background-color: #3a3a3a;
+  transform: translateY(-2px);
+}
+
+/* --- Novel Image --- */
+.novel-item-img {
+  width: 90px; /* Adjust size as needed */
+  height: 90px; /* Adjust size as needed */
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+/* --- Details Section (Title and Chapter Number) --- */
+.novel-item-details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* --- Header (Novel Title) --- */
+.novel-item-header {
+  display: flex;
+  align-items: center;
+}
+
+.novel-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Body (Chapter Number and Title) --- */
+.novel-item-body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #b0b0b0;
 }

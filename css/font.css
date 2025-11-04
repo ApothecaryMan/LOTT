@@ -328,6 +328,8 @@ h2 {
   border: none;
   transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.5);
   cursor: pointer;
+
+  transform: scale(1.2);
 }
 #size-slider::-webkit-slider-thumb:hover {
   transform: scale(1.3);
@@ -344,7 +346,6 @@ h2 {
   color: rgba(255, 255, 255, 0.623);
 }
 #size-slider::-webkit-slider-thumb:active {
-  transform: scale(1.2);
 }
 #align-formate {
   display: flex;

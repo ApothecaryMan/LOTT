@@ -32,8 +32,7 @@ body.light-theme #gray {
 /* هذه هي "الحاويات" التي طلبت جعلها بيضاء */
 body.light-theme .chapter,
 body.light-theme .info-container .info,
-body.light-theme .main-header-container,
-body.light-theme #chapter-list-container {
+body.light-theme .main-header-container {
   background-color: #ffffff;
   border-color: #dcdcdc; /* تغيير لون الحدود لتكون مرئية */
 }
@@ -128,5 +127,3 @@ body.light-theme .reply-textarea {
 body.light-theme .form-group input {
   color: #333;
 }
-
-
