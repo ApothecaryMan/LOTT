@@ -36,12 +36,13 @@
 .carousel-container {
   /* width: 100%; */
   max-width: auto;
-  border-radius: 25px;
+  border-radius: 100px;
   border: none;
   box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .carousel-wrapper {

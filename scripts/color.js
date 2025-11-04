@@ -152,7 +152,7 @@ function changeTheme(event) {
     .sort-option.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.2)")}; }
-    .body, .font-tools-content button.active { background-color: ${newColor
+    /*.body,*/ .font-tools-content button.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.1)")};
       box-shadow: 0 0px 10px ${newColor
