@@ -49,6 +49,11 @@ export class NovelListUI {
    * @private
    */
   _showList() {
+    // Hide chapter list if it's open
+    if (window.chapterListUI && window.chapterListUI._hideList) {
+      window.chapterListUI._hideList();
+    }
+
     if (window.vibrationManager) window.vibrationManager.listOpen();
 
     this.toggleButton.classList.add("active");

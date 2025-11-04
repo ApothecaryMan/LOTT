@@ -10,5 +10,11 @@
     "path": "chapters/TalesOfHerdingGods/TalesOfHerdingGods.json",
     "title": "Tales Of Herding Gods",
     "image": "img/novels/TalesOfHerdingGods.webp"
+  },
+  {
+    "id": "DevilsSonInLaw",
+    "path": "chapters/DevilsSonInLaw/DevilsSonInLaw.json",
+    "title": "Devil's Son In Law",
+    "image": "img/novels/DevilsSonInLaw.jpg"
   }
 ]

@@ -49,6 +49,11 @@ export class ListUI {
    * @private
    */
   _showList() {
+    // Hide novel list if it's open
+    if (window.novelListUI && window.novelListUI._hideList) {
+      window.novelListUI._hideList();
+    }
+
     if (window.vibrationManager) window.vibrationManager.listOpen();
 
     this.toggleButton.classList.add("active");

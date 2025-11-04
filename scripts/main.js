@@ -6,11 +6,11 @@ import { NovelListUI } from "./list/NovelListUI.js";
 document.addEventListener("DOMContentLoaded", async () => {
   const listLoader = new ListLoader();
   const novelListLoader = new NovelListLoader();
-  const listUI = new ListUI();
+  window.chapterListUI = new ListUI(); // Expose globally
   window.novelListUI = new NovelListUI();
 
   await listLoader.init();
   await novelListLoader.init();
-  listUI.init();
-  novelListUI.init();
+  window.chapterListUI.init(); // Use global reference
+  window.novelListUI.init();
 });
