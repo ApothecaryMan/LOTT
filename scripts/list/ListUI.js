@@ -66,7 +66,7 @@ export class ListUI {
     setTimeout(() => {
       this.container.classList.add("visible");
       this._adjustHeight();
-      this.body.classList.add("list-is-open");
+      // this.body.classList.add("list-is-open");
     }, 150);
   }
 
@@ -80,7 +80,7 @@ export class ListUI {
     this.toggleButton.classList.remove("active");
     this.container.classList.remove("visible");
     this.container.style.maxHeight = "0";
-    this.body.classList.remove("list-is-open");
+    // this.body.classList.remove("list-is-open");
   }
 
   /**

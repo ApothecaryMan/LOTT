@@ -197,19 +197,15 @@ function changeTheme(event) {
   body.light-theme .chapter,
   body.light-theme #info-wrapper,
   body.light-theme .main-header-container,
-  body.light-theme #chapter-list-container,
-  body.light-theme #novel-list-container,
   body.light-theme #comments-panel,
   body.light-theme .auth-modal-content,
   body.light-theme input,
   body.light-theme .auth-modal-close:hover,
-  body.light-theme .carousel-item button,
-  body.light-theme .chapter-item {
+  body.light-theme .carousel-item button {
     background-color: ${containerBgColor};
   }
 
-  body.light-theme .chapter-item:hover,
-  body.light-theme .novel-item:hover {
+  body.light-theme .chapter-item:hover {
     background-color: ${hoverBgColor};
   }
 
@@ -236,7 +232,7 @@ function changeTheme(event) {
       .carousel-container .carousel-nav-btn { background-color: ${bodyBgColor}; }
       .chapter, #info-wrapper, .main-header-container,
  
-      #novel-list-container, #comments-panel, .auth-modal-content, .chapter-item {
+      #comments-panel, .auth-modal-content {
           background-color: ${containerBgColor};
       }
       .chapter-item:hover, .novel-item:hover { background-color: ${hoverBgColor}; }

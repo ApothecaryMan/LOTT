@@ -92,7 +92,7 @@ body.light-theme #chapter-list button:hover {
 body.light-theme .chapter-number,
 body.light-theme .chapter-title-in-list,
 body.light-theme .dash {
-  color: #444;
+  color: #000000;
 }
 
 body.light-theme .next,
@@ -126,4 +126,10 @@ body.light-theme .reply-textarea {
 /* COMMENTS */
 body.light-theme .form-group input {
   color: #333;
+}
+body.light-theme .novel-item p {
+  color: #000000;
+}
+body.light-theme .novel-chapter-count {
+  color: #000000;
 }

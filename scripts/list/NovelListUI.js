@@ -22,7 +22,9 @@ export class NovelListUI {
    */
   init() {
     if (!this.toggleButton || !this.container) {
-      console.error("❌ لم يتم العثور على الزر أو الحاوية الخاصة بقائمة الروايات.");
+      console.error(
+        "❌ لم يتم العثور على الزر أو الحاوية الخاصة بقائمة الروايات."
+      );
       return;
     }
 
@@ -70,7 +72,7 @@ export class NovelListUI {
     setTimeout(() => {
       this.container.classList.add("visible");
       this._adjustHeight();
-      this.body.classList.add("list-is-open");
+      // this.body.classList.add("list-is-open");
     }, 150);
   }
 
@@ -84,7 +86,7 @@ export class NovelListUI {
     this.toggleButton.classList.remove("active");
     this.container.classList.remove("visible");
     this.container.style.maxHeight = "0";
-    this.body.classList.remove("list-is-open");
+    // this.body.classList.remove("list-is-open");
   }
 
   /**

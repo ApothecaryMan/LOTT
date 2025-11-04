@@ -227,7 +227,6 @@ body.list-is-open {
 }
 
 .novel-item:hover {
-  background-color: #3a3a3a;
   transform: translateY(-2px);
 }
 
@@ -269,4 +268,39 @@ body.list-is-open {
   gap: 8px;
   font-size: 14px;
   color: #b0b0b0;
+}
+.novel-chapter-count {
+  color: #ffffff;
+  border-radius: 25px;
+  padding: 2px 8px;
+
+  background-color: rgba(var(--bg-color-dark-rgb), 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.068);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.3),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+h3 {
+  font-family: "Merdane", sans-serif;
+  text-align: center;
+  font-weight: 25px;
+  margin-top: 0;
+  margin-bottom: 25px;
+  user-select: none;
+  border-radius: 25px;
+  padding: 10px 15px;
+
+  /* GLASS */
+  background-color: rgba(var(--bg-color-dark-rgb), 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.068);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.3),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
