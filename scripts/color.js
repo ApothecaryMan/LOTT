@@ -152,7 +152,7 @@ function changeTheme(event) {
     .sort-option.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.2)")}; }
-    .body, .font-tools-content button.active { background-color: ${newColor
+    .bodyy, .font-tools-content button.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.1)")};
       box-shadow: 0 0px 10px ${newColor
@@ -215,7 +215,8 @@ function changeTheme(event) {
     dynamicCSS += `
       body { background-color: ${bodyBgColor}; }
       .carousel-wrapper .carousel-nav-btn { background-color: ${bodyBgColor}; }
-      .chapter, #info-wrapper, .main-header-container, #chapter-list-container, 
+      .chapter, #info-wrapper, .main-header-container, ###chapter-list-container
+      , 
       #novel-list-container, #comments-panel, .auth-modal-content, .chapter-item {
           background-color: ${containerBgColor};
       }
