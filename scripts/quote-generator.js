@@ -95,9 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const quoteTemplate = document.createElement("div");
     quoteTemplate.classList.add("generated-quote");
-    quoteTemplate.style.padding = "20px";
+    quoteTemplate.style.padding = "20px 20px 10px 20px";
     quoteTemplate.style.borderRadius = "0";
-    quoteTemplate.style.width = `${Math.round(document.body.clientWidth * 0.9)}px`;
+    quoteTemplate.style.width = `${Math.round(
+      document.body.clientWidth * 0.9
+    )}px`;
     quoteTemplate.style.maxWidth = "400px";
     quoteTemplate.style.textAlign = "center";
     quoteTemplate.style.visibility = "hidden"; // Hide for measurement
@@ -144,14 +146,16 @@ document.addEventListener("DOMContentLoaded", () => {
     let chapterTitle = "";
 
     if (window.allNovels && novelId) {
-      const novel = window.allNovels.find(n => n.id === novelId);
+      const novel = window.allNovels.find((n) => n.id === novelId);
       if (novel) {
         novelTitle = novel.title;
       }
     }
 
     if (window.currentNovelChapters && chapterId) {
-      const chapter = window.currentNovelChapters.find(c => c.id === chapterId.toString());
+      const chapter = window.currentNovelChapters.find(
+        (c) => c.id === chapterId.toString()
+      );
       if (chapter) {
         chapterTitle = chapter.title;
       }
@@ -161,20 +165,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const footerDiv = document.createElement("div");
       footerDiv.style.display = "flex";
       footerDiv.style.justifyContent = "space-between";
-      footerDiv.style.marginTop = "15px";
+      footerDiv.style.paddingTop = "15px";
       footerDiv.style.fontSize = "small";
       footerDiv.style.color = color; // Use the same color as the quote text
 
       const chapterInfoSpan = document.createElement("span");
-      chapterInfoSpan.style.textAlign = "right";
-      chapterInfoSpan.textContent = `${chapterId ? chapterId + ' - ' : ''}${chapterTitle}`;
+      chapterInfoSpan.style.textAlign = "left";
+      chapterInfoSpan.textContent = `${
+        chapterId ? chapterId + " - " : ""
+      }${chapterTitle}`;
 
       const novelTitleSpan = document.createElement("span");
-      novelTitleSpan.style.textAlign = "left";
+      novelTitleSpan.style.textAlign = "right";
+      novelTitleSpan.style.fontFamily = "'M PLUS Rounded 1c', sans-serif";
       novelTitleSpan.textContent = novelTitle;
 
-      footerDiv.appendChild(novelTitleSpan);
       footerDiv.appendChild(chapterInfoSpan);
+      footerDiv.appendChild(novelTitleSpan);
       quoteTemplate.appendChild(footerDiv);
     }
 
