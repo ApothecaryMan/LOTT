@@ -100,19 +100,42 @@ document.addEventListener("DOMContentLoaded", () => {
     quoteTemplate.style.width = `${document.body.clientWidth * 0.9}px`;
     quoteTemplate.style.maxWidth = "400px";
     quoteTemplate.style.textAlign = "center";
-    const paragraphs = text.split(/\n\s*\n/);
-    const paragraphHtml = paragraphs
-      .map((p, index) => {
-      const marginBottom = index === paragraphs.length - 1 ? '0' : '1.5em';
-      return `<div style="padding-bottom: ${marginBottom};"><p style="font-size: 20px; font-family: ${fontFamily}; color: ${color}; margin: 0;">${p}</p></div>`;
-      })
-      .join("");
-    quoteTemplate.innerHTML = paragraphHtml;
+    quoteTemplate.style.visibility = "hidden"; // Hide for measurement
+    quoteTemplate.style.position = "absolute";
+    quoteTemplate.style.left = "-9999px";
+    document.body.appendChild(quoteTemplate); // Append for measurement
 
-    document.body.appendChild(quoteTemplate);
+    const maxHeight = document.documentElement.clientHeight / 2;
+    let currentFontSize = 20; // Initial font size
+
+    const paragraphs = text.split(/\n\s*\n/);
+
+    // Function to generate paragraph HTML with a given font size
+    const generateParagraphHtml = (fontSize) => {
+      return paragraphs.map((p, index) => {
+        const marginBottom = index === paragraphs.length - 1 ? '0' : '1.5em';
+        return `<div style="padding-bottom: ${marginBottom};"><p style="font-size: ${fontSize}px; font-family: ${fontFamily}; color: ${color}; margin: 0;">${p}</p></div>`;
+      }).join('');
+    };
+
+    // Measurement loop
+    while (true) {
+      const paragraphHtml = generateParagraphHtml(currentFontSize);
+      quoteTemplate.innerHTML = paragraphHtml;
+
+      if (quoteTemplate.offsetHeight <= maxHeight || currentFontSize <= 8) { // Stop if fits or font size too small
+        break;
+      }
+      currentFontSize--;
+    }
+
+    // Remove temporary styling before html2canvas
+    quoteTemplate.style.visibility = "";
+    quoteTemplate.style.position = "";
+    quoteTemplate.style.left = "";
 
     html2canvas(quoteTemplate).then((canvas) => {
-      document.body.removeChild(quoteTemplate);
+      document.body.removeChild(quoteTemplate); // Remove after canvas is generated
       const imgData = canvas.toDataURL("image/png");
       const img = new Image();
       img.src = imgData;
