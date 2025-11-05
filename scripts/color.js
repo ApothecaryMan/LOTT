@@ -237,7 +237,7 @@ function changeTheme(event) {
       .chapter, #info-wrapper, .main-header-container,
  
       #comments-panel, .auth-modal-content {
-          background-color: ${containerBgColor};
+          background-color: ${l === 0 ? 'rgb(0, 0, 0)' : containerBgColor};
       }
       .chapter-item:hover, .novel-item:hover { background-color: ${hoverBgColor}; }
       .spinner { border: 3px solid ${containerBgColor}; border-top-color: ${newColor}; }
