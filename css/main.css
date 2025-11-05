@@ -205,8 +205,9 @@ body.list-is-open {
 /* --- Individual Novel Item --- */
 .novel-item {
   width: 100%;
+  box-sizing: border-box; /* Add this line */
   border-radius: 30px;
-  padding: 15px 30px 15px 15px;
+  padding: 15px 15px 15px 15px;
   display: flex;
   gap: 20px;
   align-items: center;
@@ -224,11 +225,12 @@ body.list-is-open {
 
 /* --- Novel Image --- */
 .novel-item-img {
-  width: 90px; /* Adjust size as needed */
-  height: 90px; /* Adjust size as needed */
+  width: 30%;
+  max-width: 90px;
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 8px;
-  flex-shrink: 0; /* Prevent image from shrinking */
 }
 
 /* --- Details Section (Title and Chapter Number) --- */
