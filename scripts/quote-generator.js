@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeQuoteModalBtn = document.getElementById("close-quote-modal-btn");
 
   let selectedText = "";
-  let selectedTextBackgroundColor = "";
   let selectedTextColor = "";
   let selectedTextFontFamily = "";
 
@@ -29,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const parentElement = range.commonAncestorContainer.parentElement;
       const computedStyle = window.getComputedStyle(parentElement);
 
-      selectedTextBackgroundColor = computedStyle.backgroundColor;
       selectedTextColor = computedStyle.color;
       selectedTextFontFamily = computedStyle.fontFamily;
 
@@ -54,15 +52,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   quoteBtn.addEventListener("click", () => {
     quoteContextMenu.style.display = "none";
-    generateQuoteImage(selectedText, selectedTextBackgroundColor, selectedTextColor, selectedTextFontFamily);
+    generateQuoteImage(selectedText, selectedTextColor, selectedTextFontFamily);
     window.getSelection().removeAllRanges();
   });
 
-  function generateQuoteImage(text, backgroundColor, color, fontFamily) {
+  function generateQuoteImage(text, color, fontFamily) {
+    const COLOR_KEY = "userColorPreference";
+    const CUSTOM_COLOR_VALUE_KEY = "userCustomColorPreferenceValue";
+
+    let backgroundColor;
+    const savedColorId = localStorage.getItem(COLOR_KEY) || "gray";
+    if (savedColorId === "custom-color-btn") {
+      backgroundColor = localStorage.getItem(CUSTOM_COLOR_VALUE_KEY) || 'rgb(76, 175, 80)'; // fallback to green
+    } else {
+      const colorButton = document.getElementById(savedColorId);
+      if (colorButton) {
+        backgroundColor = window.getComputedStyle(colorButton).backgroundColor;
+      } else {
+        backgroundColor = 'rgb(76, 175, 80)'; // fallback to green
+      }
+    }
+
     const quoteTemplate = document.createElement("div");
+    quoteTemplate.classList.add("generated-quote");
     quoteTemplate.style.padding = "20px";
-    quoteTemplate.style.backgroundColor = backgroundColor;
-    quoteTemplate.style.border = "1px solid #ccc";
     quoteTemplate.style.borderRadius = "10px";
     quoteTemplate.style.width = `${document.body.clientWidth * 0.9}px`;
     quoteTemplate.style.maxWidth = "400px";

@@ -221,6 +221,7 @@ function changeTheme(event) {
   body.light-theme .chapter-item .novel-chapter-count p{ color: white; }
   body.light-theme .font-tools-content button.active{ background-color: ${newColor};  }
   body.light-theme .font-tools-content button.active svg { fill: white; }
+  .generated-quote { background-color: ${containerBgColor}; }
 `;
   } else {
     // ================== قسم الثيم الداكن (Dark Theme) ==================
@@ -248,6 +249,7 @@ function changeTheme(event) {
       fill: white;
       color: white;
       }
+      .generated-quote { background-color: ${newColor}; }
     `;
   }
 
