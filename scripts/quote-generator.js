@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeQuoteModalBtn = document.getElementById("close-quote-modal-btn");
 
   let selectedText = "";
+  let selectedTextBackgroundColor = "";
+  let selectedTextColor = "";
+  let selectedTextFontFamily = "";
 
   function debounce(func, delay) {
     let timeout;
@@ -23,6 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (selectedText) {
       const range = selection.getRangeAt(0);
+      const parentElement = range.commonAncestorContainer.parentElement;
+      const computedStyle = window.getComputedStyle(parentElement);
+
+      selectedTextBackgroundColor = computedStyle.backgroundColor;
+      selectedTextColor = computedStyle.color;
+      selectedTextFontFamily = computedStyle.fontFamily;
+
       const rect = range.getBoundingClientRect();
       quoteContextMenu.style.display = 'block';
       quoteContextMenu.style.top = `${window.scrollY + rect.bottom}px`;
@@ -44,20 +54,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   quoteBtn.addEventListener("click", () => {
     quoteContextMenu.style.display = "none";
-    generateQuoteImage(selectedText);
+    generateQuoteImage(selectedText, selectedTextBackgroundColor, selectedTextColor, selectedTextFontFamily);
     window.getSelection().removeAllRanges();
   });
 
-  function generateQuoteImage(text) {
+  function generateQuoteImage(text, backgroundColor, color, fontFamily) {
     const quoteTemplate = document.createElement("div");
     quoteTemplate.style.padding = "20px";
-    quoteTemplate.style.backgroundColor = "#f0f0f0";
+    quoteTemplate.style.backgroundColor = backgroundColor;
     quoteTemplate.style.border = "1px solid #ccc";
     quoteTemplate.style.borderRadius = "10px";
     quoteTemplate.style.width = `${document.body.clientWidth * 0.9}px`;
     quoteTemplate.style.maxWidth = "400px";
     quoteTemplate.style.textAlign = "center";
-    quoteTemplate.innerHTML = `<p style="font-size: 20px; font-family: 'Arial', sans-serif;">${text}</p>`;
+    quoteTemplate.innerHTML = `<p style="font-size: 20px; font-family: ${fontFamily}; color: ${color};">${text}</p>`;
 
     document.body.appendChild(quoteTemplate);
 
