@@ -1,0 +1,74 @@
+.quote-context-menu {
+  position: absolute;
+  display: none;
+  background-color: #333;
+  border-radius: 5px;
+  padding: 5px;
+  z-index: 1000;
+}
+
+#quote-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+#quote-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.quote-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.quote-modal-content {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#quote-image-container {
+  margin-bottom: 20px;
+}
+
+#download-quote-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#close-quote-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .quote-modal-content {
+    width: 90%;
+  }
+  #quote-image-container img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
