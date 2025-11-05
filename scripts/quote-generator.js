@@ -137,6 +137,47 @@ document.addEventListener("DOMContentLoaded", () => {
     quoteTemplate.style.position = "";
     quoteTemplate.style.left = "";
 
+    // Add chapter and novel information
+    const novelId = window.currentNovelId;
+    const chapterId = window.currentChapterNumber;
+    let novelTitle = "";
+    let chapterTitle = "";
+
+    if (window.allNovels && novelId) {
+      const novel = window.allNovels.find(n => n.id === novelId);
+      if (novel) {
+        novelTitle = novel.title;
+      }
+    }
+
+    if (window.currentNovelChapters && chapterId) {
+      const chapter = window.currentNovelChapters.find(c => c.id === chapterId.toString());
+      if (chapter) {
+        chapterTitle = chapter.title;
+      }
+    }
+
+    if (novelTitle || chapterTitle) {
+      const footerDiv = document.createElement("div");
+      footerDiv.style.display = "flex";
+      footerDiv.style.justifyContent = "space-between";
+      footerDiv.style.marginTop = "15px";
+      footerDiv.style.fontSize = "small";
+      footerDiv.style.color = color; // Use the same color as the quote text
+
+      const chapterInfoSpan = document.createElement("span");
+      chapterInfoSpan.style.textAlign = "right";
+      chapterInfoSpan.textContent = `${chapterId ? chapterId + ' - ' : ''}${chapterTitle}`;
+
+      const novelTitleSpan = document.createElement("span");
+      novelTitleSpan.style.textAlign = "left";
+      novelTitleSpan.textContent = novelTitle;
+
+      footerDiv.appendChild(novelTitleSpan);
+      footerDiv.appendChild(chapterInfoSpan);
+      quoteTemplate.appendChild(footerDiv);
+    }
+
     html2canvas(quoteTemplate).then((canvas) => {
       document.body.removeChild(quoteTemplate); // Remove after canvas is generated
       const imgData = canvas.toDataURL("image/png");

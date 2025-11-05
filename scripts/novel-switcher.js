@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         throw new Error(`Failed to load novels data: ${response.status}`);
       }
       novels = await response.json();
+      window.allNovels = novels; // Expose novels globally
 
       const lastOpenNovelId = localStorage.getItem("lastOpenNovelId");
       const novelToLoad = novels.find(n => n.id === lastOpenNovelId)?.id || novels[0].id;
