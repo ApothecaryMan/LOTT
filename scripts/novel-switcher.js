@@ -56,7 +56,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         throw new Error(`Failed to load novels data: ${response.status}`);
       }
       novels = await response.json();
-      await loadNovel(novels[currentNovelIndex].id);
+
+      const lastOpenNovelId = localStorage.getItem("lastOpenNovelId");
+      const novelToLoad = novels.find(n => n.id === lastOpenNovelId)?.id || novels[0].id;
+
+      await loadNovel(novelToLoad);
     } catch (error) {
       console.error("Error initializing novel switcher:", error);
     }
@@ -73,6 +77,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         throw new Error(`Failed to load novel data: ${response.status}`);
       }
       const novelData = await response.json();
+
+      localStorage.setItem("lastOpenNovelId", novelId); // SAVE CURRENT NOVEL
 
       window.currentNovelId = novelId;
       window.currentNovelChapters = novelData.chapters;
@@ -113,6 +119,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (chapterToLoad) {
         await window.loadChapter(novelId, chapterToLoad);
       }
+
+      // Show the main content and hide the loader
+      const loader = document.getElementById("global-loader");
+      const mainContent = document.querySelector(".main-content-wrapper");
+      if (loader) loader.style.display = "none";
+      if (mainContent) mainContent.style.visibility = "visible";
     } catch (error) {
       console.error(`Error loading novel ${novelId}:`, error);
     }
