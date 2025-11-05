@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     quoteTemplate.classList.add("generated-quote");
     quoteTemplate.style.padding = "20px";
     quoteTemplate.style.borderRadius = "0";
-    quoteTemplate.style.width = `${document.body.clientWidth * 0.9}px`;
+    quoteTemplate.style.width = `${Math.round(document.body.clientWidth * 0.9)}px`;
     quoteTemplate.style.maxWidth = "400px";
     quoteTemplate.style.textAlign = "center";
     quoteTemplate.style.visibility = "hidden"; // Hide for measurement
@@ -112,10 +112,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to generate paragraph HTML with a given font size
     const generateParagraphHtml = (fontSize) => {
-      return paragraphs.map((p, index) => {
-        const marginBottom = index === paragraphs.length - 1 ? '0' : '1.5em';
-        return `<div style="padding-bottom: ${marginBottom};"><p style="font-size: ${fontSize}px; font-family: ${fontFamily}; color: ${color}; margin: 0;">${p}</p></div>`;
-      }).join('');
+      return paragraphs
+        .map((p, index) => {
+          const marginBottom = index === paragraphs.length - 1 ? "0" : "1.5em";
+          return `<div style="padding-bottom: ${marginBottom};"><p style="font-size: ${fontSize}px; font-family: ${fontFamily}; color: ${color}; margin: 0;">${p}</p></div>`;
+        })
+        .join("");
     };
 
     // Measurement loop
@@ -123,7 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const paragraphHtml = generateParagraphHtml(currentFontSize);
       quoteTemplate.innerHTML = paragraphHtml;
 
-      if (quoteTemplate.offsetHeight <= maxHeight || currentFontSize <= 8) { // Stop if fits or font size too small
+      if (quoteTemplate.offsetHeight <= maxHeight || currentFontSize <= 8) {
+        // Stop if fits or font size too small
         break;
       }
       currentFontSize--;
