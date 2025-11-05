@@ -38,7 +38,7 @@
 
 .carousel-container {
   /* width: 100%; */
-  max-width: auto;
+  max-width: 2000px;
   border-radius: 100px;
   border: none;
   box-shadow: none;
