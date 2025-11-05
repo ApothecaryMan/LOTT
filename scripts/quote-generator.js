@@ -1,14 +1,23 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const quoteContextMenu = document.getElementById('quote-context-menu');
-  const quoteBtn = document.getElementById('quote-btn');
-  const quoteModal = document.getElementById('quote-modal');
-  const quoteImageContainer = document.getElementById('quote-image-container');
-  const downloadQuoteBtn = document.getElementById('download-quote-btn');
-  const closeQuoteModalBtn = document.getElementById('close-quote-modal-btn');
+document.addEventListener("DOMContentLoaded", () => {
+  const quoteContextMenu = document.getElementById("quote-context-menu");
+  const quoteBtn = document.getElementById("quote-btn");
+  const quoteModal = document.getElementById("quote-modal");
+  const quoteImageContainer = document.getElementById("quote-image-container");
+  const downloadQuoteBtn = document.getElementById("download-quote-btn");
+  const closeQuoteModalBtn = document.getElementById("close-quote-modal-btn");
 
-  let selectedText = '';
+  let selectedText = "";
 
-  document.addEventListener('mouseup', (e) => {
+  function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), delay);
+    };
+  }
+
+  const debouncedSelectionChange = debounce(() => {
     const selection = window.getSelection();
     selectedText = selection.toString().trim();
 
@@ -21,51 +30,62 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       quoteContextMenu.style.display = 'none';
     }
+  }, 200);
+
+  document.addEventListener('selectionchange', () => {
+    debouncedSelectionChange();
   });
 
-  quoteBtn.addEventListener('click', () => {
-    quoteContextMenu.style.display = 'none';
+  document.addEventListener('contextmenu', (e) => {
+    if (window.getSelection().toString().trim()) {
+      e.preventDefault();
+    }
+  });
+
+  quoteBtn.addEventListener("click", () => {
+    quoteContextMenu.style.display = "none";
     generateQuoteImage(selectedText);
+    window.getSelection().removeAllRanges();
   });
 
   function generateQuoteImage(text) {
-    const quoteTemplate = document.createElement('div');
-    quoteTemplate.style.padding = '20px';
-    quoteTemplate.style.backgroundColor = '#f0f0f0';
-    quoteTemplate.style.border = '1px solid #ccc';
-    quoteTemplate.style.borderRadius = '10px';
+    const quoteTemplate = document.createElement("div");
+    quoteTemplate.style.padding = "20px";
+    quoteTemplate.style.backgroundColor = "#f0f0f0";
+    quoteTemplate.style.border = "1px solid #ccc";
+    quoteTemplate.style.borderRadius = "10px";
     quoteTemplate.style.width = `${document.body.clientWidth * 0.9}px`;
-    quoteTemplate.style.maxWidth = '400px';
-    quoteTemplate.style.textAlign = 'center';
+    quoteTemplate.style.maxWidth = "400px";
+    quoteTemplate.style.textAlign = "center";
     quoteTemplate.innerHTML = `<p style="font-size: 20px; font-family: 'Arial', sans-serif;">${text}</p>`;
 
     document.body.appendChild(quoteTemplate);
 
     html2canvas(quoteTemplate).then((canvas) => {
       document.body.removeChild(quoteTemplate);
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL("image/png");
       const img = new Image();
       img.src = imgData;
-      quoteImageContainer.innerHTML = '';
+      quoteImageContainer.innerHTML = "";
       quoteImageContainer.appendChild(img);
-      quoteModal.style.display = 'flex';
+      quoteModal.style.display = "flex";
 
       downloadQuoteBtn.onclick = () => {
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = imgData;
-        a.download = 'quote.png';
+        a.download = "quote.png";
         a.click();
       };
     });
   }
 
-  closeQuoteModalBtn.addEventListener('click', () => {
-    quoteModal.style.display = 'none';
+  closeQuoteModalBtn.addEventListener("click", () => {
+    quoteModal.style.display = "none";
   });
 
-  quoteModal.addEventListener('click', (e) => {
+  quoteModal.addEventListener("click", (e) => {
     if (e.target === quoteModal) {
-      quoteModal.style.display = 'none';
+      quoteModal.style.display = "none";
     }
   });
 });
