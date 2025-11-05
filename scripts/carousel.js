@@ -57,27 +57,24 @@ function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
     }
   }
 
-  //Vibration
   function triggerBounce(button) {
     // VIBRATION: Trigger the bounce haptic from the manager
     if (window.vibrationManager) {
       window.vibrationManager.bounce();
     }
 
-    clearTimeout(bounceTimeout);
-
-    // BUG FIX: Target the correct carousel that is being interacted with, not always the top one.
-    // The 'carousel' variable is available from the parent function's scope.
     const carouselToShake = carousel;
 
-    carouselToShake.classList.remove("is-shaking");
+    // If the animation is already running, don't do anything
+    if (carouselToShake.classList.contains("shake")) {
+      return;
+    }
 
-    requestAnimationFrame(() => {
-      carouselToShake.classList.add("is-shaking");
-      bounceTimeout = setTimeout(() => {
-        carouselToShake.classList.remove("is-shaking");
-      }, 300);
-    });
+    carouselToShake.classList.add("shake");
+
+    carouselToShake.addEventListener('animationend', () => {
+      carouselToShake.classList.remove('shake');
+    }, { once: true });
   }
   // Next Button Click
   nextBtn.addEventListener("click", () => {
