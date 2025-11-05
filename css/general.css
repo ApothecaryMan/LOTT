@@ -62,15 +62,17 @@ button {
 h3,
 .chapter-item,
 .novel-item,
-.novel-chapter-count {
+.novel-chapter-count,
+.font-tools-popup,
+.card-img {
   /* GLASS EFFECT 3D */
-  border: 1px solid rgba(255, 255, 255, 0.068);
+  /* border: 1px solid rgba(255, 255, 255, 0.068);
   background-color: rgba(var(--bg-color-dark-rgb), 0.9);
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(4px);
   box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3),
     inset -2px -2px 2px 1px rgba(255, 255, 255, 0.3),
-    0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    0 4px 8px 0 rgba(0, 0, 0, 0.2); */
 
   /* FROSTED EFFECT 2D */
   /* background-color: rgba(var(--bg-color-dark-rgb), 0.9);
@@ -92,4 +94,35 @@ h3,
     0 4px 12px rgba(0, 0, 0, 0.6);
 
   overflow: hidden; */
+
+  /* MOST GLASSY  3D*/
+  border: 1px solid rgba(255, 255, 255, 0.068);
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.2),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.2),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+/* BUTTONS */
+#mode-selector,
+#title-btn,
+#comments-btn,
+#font-panel-btn,
+#word-count,
+#prev-btn,
+#next-btn {
+  border: 1px solid rgba(255, 255, 255, 0.068);
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.1),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }

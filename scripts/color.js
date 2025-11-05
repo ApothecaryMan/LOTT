@@ -152,13 +152,13 @@ function changeTheme(event) {
     .sort-option.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.2)")}; }
-    /*.body,*/ .font-tools-content button.active { background-color: ${newColor
+    /*.body, .font-tools-content button.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.1)")};
       box-shadow: 0 0px 10px ${newColor
         .replace("rgb", "rgba")
         .replace(")", ", 0.1)")};
-    }
+    }*/
     
   `;
 
@@ -182,11 +182,13 @@ function changeTheme(event) {
     dynamicCSS += `
   body.light-theme { background-color: ${bodyBgColor}; }
 
-  body.light-theme .body {
-    background-color: ${newColor.replace("rgb", "rgba").replace(")", ", 0.1)")};
+  body.light-theme .body,.font-tools-popup, body.light-theme .card {
+    background-color: ${newColor
+      .replace("rgb", "rgba")
+      .replace(")", ", 0.05)")};
     box-shadow: 0 0px 10px ${newColor
       .replace("rgb", "rgba")
-      .replace(")", ", 0.1)")};
+      .replace(")", ", 0.05)")};
     border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
@@ -216,7 +218,9 @@ function changeTheme(event) {
 
   body.light-theme .font-tools-popup svg { fill: #222; }
   body.light-theme .card-title { color: ${newColor}; }
-  body.light-theme .chapter-item .novel-chapter-count { color: #444; }
+  body.light-theme .chapter-item .novel-chapter-count p{ color: white; }
+  body.light-theme .font-tools-content button.active{ background-color: ${newColor};  }
+  body.light-theme .font-tools-content button.active svg { fill: white; }
 `;
   } else {
     // ================== قسم الثيم الداكن (Dark Theme) ==================
@@ -240,7 +244,10 @@ function changeTheme(event) {
       .font-tools-popup svg { fill: #eee; }
       .font-tools-popup button{color: white; }
       .font-tools-popup h4, .font-tools-popup h5 { color: white; }
-      
+      #comments-btn svg, #title-btn, #font-panel-btn svg, #word-count {
+      fill: white;
+      color: white;
+      }
     `;
   }
 

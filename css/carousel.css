@@ -16,14 +16,17 @@
 
   /* GLASS EFFECT */
   /* الشكل الأساسي */
-  border: 1px ridge rgba(255, 255, 255, 0.1);
-  background: rgba(15, 15, 15, 0.35);
-  backdrop-filter: blur(12px) saturate(200%);
-  -webkit-backdrop-filter: blur(12px) saturate(200%);
-  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.05),
-    0 6px 20px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.068);
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.2),
+    inset -2px -2px 2px 1px rgba(255, 255, 255, 0.2),
+    0 4px 8px 0 rgba(0, 0, 0, 0.2);
   color: rgba(255, 255, 255, 0.85);
   overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
   transition: all 0.3s ease;
 
   /* --- "Liquid" Shape & Style --- */
@@ -241,6 +244,9 @@
 #gray {
   background-color: rgb(166, 166, 166);
 }
+#black {
+  background-color: rgb(0, 0, 0);
+}
 #orange {
   background-color: #eb8317;
 }
@@ -279,11 +285,11 @@
 }
 
 #prev-btn {
-  left: -3px;
+  left: 5px;
   border-radius: 0 25px 25px 0;
 }
 #next-btn {
-  right: -3px;
+  right: 5px;
   border-radius: 25px 0 0 25px;
 }
 .carousel-nav-btn.hidden {
