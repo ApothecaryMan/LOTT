@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function debounce(func, delay) {
     let timeout;
-    return function(...args) {
+    return function (...args) {
       const context = this;
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(context, args), delay);
@@ -29,22 +29,41 @@ document.addEventListener("DOMContentLoaded", () => {
       const computedStyle = window.getComputedStyle(parentElement);
 
       selectedTextColor = computedStyle.color;
+      const isDarkMode = !document.body.classList.contains("light-theme");
+      if (isDarkMode) {
+        const rgb = selectedTextColor.match(/\d+/g);
+        if (rgb) {
+          const brightness =
+            (parseInt(rgb[0]) * 299 +
+              parseInt(rgb[1]) * 587 +
+              parseInt(rgb[2]) * 114) /
+            1000;
+          if (brightness < 128) {
+            selectedTextColor = "rgb(166, 166, 166)";
+          }
+        }
+      }
       selectedTextFontFamily = computedStyle.fontFamily;
 
       const rect = range.getBoundingClientRect();
-      quoteContextMenu.style.display = 'block';
+      quoteContextMenu.style.display = "block";
       quoteContextMenu.style.top = `${window.scrollY + rect.bottom}px`;
-      quoteContextMenu.style.left = `${window.scrollX + rect.left + rect.width / 2 - quoteContextMenu.offsetWidth / 2}px`;
+      quoteContextMenu.style.left = `${
+        window.scrollX +
+        rect.left +
+        rect.width / 2 -
+        quoteContextMenu.offsetWidth / 2
+      }px`;
     } else {
-      quoteContextMenu.style.display = 'none';
+      quoteContextMenu.style.display = "none";
     }
   }, 200);
 
-  document.addEventListener('selectionchange', () => {
+  document.addEventListener("selectionchange", () => {
     debouncedSelectionChange();
   });
 
-  document.addEventListener('contextmenu', (e) => {
+  document.addEventListener("contextmenu", (e) => {
     if (window.getSelection().toString().trim()) {
       e.preventDefault();
     }
@@ -63,13 +82,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let backgroundColor;
     const savedColorId = localStorage.getItem(COLOR_KEY) || "gray";
     if (savedColorId === "custom-color-btn") {
-      backgroundColor = localStorage.getItem(CUSTOM_COLOR_VALUE_KEY) || 'rgb(76, 175, 80)'; // fallback to green
+      backgroundColor =
+        localStorage.getItem(CUSTOM_COLOR_VALUE_KEY) || "rgb(76, 175, 80)"; // fallback to green
     } else {
       const colorButton = document.getElementById(savedColorId);
       if (colorButton) {
         backgroundColor = window.getComputedStyle(colorButton).backgroundColor;
       } else {
-        backgroundColor = 'rgb(76, 175, 80)'; // fallback to green
+        backgroundColor = "rgb(76, 175, 80)"; // fallback to green
       }
     }
 
