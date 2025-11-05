@@ -96,11 +96,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const quoteTemplate = document.createElement("div");
     quoteTemplate.classList.add("generated-quote");
     quoteTemplate.style.padding = "20px";
-    quoteTemplate.style.borderRadius = "10px";
+    quoteTemplate.style.borderRadius = "0";
     quoteTemplate.style.width = `${document.body.clientWidth * 0.9}px`;
     quoteTemplate.style.maxWidth = "400px";
     quoteTemplate.style.textAlign = "center";
-    quoteTemplate.innerHTML = `<p style="font-size: 20px; font-family: ${fontFamily}; color: ${color};">${text}</p>`;
+    const paragraphs = text.split(/\n\s*\n/);
+    const paragraphHtml = paragraphs
+      .map((p, index) => {
+      const marginBottom = index === paragraphs.length - 1 ? '0' : '1.5em';
+      return `<div style="padding-bottom: ${marginBottom};"><p style="font-size: 20px; font-family: ${fontFamily}; color: ${color}; margin: 0;">${p}</p></div>`;
+      })
+      .join("");
+    quoteTemplate.innerHTML = paragraphHtml;
 
     document.body.appendChild(quoteTemplate);
 
