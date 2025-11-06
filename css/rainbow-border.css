@@ -1,18 +1,15 @@
-
 .rainbow-border {
-  border-radius: 15px;
-  padding: 5px;
   position: relative;
-  overflow: hidden;
+  border-radius: 15px;
 }
 
 .rainbow-border::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
   background: conic-gradient(
     hsl(0, 100%, 50%),
     hsl(45, 100%, 50%),
@@ -24,12 +21,12 @@
     hsl(315, 100%, 50%),
     hsl(360, 100%, 50%)
   );
+  filter: blur(10px);
+  z-index: -1;
   animation: rotate 4s linear infinite;
 }
 
 .rainbow-border img {
-  position: relative;
-  z-index: 1;
   border-radius: 10px;
 }
 
