@@ -194,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
       quoteImageContainer.innerHTML = "";
       quoteImageContainer.appendChild(img);
       quoteModal.style.display = "flex";
+      quoteImageContainer.classList.add("rainbow-border");
 
       downloadQuoteBtn.onclick = () => {
         const a = document.createElement("a");
@@ -316,11 +317,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   closeQuoteModalBtn.addEventListener("click", () => {
     quoteModal.style.display = "none";
+    quoteImageContainer.classList.remove("rainbow-border");
   });
 
   quoteModal.addEventListener("click", (e) => {
     if (e.target === quoteModal) {
       quoteModal.style.display = "none";
+      quoteImageContainer.classList.remove("rainbow-border");
     }
   });
 });
