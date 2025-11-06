@@ -260,8 +260,12 @@ document.addEventListener("DOMContentLoaded", () => {
           alert('No quote image to share.');
         }
       } catch (error) {
-        console.error('Error sharing:', error);
-        alert('Failed to share quote.');
+        if (error.name === 'AbortError') {
+          console.log('Share cancelled by user.');
+        } else {
+          console.error('Error sharing:', error);
+          alert('Failed to share quote.');
+        }
       }
     } else {
       alert('Web Share API is not supported in your browser. You can download the image instead.');
