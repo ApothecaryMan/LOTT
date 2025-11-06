@@ -182,7 +182,7 @@ function changeTheme(event) {
     dynamicCSS += `
   body.light-theme { background-color: ${bodyBgColor}; }
 
-  body.light-theme .body,.font-tools-popup, body.light-theme .card {
+  body.light-theme .body,.font-tools-popup, body.light-theme .card, body.light-theme #quote-options-panel {
     background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.05)")};
@@ -195,7 +195,6 @@ function changeTheme(event) {
   .carousel-nav-btn {
     background-color: ${bodyBgColor};
   }
-  body.light-theme #quote-options-panel {  background: rgba(62, 62, 62, 0.688);}
   body.light-theme .chapter,
   body.light-theme #info-wrapper,
   body.light-theme .main-header-container,
@@ -217,7 +216,7 @@ function changeTheme(event) {
   }
 
   body.light-theme .font-tools-popup svg { fill: #222; }
-  body.light-theme #comments-btn svg { fill: #000; }
+  body.light-theme #comments-btn svg, body.light-theme #quote-options-panel svg { fill: #000; }
   body.light-theme #comments-btn:hover svg,
   body.light-theme #comments-btn.active svg { fill: white; }
   body.light-theme .card-title { color: ${newColor}; }
