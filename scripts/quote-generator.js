@@ -197,7 +197,28 @@ document.addEventListener("DOMContentLoaded", () => {
       downloadQuoteBtn.onclick = () => {
         const a = document.createElement("a");
         a.href = imgData;
-        a.download = "quote.png";
+        // Generate dynamic filename
+        const getNovelAbbreviation = (title) => {
+          if (!title) return "UNKNOWN";
+          return title.split(" ").map(word => word.charAt(0)).join("").toUpperCase();
+        };
+
+        const novelAbbr = getNovelAbbreviation(novelTitle);
+        const chapterNum = chapterId || "NOC"; // "NOC" for No Chapter
+        
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const day = String(today.getDate()).padStart(2, '0');
+        const dateString = `${year}${month}${day}`;
+
+        const IMAGE_COUNT_KEY = "quoteImageDownloadCount";
+        let imageCount = parseInt(localStorage.getItem(IMAGE_COUNT_KEY) || "0");
+        
+        const filename = `${novelAbbr}-${chapterNum}-${dateString}-${imageCount}.png`;
+        localStorage.setItem(IMAGE_COUNT_KEY, (imageCount + 1).toString());
+
+        a.download = filename;
         a.click();
       };
     });
