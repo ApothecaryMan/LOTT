@@ -136,9 +136,6 @@ body.light-theme .novel-chapter-count {
 body.light-theme #quote-options-panel label {
   color: #000000;
 }
-body.light-theme #quote-options-panel input[type="checkbox"] {
-  accent-color: white;
-}
 body.light-theme #quote-options-panel .separator {
   color: black;
 }
