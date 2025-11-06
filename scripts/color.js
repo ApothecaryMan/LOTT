@@ -195,7 +195,7 @@ function changeTheme(event) {
   .carousel-nav-btn {
     background-color: ${bodyBgColor};
   }
-
+  body.light-theme #quote-options-panel {  background: rgba(62, 62, 62, 0.688);}
   body.light-theme .chapter,
   body.light-theme #info-wrapper,
   body.light-theme .main-header-container,
