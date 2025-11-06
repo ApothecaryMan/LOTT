@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const quoteTemplate = document.createElement("div");
     quoteTemplate.classList.add("generated-quote");
     quoteTemplate.style.padding = "20px 20px 10px 20px";
-    quoteTemplate.style.borderRadius = "0";
+    quoteTemplate.style.borderRadius = "15px";
     quoteTemplate.style.width = `${Math.round(
       document.body.clientWidth * 0.9
     )}px`;
@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
       quoteTemplate.appendChild(footerDiv);
     }
 
-    html2canvas(quoteTemplate).then((canvas) => {
+    html2canvas(quoteTemplate, { backgroundColor: null }).then((canvas) => {
       document.body.removeChild(quoteTemplate); // Remove after canvas is generated
       const imgData = canvas.toDataURL("image/png");
       const img = new Image();
