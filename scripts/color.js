@@ -114,7 +114,7 @@ function changeTheme(event) {
 
     /* تغيير لون أيقونات SVG داخل الأزرار التفاعلية إلى الأبيض عند التفعيل */
     #increase-font-size:hover svg, #decrease-font-size:hover svg, #title-btn:hover svg,
-    #align-formate button:hover svg, #comments-btn:hover svg, #comments-btn.active svg,
+    #align-formate button:hover svg,
     .carousel-item #align-formate button.active svg,
     .carousel-item button #title-btn.active svg, .carousel-btn-middle:hover svg {
         fill: white;
@@ -217,6 +217,9 @@ function changeTheme(event) {
   }
 
   body.light-theme .font-tools-popup svg { fill: #222; }
+  body.light-theme #comments-btn svg { fill: #000; }
+  body.light-theme #comments-btn:hover svg,
+  body.light-theme #comments-btn.active svg { fill: white; }
   body.light-theme .card-title { color: ${newColor}; }
   body.light-theme .chapter-item .novel-chapter-count p{ color: white; }
   body.light-theme .font-tools-content button.active{ background-color: ${newColor};  }
@@ -245,7 +248,7 @@ function changeTheme(event) {
       .font-tools-popup svg { fill: #eee; }
       .font-tools-popup button{color: white; }
       .font-tools-popup h4, .font-tools-popup h5 { color: white; }
-      #comments-btn svg, #title-btn, #font-panel-btn svg, #word-count {
+      #comments-btn svg, #title-btn, #font-panel-btn svg, #word-count{
       fill: white;
       color: white;
       }
