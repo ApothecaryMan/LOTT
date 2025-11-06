@@ -241,6 +241,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  function showToast(message) {
+    const toast = document.createElement("div");
+    toast.textContent = message;
+    toast.style.position = "fixed";
+    toast.style.bottom = "20px";
+    toast.style.left = "50%";
+    toast.style.transform = "translateX(-50%)";
+    toast.style.backgroundColor = "#333";
+    toast.style.color = "#fff";
+    toast.style.padding = "10px 20px";
+    toast.style.borderRadius = "5px";
+    toast.style.zIndex = "1000";
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.transition = "opacity 0.5s ease";
+      toast.style.opacity = "0";
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 500);
+    }, 2000);
+  }
+
   shareQuoteBtn.addEventListener("click", async () => {
     if (navigator.share) {
       try {
@@ -257,18 +280,37 @@ document.addEventListener("DOMContentLoaded", () => {
           });
           console.log('Quote shared successfully');
         } else {
-          alert('No quote image to share.');
+          showToast('No quote image to share.');
         }
       } catch (error) {
         if (error.name === 'AbortError') {
           console.log('Share cancelled by user.');
         } else {
           console.error('Error sharing:', error);
-          alert('Failed to share quote.');
+          showToast('Failed to share quote.');
         }
       }
     } else {
-      alert('Web Share API is not supported in your browser. You can download the image instead.');
+      try {
+        const img = quoteImageContainer.querySelector("img");
+        if (img) {
+          const response = await fetch(img.src);
+          const blob = await response.blob();
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              [blob.type]: blob,
+            }),
+          ]);
+          showToast("Quote image copied to clipboard!");
+        } else {
+          showToast("No quote image to copy.");
+        }
+      } catch (error) {
+        console.error("Error copying to clipboard:", error);
+        showToast(
+          "Copying to clipboard is not supported in your browser. You can download the image instead."
+        );
+      }
     }
   });
 
