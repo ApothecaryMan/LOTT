@@ -80,3 +80,56 @@
     height: auto;
   }
 }
+
+#quote-options-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 25px;
+  font-size: 14px;
+  gap: 10px; /* Space between items */
+}
+
+#quote-options-panel label {
+  margin-right: 0; /* Removed margin-right as gap handles spacing */
+  cursor: pointer;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+#quote-options-panel input[type="checkbox"] {
+  margin-right: 0; /* Removed margin-right as gap handles spacing */
+  cursor: pointer;
+  /* Basic styling for checkbox */
+  width: 16px;
+  height: 16px;
+  accent-color: #4caf50; /* Highlight color for checkbox */
+}
+
+#quote-options-panel .separator {
+  color: #ccc;
+  font-weight: bold;
+}
+
+#share-quote-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#share-quote-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #e3e3e3;
+}
+
+#share-quote-btn:hover svg {
+  fill: #ffffff;
+}

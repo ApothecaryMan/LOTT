@@ -96,7 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const quoteTemplate = document.createElement("div");
     quoteTemplate.classList.add("generated-quote");
     quoteTemplate.style.padding = "20px 20px 10px 20px";
-    quoteTemplate.style.borderRadius = "15px";
+    let useRoundedCorners = JSON.parse(localStorage.getItem("quoteRoundedCorners") || "true");
+    quoteTemplate.style.borderRadius = useRoundedCorners ? "15px" : "0";
     quoteTemplate.style.width = `${Math.round(
       document.body.clientWidth * 0.9
     )}px`;
@@ -223,6 +224,49 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     });
   }
+
+  const toggleBorderRadius = document.getElementById("toggle-border-radius");
+  const shareQuoteBtn = document.getElementById("share-quote-btn");
+
+  // Initialize border-radius preference
+  let useRoundedCorners = JSON.parse(localStorage.getItem("quoteRoundedCorners") || "true");
+  toggleBorderRadius.checked = useRoundedCorners;
+
+  toggleBorderRadius.addEventListener("change", () => {
+    useRoundedCorners = toggleBorderRadius.checked;
+    localStorage.setItem("quoteRoundedCorners", JSON.stringify(useRoundedCorners));
+    // If the modal is open, regenerate the image to apply the new setting
+    if (quoteModal.style.display === "flex" && selectedText) {
+      generateQuoteImage(selectedText, selectedTextColor, selectedTextFontFamily);
+    }
+  });
+
+  shareQuoteBtn.addEventListener("click", async () => {
+    if (navigator.share) {
+      try {
+        const img = quoteImageContainer.querySelector('img');
+        if (img) {
+          const response = await fetch(img.src);
+          const blob = await response.blob();
+          const file = new File([blob], "quote.png", { type: "image/png" });
+
+          await navigator.share({
+            files: [file],
+            title: 'My Quote',
+            text: 'Check out this quote!',
+          });
+          console.log('Quote shared successfully');
+        } else {
+          alert('No quote image to share.');
+        }
+      } catch (error) {
+        console.error('Error sharing:', error);
+        alert('Failed to share quote.');
+      }
+    } else {
+      alert('Web Share API is not supported in your browser. You can download the image instead.');
+    }
+  });
 
   closeQuoteModalBtn.addEventListener("click", () => {
     quoteModal.style.display = "none";
