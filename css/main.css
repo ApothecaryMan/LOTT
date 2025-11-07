@@ -212,12 +212,13 @@ body.list-is-open {
   gap: 20px;
   align-items: center;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease-out, height 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+  transition: height 0.5s cubic-bezier(0.25, 1, 0.3, 1), background-color 0.2s ease, transform 0.15s ease-out;
   text-decoration: none;
   user-select: none;
   height: 120px; /* Default height */
   position: relative;
   overflow: hidden;
+  justify-content: flex-start; /* Align items to start in default state */
 
   /* --- "Liquid" Shape & Style --- */
   color: rgba(255, 255, 255, 0.8);
@@ -240,10 +241,18 @@ body.list-is-open {
   object-fit: cover;
   border-radius: 8px;
   transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+  position: relative; /* Keep relative for default flow */
+  left: 0;
+  top: 0;
 }
 
 .novel-item.expanded .novel-item-img {
-  transform: translate(115%, -50%) scale(1.05);
+  position: absolute; /* Take out of flow */
+  width: 150px; /* Larger size for expanded image */
+  height: 150px;
+  top: 20px; /* Position from top of expanded item */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%) scale(1.05); /* Adjust for its own width and scale */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -254,36 +263,50 @@ body.list-is-open {
   width: 100%;
   transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
   opacity: 1;
+  position: relative; /* Keep relative for default flow */
+  top: 0;
+  left: 0;
+  text-align: left; /* Default alignment */
 }
 
 .novel-item.expanded .novel-item-details {
-  transform: translateY(100%);
+  position: absolute; /* Take out of flow */
+  top: 190px; /* Below the image (20px top + 150px image height + 20px gap) */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for its own width */
   opacity: 1;
   transition-delay: 0.1s;
+  width: 90%; /* Adjust width for expanded state */
+  text-align: center; /* Center text within details */
 }
 
 /* --- Novel Description --- */
 .novel-item-description {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+  position: absolute; /* Always absolute, hidden by default */
+  top: 250px; /* Below details (190px top + estimated 40px details height + 20px gap) */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%) translateY(20px); /* Start slightly below and move up */
   opacity: 0;
-  transform: translateY(20px);
   transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
   font-size: 14px;
   color: #b0b0b0;
   max-height: 150px; /* Limit description height */
   overflow: hidden;
+  text-align: center; /* Center text */
+  width: 90%; /* Adjust width for expanded state */
 }
 
 .novel-item.expanded .novel-item-description {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0); /* Move to final position */
   transition-delay: 0.2s;
 }
 
-/* --- Header (Novel Title) --- */
+/* Adjust novel-title and novel-item-body for centering within details */
+.novel-item.expanded .novel-title,
+.novel-item.expanded .novel-item-body {
+  justify-content: center; /* Center content within details */
+}
 .novel-item-header {
   display: flex;
   align-items: center;
