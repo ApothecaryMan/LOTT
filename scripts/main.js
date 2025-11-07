@@ -15,7 +15,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.novelListUI.init();
 
   // Disable right-click and long-press context menu
-  window.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-  }, false);
+  window.addEventListener(
+    "contextmenu",
+    function (e) {
+      e.preventDefault();
+    },
+    false
+  );
+
+  // Register Service Worker for PWA (if supported)
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((reg) =>
+          console.log("Service Worker registered with scope:", reg.scope)
+        )
+        .catch((err) =>
+          console.warn("Service Worker registration failed:", err)
+        );
+    });
+  }
 });
