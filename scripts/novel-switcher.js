@@ -213,23 +213,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       novelItem.dataset.novelId = novel.id;
 
       novelItem.innerHTML = `
-        <img class="novel-item-img lazy" data-src="${novel.image}" alt="${
-        novel.title
-      }" src="img/pic1.webp">
-        <div class="novel-item-details">
-          <div class="novel-item-header">
-            <p class="novel-title">${novel.title}</p>
-          </div>
-          <div class="novel-item-body">
-            <span class="novel-chapter-count">${
-              getReadChapters(novel.id).size
-            }/${novel.chapterCount}</span>
-          </div>
-        </div>
-        <div class="novel-item-description">
-          <p>${novel.description}</p>
-        </div>
-      `;
+  <img 
+    class="novel-item-img lazy" 
+    data-src="${novel.image}" 
+    alt="${novel.title}" 
+    src="img/pic1.webp"
+  >
+  <div class="novel-item-details">
+    <div class="novel-item-header">
+      <p class="novel-title">${novel.title}</p>
+    </div>
+    <div class="novel-item-body">
+      <span class="novel-chapter-count">
+        ${getReadChapters(novel.id).size}/${novel.chapterCount}
+      </span>
+    </div>
+  </div>
+  <div class="novel-item-description">
+    <p>${novel.description}</p>
+  </div>
+`;
 
       novelItem.addEventListener("mousedown", startPress);
       novelItem.addEventListener("mouseup", endPress);
