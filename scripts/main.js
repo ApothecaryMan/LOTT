@@ -13,4 +13,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   await novelListLoader.init();
   window.chapterListUI.init(); // Use global reference
   window.novelListUI.init();
+
+  // Disable right-click and long-press context menu
+  window.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  }, false);
 });
