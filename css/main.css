@@ -319,7 +319,7 @@ body.list-is-open {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
   transition-delay: 0.25s;
-  max-height: 150px;
+  max-height: 500px;
 }
 
 /* Title & Header */
