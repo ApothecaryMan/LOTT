@@ -281,6 +281,12 @@ async function loadChapter(novelId, chapterId, position = "replace") {
       window.currentChapterNumber = parseInt(chapterId, 10);
       resetInfiniteScroll();
 
+      // 🔧 إغلاق قائمة الفصول واستعادة الاسكرول
+      if (window.chapterListUI) {
+        window.chapterListUI._hideList();
+      }
+      document.body.style.overflow = "auto";
+
       // Scroll to the chapter title, accounting for the sticky header
       setTimeout(() => {
         const isFirstChapter = chapterId === window.currentNovelChapters[0]?.id;

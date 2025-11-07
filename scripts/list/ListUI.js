@@ -141,11 +141,6 @@ export class ListUI {
     // 🚫 منع الاسكرول في الموقع عند فتح القائمة
     this.body.style.overflow = "hidden";
 
-    const carouselContainer = document.querySelector(".carousel-container");
-    if (carouselContainer) {
-      carouselContainer.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
     setTimeout(() => {
       this.container.classList.add("visible");
       this._adjustHeight();
@@ -166,8 +161,8 @@ export class ListUI {
     this.container.classList.remove("visible");
     this.container.style.maxHeight = "0";
 
-    // ✅ استعادة الاسكرول في الموقع
-    this.body.style.overflow = "";
+    // ✅ استعادة الاسكرول في الموقع بشكل صريح
+    this.body.style.overflow = "auto";
 
     // ✅ تفعيل الكاروسيل الذكية عند إغلاق القائمة
     if (window.smartCarouselScroll) {

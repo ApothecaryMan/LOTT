@@ -160,7 +160,7 @@ export class NovelListUI {
     this.container.style.maxHeight = "0";
 
     // ✅ استعادة الاسكرول في الموقع
-    this.body.style.overflow = "";
+    this.body.style.overflow = "auto";
 
     setTimeout(() => {
       this.isAnimating = false;
