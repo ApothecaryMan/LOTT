@@ -16,6 +16,8 @@ export class NovelListUI {
     this.container = document.querySelector(containerSelector);
     this.body = document.body;
     this.isAnimating = false;
+    this.mouseDownTime = 0;
+    this.LONG_PRESS_THRESHOLD = 500; // ms
   }
 
   /**
@@ -29,8 +31,20 @@ export class NovelListUI {
       return;
     }
 
-    this.toggleButton.addEventListener("click", () => this._toggleList());
+    // Track mouse down to detect long clicks
+    this.toggleButton.addEventListener("mousedown", () => this._onMouseDown());
+    this.toggleButton.addEventListener("mouseup", () => this._onMouseUp());
+    this.toggleButton.addEventListener("mouseleave", () =>
+      this._onMouseLeave()
+    );
+
+    this.toggleButton.addEventListener("click", (e) => this._toggleList(e));
     window.addEventListener("resize", () => this._adjustHeight());
+
+    // Close list when clicking on a novel
+    this.container.addEventListener("click", (e) =>
+      this._handleContainerClick(e)
+    );
 
     // 🚫 منع الاسكرول الخلفي عند فتح القائمة
     this.container.addEventListener("wheel", (e) => this._handleWheel(e), {
@@ -43,6 +57,50 @@ export class NovelListUI {
         passive: false,
       }
     );
+  }
+
+  /**
+   * تتبع زمن الضغط على الماوس
+   * @private
+   */
+  _onMouseDown() {
+    this.mouseDownTime = Date.now();
+  }
+
+  /**
+   * إعادة تعيين الزمن عند رفع الماوس
+   * @private
+   */
+  _onMouseUp() {
+    this.mouseDownTime = 0;
+  }
+
+  /**
+   * إعادة تعيين الزمن عند مغادرة الزر
+   * @private
+   */
+  _onMouseLeave() {
+    this.mouseDownTime = 0;
+  }
+
+  /**
+   * التحقق من كون الضغطة طويلة
+   * @private
+   */
+  _isLongPress() {
+    if (this.mouseDownTime === 0) return false;
+    return Date.now() - this.mouseDownTime >= this.LONG_PRESS_THRESHOLD;
+  }
+
+  /**
+   * معالجة الضغط على العناصر داخل القائمة
+   * @private
+   */
+  _handleContainerClick(e) {
+    const novelItem = e.target.closest(".novel-item");
+    if (novelItem) {
+      this._hideList();
+    }
   }
 
   /**
@@ -104,7 +162,16 @@ export class NovelListUI {
    * تبديل حالة القائمة (فتح / إغلاق).
    * @private
    */
-  _toggleList() {
+  _toggleList(e) {
+    // تجاهل الضغطات الطويلة
+    if (this._isLongPress()) {
+      e.preventDefault();
+      this.mouseDownTime = 0;
+      return;
+    }
+
+    this.mouseDownTime = 0;
+
     if (this.isAnimating) return; // منع التبديل السريع
 
     const isVisible = this.container.classList.contains("visible");
