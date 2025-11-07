@@ -191,22 +191,22 @@ h2 {
   bottom: 5px;
   left: 5%;
   right: 5%;
-  height: 0; /* Initially hidden */
+  height: 0;
   border-radius: 25px;
-  /* --- "Liquid" Shape & Style --- */
-  color: rgba(255, 255, 255, 0.8);
-
   color: var(--text-color);
   overflow: hidden;
-  transition: height 0.3s ease-in-out;
+  transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
   z-index: 1000;
   display: flex;
-
   flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .font-tools-popup.show {
-  height: 30%; /* Adjust as needed */
+  height: 30%;
+  opacity: 1;
+  visibility: visible;
 }
 
 .font-tools-header {
