@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           return { ...novel, chapterCount: 0 }; // Return novel with 0 chapters on error
         }
         const data = await response.json();
-        return { ...novel, chapterCount: data.chapters.length };
+        return { ...novel, chapterCount: data.chapters.length, description: data.novel.description };
       } catch (error) {
         console.error(`Error fetching chapter data for ${novel.title}:`, error);
         return { ...novel, chapterCount: 0 }; // Return novel with 0 chapters on error
@@ -209,9 +209,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       novelItem.dataset.novelId = novel.id;
 
       novelItem.innerHTML = `
-      <img class="novel-item-img lazy" data-src="${novel.image}" alt="${
+        <img class="novel-item-img lazy" data-src="${novel.image}" alt="${
         novel.title
-      }" src="img/pic1.webp">  
+      }" src="img/pic1.webp">
         <div class="novel-item-details">
           <div class="novel-item-header">
             <p class="novel-title">${novel.title}</p>
@@ -222,14 +222,41 @@ document.addEventListener("DOMContentLoaded", async () => {
             }/${novel.chapterCount}</span>
           </div>
         </div>
+        <div class="novel-item-description">
+          <p>${novel.description}</p>
+        </div>
       `;
-      novelItem.addEventListener("click", async () => {
-        await loadNovel(novel.id);
-        // The NovelListUI will handle hiding the list
-        if (window.novelListUI && window.novelListUI._hideList) {
-          window.novelListUI._hideList();
+
+      novelItem.addEventListener("mousedown", startPress);
+      novelItem.addEventListener("mouseup", endPress);
+      novelItem.addEventListener("mouseleave", endPress);
+      novelItem.addEventListener("touchstart", startPress);
+      novelItem.addEventListener("touchend", endPress);
+      novelItem.addEventListener("touchcancel", endPress);
+
+      novelItem.addEventListener("click", async (event) => {
+        // Only load novel if it's not expanded
+        if (!novelItem.classList.contains("expanded")) {
+          await loadNovel(novel.id);
+          if (window.novelListUI && window.novelListUI._hideList) {
+            window.novelListUI._hideList();
+          }
         }
       });
+
+      function startPress() {
+        pressTimer = window.setTimeout(() => {
+          const currentlyExpanded = document.querySelector(".novel-item.expanded");
+          if (currentlyExpanded && currentlyExpanded !== novelItem) {
+            currentlyExpanded.classList.remove("expanded");
+          }
+          novelItem.classList.toggle("expanded");
+        }, 500); // 500ms for long press
+      }
+
+      function endPress() {
+        clearTimeout(pressTimer);
+      }
       novelListContainer.appendChild(novelItem);
       console.log(
         `Appended novel: ${novel.title} with ${novel.chapterCount} chapters.`
