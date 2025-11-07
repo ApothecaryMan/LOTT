@@ -1,10 +1,15 @@
-// --- START: New carousel.js content ---
+// --- START: Improved carousel.js ---
 
-// This function can initialize any carousel on the page
+/**
+ * This function can initialize any carousel on the page
+ * @param {string} carouselId - ID of the carousel container
+ * @param {string} prevBtnId - ID of the previous button
+ * @param {string} nextBtnId - ID of the next button
+ */
 function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
   const carousel = document.getElementById(carouselId);
-  const nextBtn = document.getElementById(prevBtnId);
-  const prevBtn = document.getElementById(nextBtnId);
+  const prevBtn = document.getElementById(prevBtnId);
+  const nextBtn = document.getElementById(nextBtnId);
 
   if (!carousel || !prevBtn || !nextBtn) {
     // It's okay if a carousel doesn't exist, just log a note and exit.
@@ -20,7 +25,7 @@ function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
 
   let isAtStart = true;
   let isAtEnd = false;
-  let bounceTimeout;
+  let isScrolling = false;
 
   /**
    * Checks button visibility based on scroll position.
@@ -57,35 +62,62 @@ function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
     }
   }
 
+  /**
+   * Trigger bounce animation and haptic feedback
+   * @param {HTMLElement} button - The button that triggered the bounce
+   */
   function triggerBounce(button) {
     // VIBRATION: Trigger the bounce haptic from the manager
     if (window.vibrationManager) {
       window.vibrationManager.bounce();
     }
 
-    const carouselToShake = carousel;
-
     // If the animation is already running, don't do anything
-    if (carouselToShake.classList.contains("shake")) {
+    if (carousel.classList.contains("shake")) {
       return;
     }
 
-    carouselToShake.classList.add("shake");
+    carousel.classList.add("shake");
 
-    carouselToShake.addEventListener('animationend', () => {
-      carouselToShake.classList.remove('shake');
-    }, { once: true });
+    carousel.addEventListener(
+      "animationend",
+      () => {
+        carousel.classList.remove("shake");
+      },
+      { once: true }
+    );
   }
+
+  /**
+   * Smooth scroll with debouncing to prevent rapid clicks
+   * @param {number} direction - Direction to scroll (positive = right, negative = left)
+   */
+  function smoothScroll(direction) {
+    if (isScrolling) return; // منع التمرير السريع المتكرر
+
+    isScrolling = true;
+
+    const isRTL = getComputedStyle(carousel).direction === "rtl";
+    const scrollLeft = isRTL ? -direction : direction;
+
+    carousel.scrollBy({
+      left: scrollLeft,
+      behavior: "smooth",
+    });
+
+    // إزالة العلم بعد انتهاء التمرير
+    setTimeout(() => {
+      isScrolling = false;
+    }, 600);
+  }
+
   // Next Button Click
   nextBtn.addEventListener("click", () => {
     const isRTL = getComputedStyle(carousel).direction === "rtl";
     if (isRTL ? isAtStart : isAtEnd) {
       triggerBounce(nextBtn);
     } else {
-      carousel.scrollBy({
-        left: isRTL ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+      smoothScroll(scrollAmount);
     }
   });
 
@@ -95,10 +127,7 @@ function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
     if (isRTL ? isAtEnd : isAtStart) {
       triggerBounce(prevBtn);
     } else {
-      carousel.scrollBy({
-        left: isRTL ? scrollAmount : -scrollAmount,
-        behavior: "smooth",
-      });
+      smoothScroll(-scrollAmount);
     }
   });
 
@@ -119,9 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize the new card carousel
   initializeCarousel("card-carousel", "card-prev-btn", "card-next-btn");
-
-  // NOTE: The word count logic was moved out of this file as it's not related to carousels.
-  // It's better to keep it in a more general script file like `script.js` or its own file.
 });
 
-//>>>>>>>>>>>>>>>>>>>>>>>>> WORD COUNT (Now separate) >>>>>>>>>>>>>>
+//>>>>>>>>>>>>>>>>>>>>>>>>> END CAROUSEL >>>>>>>>>>>>>>>>>>>>>

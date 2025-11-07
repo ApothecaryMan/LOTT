@@ -15,6 +15,7 @@ export class NovelListUI {
     this.toggleButton = document.querySelector(toggleSelector);
     this.container = document.querySelector(containerSelector);
     this.body = document.body;
+    this.isAnimating = false;
   }
 
   /**
@@ -30,6 +31,73 @@ export class NovelListUI {
 
     this.toggleButton.addEventListener("click", () => this._toggleList());
     window.addEventListener("resize", () => this._adjustHeight());
+
+    // 🚫 منع الاسكرول الخلفي عند فتح القائمة
+    this.container.addEventListener("wheel", (e) => this._handleWheel(e), {
+      passive: false,
+    });
+    this.container.addEventListener(
+      "touchmove",
+      (e) => this._handleTouchMove(e),
+      {
+        passive: false,
+      }
+    );
+  }
+
+  /**
+   * منع انتشار أحداث الماوس عند التمرير داخل القائمة
+   * @private
+   */
+  _handleWheel(e) {
+    if (!this.container.classList.contains("visible")) return;
+
+    const novelList = this.container.querySelector("#novel-list");
+    if (!novelList) return;
+
+    const isAtTop = novelList.scrollTop === 0;
+    const isAtBottom =
+      novelList.scrollTop >= novelList.scrollHeight - novelList.clientHeight;
+
+    // إذا كنا في الأعلى والتمرير للأعلى، أوقف الحدث
+    if (isAtTop && e.deltaY < 0) {
+      e.preventDefault();
+    }
+
+    // إذا كنا في الأسفل والتمرير للأسفل، أوقف الحدث
+    if (isAtBottom && e.deltaY > 0) {
+      e.preventDefault();
+    }
+  }
+
+  /**
+   * منع انتشار أحداث اللمس عند التمرير داخل القائمة
+   * @private
+   */
+  _handleTouchMove(e) {
+    if (!this.container.classList.contains("visible")) return;
+
+    const novelList = this.container.querySelector("#novel-list");
+    if (!novelList) return;
+
+    const isAtTop = novelList.scrollTop === 0;
+    const isAtBottom =
+      novelList.scrollTop >= novelList.scrollHeight - novelList.clientHeight;
+
+    const touch = e.touches[0];
+    const scrollDirection = this.lastTouchY
+      ? touch.clientY - this.lastTouchY
+      : 0;
+
+    this.lastTouchY = touch.clientY;
+
+    // منع الاسكرول الخلفي
+    if (
+      (isAtTop && scrollDirection > 0) ||
+      (isAtBottom && scrollDirection < 0)
+    ) {
+      e.preventDefault();
+    }
   }
 
   /**
@@ -37,6 +105,8 @@ export class NovelListUI {
    * @private
    */
   _toggleList() {
+    if (this.isAnimating) return; // منع التبديل السريع
+
     const isVisible = this.container.classList.contains("visible");
 
     if (isVisible) {
@@ -51,6 +121,8 @@ export class NovelListUI {
    * @private
    */
   _showList() {
+    this.isAnimating = true;
+
     // Hide chapter list if it's open
     if (window.chapterListUI && window.chapterListUI._hideList) {
       window.chapterListUI._hideList();
@@ -60,10 +132,8 @@ export class NovelListUI {
 
     this.toggleButton.classList.add("active");
 
-    const carouselContainer = document.querySelector(".carousel-container");
-    if (carouselContainer) {
-      carouselContainer.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    // 🚫 منع الاسكرول في الموقع عند فتح القائمة
+    this.body.style.overflow = "hidden";
 
     if (window.populateNovelListContent) {
       window.populateNovelListContent();
@@ -72,7 +142,7 @@ export class NovelListUI {
     setTimeout(() => {
       this.container.classList.add("visible");
       this._adjustHeight();
-      // this.body.classList.add("list-is-open");
+      this.isAnimating = false;
     }, 150);
   }
 
@@ -81,12 +151,21 @@ export class NovelListUI {
    * @private
    */
   _hideList() {
+    this.isAnimating = true;
+
     if (window.vibrationManager) window.vibrationManager.listClose();
 
     this.toggleButton.classList.remove("active");
     this.container.classList.remove("visible");
     this.container.style.maxHeight = "0";
-    // this.body.classList.remove("list-is-open");
+
+    // ✅ استعادة الاسكرول في الموقع
+    this.body.style.overflow = "";
+
+    setTimeout(() => {
+      this.isAnimating = false;
+      this.lastTouchY = null;
+    }, 300);
   }
 
   /**

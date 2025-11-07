@@ -15,6 +15,8 @@ export class ListUI {
     this.toggleButton = document.querySelector(toggleSelector);
     this.container = document.querySelector(containerSelector);
     this.body = document.body;
+    this.isAnimating = false;
+    this.lastTouchY = null;
   }
 
   /**
@@ -28,6 +30,75 @@ export class ListUI {
 
     this.toggleButton.addEventListener("click", () => this._toggleList());
     window.addEventListener("resize", () => this._adjustHeight());
+
+    // 🚫 منع الاسكرول الخلفي عند فتح القائمة
+    this.container.addEventListener("wheel", (e) => this._handleWheel(e), {
+      passive: false,
+    });
+    this.container.addEventListener(
+      "touchmove",
+      (e) => this._handleTouchMove(e),
+      {
+        passive: false,
+      }
+    );
+  }
+
+  /**
+   * منع انتشار أحداث الماوس عند التمرير داخل القائمة
+   * @private
+   */
+  _handleWheel(e) {
+    if (!this.container.classList.contains("visible")) return;
+
+    const chapterList = this.container.querySelector("#chapter-list");
+    if (!chapterList) return;
+
+    const isAtTop = chapterList.scrollTop === 0;
+    const isAtBottom =
+      chapterList.scrollTop >=
+      chapterList.scrollHeight - chapterList.clientHeight;
+
+    // إذا كنا في الأعلى والتمرير للأعلى، أوقف الحدث
+    if (isAtTop && e.deltaY < 0) {
+      e.preventDefault();
+    }
+
+    // إذا كنا في الأسفل والتمرير للأسفل، أوقف الحدث
+    if (isAtBottom && e.deltaY > 0) {
+      e.preventDefault();
+    }
+  }
+
+  /**
+   * منع انتشار أحداث اللمس عند التمرير داخل القائمة
+   * @private
+   */
+  _handleTouchMove(e) {
+    if (!this.container.classList.contains("visible")) return;
+
+    const chapterList = this.container.querySelector("#chapter-list");
+    if (!chapterList) return;
+
+    const isAtTop = chapterList.scrollTop === 0;
+    const isAtBottom =
+      chapterList.scrollTop >=
+      chapterList.scrollHeight - chapterList.clientHeight;
+
+    const touch = e.touches[0];
+    const scrollDirection = this.lastTouchY
+      ? touch.clientY - this.lastTouchY
+      : 0;
+
+    this.lastTouchY = touch.clientY;
+
+    // منع الاسكرول الخلفي
+    if (
+      (isAtTop && scrollDirection > 0) ||
+      (isAtBottom && scrollDirection < 0)
+    ) {
+      e.preventDefault();
+    }
   }
 
   /**
@@ -35,6 +106,8 @@ export class ListUI {
    * @private
    */
   _toggleList() {
+    if (this.isAnimating) return; // منع التبديل السريع
+
     const isVisible = this.container.classList.contains("visible");
 
     if (isVisible) {
@@ -49,14 +122,24 @@ export class ListUI {
    * @private
    */
   _showList() {
+    this.isAnimating = true;
+
     // Hide novel list if it's open
     if (window.novelListUI && window.novelListUI._hideList) {
       window.novelListUI._hideList();
     }
 
+    // 🚫 تعطيل الكاروسيل الذكية عند فتح القائمة
+    if (window.smartCarouselScroll) {
+      window.smartCarouselScroll.disabled = true;
+    }
+
     if (window.vibrationManager) window.vibrationManager.listOpen();
 
     this.toggleButton.classList.add("active");
+
+    // 🚫 منع الاسكرول في الموقع عند فتح القائمة
+    this.body.style.overflow = "hidden";
 
     const carouselContainer = document.querySelector(".carousel-container");
     if (carouselContainer) {
@@ -66,7 +149,7 @@ export class ListUI {
     setTimeout(() => {
       this.container.classList.add("visible");
       this._adjustHeight();
-      // this.body.classList.add("list-is-open");
+      this.isAnimating = false;
     }, 150);
   }
 
@@ -75,12 +158,27 @@ export class ListUI {
    * @private
    */
   _hideList() {
+    this.isAnimating = true;
+
     if (window.vibrationManager) window.vibrationManager.listClose();
 
     this.toggleButton.classList.remove("active");
     this.container.classList.remove("visible");
     this.container.style.maxHeight = "0";
-    // this.body.classList.remove("list-is-open");
+
+    // ✅ استعادة الاسكرول في الموقع
+    this.body.style.overflow = "";
+
+    // ✅ تفعيل الكاروسيل الذكية عند إغلاق القائمة
+    if (window.smartCarouselScroll) {
+      window.smartCarouselScroll.disabled = false;
+      window.smartCarouselScroll.showCarousel();
+    }
+
+    setTimeout(() => {
+      this.isAnimating = false;
+      this.lastTouchY = null;
+    }, 300);
   }
 
   /**
