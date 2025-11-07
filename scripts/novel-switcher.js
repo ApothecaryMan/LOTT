@@ -59,7 +59,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.allNovels = novels; // Expose novels globally
 
       const lastOpenNovelId = localStorage.getItem("lastOpenNovelId");
-      const novelToLoad = novels.find(n => n.id === lastOpenNovelId)?.id || novels[0].id;
+      const novelToLoad =
+        novels.find((n) => n.id === lastOpenNovelId)?.id || novels[0].id;
 
       await loadNovel(novelToLoad);
     } catch (error) {
@@ -208,7 +209,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       novelItem.dataset.novelId = novel.id;
 
       novelItem.innerHTML = `
-      <img class="novel-item-img lazy" data-src="${novel.image}" alt="${novel.title}" src="img/pic1.webp">  
+      <img class="novel-item-img lazy" data-src="${novel.image}" alt="${
+        novel.title
+      }" src="img/pic1.webp">  
         <div class="novel-item-details">
           <div class="novel-item-header">
             <p class="novel-title">${novel.title}</p>

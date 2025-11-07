@@ -86,7 +86,6 @@ body.list-is-open .info-container {
 }
 
 .chapter-item:hover {
-  background-color: #3a3a3a;
   transform: translateY(-2px);
 }
 

@@ -206,10 +206,6 @@ function changeTheme(event) {
     background-color: ${containerBgColor};
   }
 
-  body.light-theme .chapter-item:hover {
-    background-color: ${hoverBgColor};
-  }
-
   .spinner {
     border: 3px solid ${containerBgColor};
     border-top-color: ${newColor};
@@ -242,7 +238,6 @@ function changeTheme(event) {
       #comments-panel, .auth-modal-content {
           background-color: ${l === 0 ? "rgb(0, 0, 0)" : containerBgColor};
       }
-      .chapter-item:hover, .novel-item:hover { background-color: ${hoverBgColor}; }
       .spinner { border: 3px solid ${containerBgColor}; border-top-color: ${newColor}; }
       .font-tools-popup svg { fill: #eee; }
       .font-tools-popup button{color: white; }
