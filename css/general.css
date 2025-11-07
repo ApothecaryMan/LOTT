@@ -1,5 +1,5 @@
 html {
-  margin: 0;
+  margin: 45px 3px 0 3px;
   padding: 0;
 }
 body {
@@ -106,6 +106,7 @@ h3,
   transform-style: preserve-3d;
   perspective: 1000px;
 }
+
 /* BUTTONS */
 #mode-selector,
 #title-btn,

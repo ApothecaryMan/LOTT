@@ -3,14 +3,15 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 0px 10px;
+  padding: 0px;
   user-select: none;
-  width: 93%;
+  width: 95%;
   border-radius: 25px;
 
   /* STICK CAROUSEL */
-  position: sticky;
-  top: 5px;
+  position: fixed;
+  top: 6px;
+  padding: 0;
   z-index: 1000;
   transition: transform 0.2s ease-in;
 
@@ -36,6 +37,10 @@
   transform: translateY(-100%);
 }
 
+.body.carousel {
+  --carousel-is-open: 1;
+}
+
 .carousel-container {
   width: 100%;
   border-radius: 100px;
@@ -55,11 +60,12 @@
 .carousel {
   max-width: 1000px;
   display: flex;
-  gap: 5px;
+  gap: 3px;
   scroll-behavior: smooth;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding: 0 10px 0 10px;
 }
 
 .carousel::-webkit-scrollbar {
@@ -71,17 +77,16 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  gap: 1px;
 
-  padding: 0 5px 0 5px;
+  padding: 0 5px;
 }
 
 .carousel-item button {
-  padding: 7px;
+  padding: 8px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  height: 25px;
+  height: 23px;
   border: 0px;
 }
 
@@ -107,8 +112,8 @@
 #font-panel-btn {
   border-radius: 25px;
   padding: 5px;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
 }
 
 #font-naskh {
@@ -306,7 +311,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  font-size: 15px;
   background-color: none;
   padding: 0;
 }
