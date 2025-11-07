@@ -6,9 +6,7 @@
   top: 10px;
   /* --- Default State: Hidden --- */
   max-height: 0; /* Collapse it vertically */
-  opacity: 0; /* Make it transparent */
-  margin-top: 0; /* Remove top margin when hidden */
-  margin-bottom: 0; /* Remove bottom margin when hidden */
+  opacity: 0; /* Make it transparent */ /* Remove top margin when hidden */ /* Remove bottom margin when hidden */
   padding-top: 0; /* Remove padding when hidden */
   padding-bottom: 0; /* Remove padding when hidden */
   border-width: 0; /* Hide border when hidden */
@@ -21,8 +19,7 @@
   /* --- Keep your existing styles --- */
   background-color: none;
   border-radius: 25px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   box-sizing: border-box;
   overflow-y: auto;
 }

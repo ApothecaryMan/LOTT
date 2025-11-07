@@ -1,5 +1,5 @@
 .title {
-  margin: 0px 0px 0px 0px;
+  margin: 0px;
   user-select: none;
   height: 40px;
   padding: 10px 0;
@@ -22,7 +22,7 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
 
   display: none;
 }
@@ -30,7 +30,6 @@
   border-radius: 50px 4px 4px 50px;
   width: 50px;
   height: 40px;
-  border: 0px;
   /* background-color: #EB8317; */
   background-color: silver;
   border: 2px;

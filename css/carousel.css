@@ -3,7 +3,6 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 0px;
   user-select: none;
   width: 95%;
   border-radius: 25px;
@@ -65,7 +64,7 @@
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 0 10px 0 10px;
+  padding: 0 10px;
 }
 
 .carousel::-webkit-scrollbar {

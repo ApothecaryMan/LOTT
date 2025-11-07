@@ -54,7 +54,7 @@ strong {
   align-items: center;
   text-align: center;
   gap: 5px;
-  margin: 5px 0 10px 0;
+  margin: 5px 0 10px;
   user-select: none;
 }
 .date p {
@@ -70,10 +70,10 @@ strong {
 }
 
 .main-header-container {
-  margin: 10px 0 2px 0;
+  margin: 10px 0 2px;
   background-color: rgb(36, 36, 36);
   border-radius: 25px 25px 5px 5px;
-  padding: 0 3% 3% 3%;
+  padding: 0 3% 3%;
 }
 
 .footer {
@@ -140,8 +140,6 @@ h3 {
   top: 10px;
   max-height: 0; /* Hidden */
   opacity: 0;
-  margin-top: 0;
-  margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
   border-width: 0;
@@ -151,8 +149,7 @@ h3 {
     padding 0.5s ease-in-out, visibility 0s linear 0s;
 
   border-radius: 25px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   box-sizing: border-box;
   overflow-y: auto;
 }
