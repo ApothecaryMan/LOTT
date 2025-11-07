@@ -266,51 +266,57 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   shareQuoteBtn.addEventListener("click", async () => {
-    if (navigator.share) {
-      try {
-        const img = quoteImageContainer.querySelector('img');
-        if (img) {
-          const response = await fetch(img.src);
-          const blob = await response.blob();
-          const file = new File([blob], "quote.png", { type: "image/png" });
+    console.log("Share button clicked");
 
-          await navigator.share({
-            files: [file],
-            title: 'My Quote',
-            text: 'Check out this quote!',
-          });
-          console.log('Quote shared successfully');
-        } else {
-          showToast('No quote image to share.');
-        }
-      } catch (error) {
-        if (error.name === 'AbortError') {
-          console.log('Share cancelled by user.');
-        } else {
-          console.error('Error sharing:', error);
-          showToast('Failed to share quote.');
-        }
+    if (!window.isSecureContext) {
+      showToast("Sharing is only available on secure connections (HTTPS).");
+      console.log("Not in a secure context, aborting share.");
+      return;
+    }
+
+    const img = quoteImageContainer.querySelector('img');
+    if (!img) {
+      showToast('No quote image to share.');
+      console.log("No image found to share");
+      return;
+    }
+
+    try {
+      const response = await fetch(img.src);
+      const blob = await response.blob();
+      const file = new File([blob], "quote.png", { type: "image/png" });
+      const shareData = {
+        files: [file],
+        title: 'My Quote',
+        text: 'Check out this quote!',
+      };
+
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        console.log("Attempting to share file...");
+        await navigator.share(shareData);
+        console.log('Quote shared successfully');
+      } else if (navigator.share) {
+        console.log("File sharing not supported, attempting to share text.");
+        await navigator.share({
+          title: 'My Quote',
+          text: 'Check out this quote!',
+        });
+        console.log('Text shared successfully');
+      } else {
+        console.log("navigator.share not supported, falling back to clipboard");
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            [blob.type]: blob,
+          }),
+        ]);
+        showToast("Quote image copied to clipboard!");
       }
-    } else {
-      try {
-        const img = quoteImageContainer.querySelector("img");
-        if (img) {
-          const response = await fetch(img.src);
-          const blob = await response.blob();
-          await navigator.clipboard.write([
-            new ClipboardItem({
-              [blob.type]: blob,
-            }),
-          ]);
-          showToast("Quote image copied to clipboard!");
-        } else {
-          showToast("No quote image to copy.");
-        }
-      } catch (error) {
-        console.error("Error copying to clipboard:", error);
-        showToast(
-          "Copying to clipboard is not supported in your browser. You can download the image instead."
-        );
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Share cancelled by user.');
+      } else {
+        console.error('Error sharing:', error);
+        showToast('Failed to share quote.');
       }
     }
   });
