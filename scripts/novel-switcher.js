@@ -190,7 +190,11 @@ document.addEventListener("DOMContentLoaded", async () => {
           return { ...novel, chapterCount: 0 }; // Return novel with 0 chapters on error
         }
         const data = await response.json();
-        return { ...novel, chapterCount: data.chapters.length, description: data.novel.description };
+        return {
+          ...novel,
+          chapterCount: data.chapters.length,
+          description: data.novel.description,
+        };
       } catch (error) {
         console.error(`Error fetching chapter data for ${novel.title}:`, error);
         return { ...novel, chapterCount: 0 }; // Return novel with 0 chapters on error
@@ -246,7 +250,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       function startPress() {
         pressTimer = window.setTimeout(() => {
-          const currentlyExpanded = document.querySelector(".novel-item.expanded");
+          const currentlyExpanded = document.querySelector(
+            ".novel-item.expanded"
+          );
           if (currentlyExpanded && currentlyExpanded !== novelItem) {
             currentlyExpanded.classList.remove("expanded");
           }

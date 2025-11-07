@@ -55,7 +55,6 @@ strong {
   text-align: center;
   gap: 5px;
   margin: 5px 0 10px 0;
-
   user-select: none;
 }
 .date p {
@@ -93,8 +92,6 @@ strong {
 
 .info-container .info {
   max-height: auto;
-
-  /* إخفاء أي محتوى يتجاوز الـ 100px */
   overflow: hidden;
   border-radius: 5px;
   transition: max-height 0.5s ease-in-out;
@@ -120,28 +117,39 @@ strong {
   padding-top: 40px;
 }
 
-/* Novel List Container - Mimicking chapter-list-container */
+h3 {
+  font-family: "Merdane", sans-serif;
+  text-align: center;
+  font-weight: 25px;
+  margin-top: 0;
+  margin-bottom: 25px;
+  user-select: none;
+  border-radius: 25px;
+  padding: 10px 15px;
+}
+
+/* ---------------------------------------------------- */
+/* ✨✨✨ بداية قسم أكواد الـ Expand ✨✨✨ */
+/* ---------------------------------------------------- */
+
+/* Novel List Container */
 #novel-list-container {
   position: relative;
   overflow: hidden;
   min-width: 95%;
   top: 10px;
-  /* --- Default State: Hidden --- */
-  max-height: 0; /* Collapse it vertically */
-  opacity: 0; /* Make it transparent */
-  margin-top: 0; /* Remove top margin when hidden */
-  margin-bottom: 0; /* Remove bottom margin when hidden */
-  padding-top: 0; /* Remove padding when hidden */
-  padding-bottom: 0; /* Remove padding when hidden */
-  border-width: 0; /* Hide border when hidden */
+  max-height: 0; /* Hidden */
+  opacity: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
 
-  /* --- Transition --- */
-  /* Animate max-height, opacity, margins, padding, border */
   transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out,
     margin 0.5s ease-in-out, border-width 0.4s ease-in-out,
     padding 0.5s ease-in-out, visibility 0s linear 0s;
 
-  /* --- Keep your existing styles --- */
   border-radius: 25px;
   margin-left: auto;
   margin-right: auto;
@@ -150,17 +158,16 @@ strong {
 }
 
 #novel-list-container::-webkit-scrollbar {
-  display: none; /* Hide the scrollbar */
+  display: none;
 }
 
 #novel-list-container.visible {
-  /* --- Visible State (Slide Down) --- */
   opacity: 1;
   padding: 20px;
   min-width: 95%;
   border-width: 1px;
-  max-height: 1000px; /* Ensure it can expand */
-  margin-bottom: 15px; /* Consistent with chapter list */
+  max-height: 1000px;
+  margin-bottom: 15px;
 }
 
 #novel-list-container h3 {
@@ -177,62 +184,61 @@ strong {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Spacing between novel items */
+  gap: 15px;
 }
 
-/* --- Add Smooth Transition to Main Content Elements --- */
+/* Smooth Transition for Main Content */
 main.main,
 .cards,
 .footer,
-.info-container    /* Added */ {
+.info-container {
   transition: opacity 0.4s ease-in-out, visibility 0s linear 0.4s,
     max-height 0.5s ease-in-out;
 }
 
-/* --- Rule to Hide Content When List is Open --- */
+/* Hide content when list is open */
 body.list-is-open main.main,
 body.list-is-open .cards,
 body.list-is-open .footer,
-body.list-is-open .info-container    /* Added */ {
+body.list-is-open .info-container {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s ease-in-out, visibility 0s linear 0s; /* Hide immediately */
+  transition: opacity 0.4s ease-in-out, visibility 0s linear 0s;
 }
 body.list-is-open {
-  overflow: hidden; /* Hide the main page scrollbar */
+  overflow: hidden;
 }
 
-/* --- Individual Novel Item --- */
+/* Individual Novel Item */
 .novel-item {
   width: 100%;
-  box-sizing: border-box; /* Add this line */
+  box-sizing: border-box;
   border-radius: 30px;
-  padding: 15px 15px 15px 15px;
+  padding: 15px;
   display: flex;
   gap: 20px;
   align-items: center;
   cursor: pointer;
-  transition: height 0.5s cubic-bezier(0.25, 1, 0.3, 1), background-color 0.2s ease, transform 0.15s ease-out;
+  transition: height 0.5s cubic-bezier(0.25, 1, 0.3, 1),
+    background-color 0.2s ease, transform 0.15s ease-out;
   text-decoration: none;
   user-select: none;
-  height: 120px; /* Default height */
+  height: 120px;
   position: relative;
   overflow: hidden;
-  justify-content: flex-start; /* Align items to start in default state */
-
-  /* --- "Liquid" Shape & Style --- */
+  justify-content: flex-start;
   color: rgba(255, 255, 255, 0.8);
 }
 
 .novel-item.expanded {
-  height: 400px; /* Expanded height */
+  height: 400px;
 }
 
 .novel-item:hover {
   transform: translateY(-2px);
 }
 
-/* --- Novel Image --- */
+/* Novel Image */
 .novel-item-img {
   width: 30%;
   max-width: 90px;
@@ -241,72 +247,76 @@ body.list-is-open {
   object-fit: cover;
   border-radius: 8px;
   transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
-  position: relative; /* Keep relative for default flow */
+  position: relative;
   left: 0;
   top: 0;
 }
 
 .novel-item.expanded .novel-item-img {
-  position: absolute; /* Take out of flow */
-  width: 150px; /* Larger size for expanded image */
+  position: absolute;
+  width: 150px;
   height: 150px;
-  top: 20px; /* Position from top of expanded item */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%) scale(1.05); /* Adjust for its own width and scale */
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) scale(1.05);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Details Section (Title and Chapter Number) --- */
+/* Details Section */
 .novel-item-details {
   display: flex;
   flex-direction: column;
   width: 100%;
   transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
   opacity: 1;
-  position: relative; /* Keep relative for default flow */
+  position: relative;
   top: 0;
   left: 0;
-  text-align: left; /* Default alignment */
+  text-align: left;
 }
 
 .novel-item.expanded .novel-item-details {
-  position: absolute; /* Take out of flow */
-  top: 190px; /* Below the image (20px top + 150px image height + 20px gap) */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Adjust for its own width */
+  position: absolute;
+  top: 190px;
+  left: 50%;
+  transform: translateX(-50%);
   opacity: 1;
   transition-delay: 0.1s;
-  width: 90%; /* Adjust width for expanded state */
-  text-align: center; /* Center text within details */
+  width: 90%;
+  text-align: center;
 }
 
-/* --- Novel Description --- */
+/* Novel Description */
 .novel-item-description {
-  position: absolute; /* Always absolute, hidden by default */
-  top: 250px; /* Below details (190px top + estimated 40px details height + 20px gap) */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%) translateY(20px); /* Start slightly below and move up */
+  position: absolute;
+  top: 250px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
   opacity: 0;
   transition: all 0.5s cubic-bezier(0.25, 1, 0.3, 1);
   font-size: 14px;
   color: #b0b0b0;
-  max-height: 150px; /* Limit description height */
+  max-height: 150px;
   overflow: hidden;
-  text-align: center; /* Center text */
-  width: 90%; /* Adjust width for expanded state */
+  text-align: center;
+  width: 90%;
 }
 
 .novel-item.expanded .novel-item-description {
   opacity: 1;
-  transform: translateX(-50%) translateY(0); /* Move to final position */
+  transform: translateX(-50%) translateY(0);
   transition-delay: 0.2s;
 }
 
-/* Adjust novel-title and novel-item-body for centering within details */
 .novel-item.expanded .novel-title,
-.novel-item.expanded .novel-item-body {
-  justify-content: center; /* Center content within details */
+.novel-item.expanded .novel-item-body,
+.novel-item.expanded .novel-item-header {
+  justify-content: center;
 }
+.novel-item.expanded .novel-chapter-count {
+  display: none;
+}
+
 .novel-item-header {
   display: flex;
   align-items: center;
@@ -319,9 +329,10 @@ body.list-is-open {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 5px 0 5px 0;
 }
 
-/* --- Body (Chapter Number and Title) --- */
+/* Body (Chapter Number and Title) */
 .novel-item-body {
   display: flex;
   align-items: center;
@@ -335,13 +346,6 @@ body.list-is-open {
   padding: 2px 8px;
 }
 
-h3 {
-  font-family: "Merdane", sans-serif;
-  text-align: center;
-  font-weight: 25px;
-  margin-top: 0;
-  margin-bottom: 25px;
-  user-select: none;
-  border-radius: 25px;
-  padding: 10px 15px;
-}
+/* ---------------------------------------------------- */
+/* ✨✨✨ نهاية قسم أكواد الـ Expand ✨✨✨ */
+/* ---------------------------------------------------- */
