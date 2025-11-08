@@ -64,7 +64,7 @@
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 0 10px;
+  padding: 0 10px; /* */
 }
 
 .carousel::-webkit-scrollbar {
@@ -77,11 +77,10 @@
   justify-content: center;
   flex: 0 0 auto;
 
-  padding: 0 5px;
+  padding: 0px; /*space between buttons*/
 }
 
 .carousel-item button {
-  padding: 8px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
