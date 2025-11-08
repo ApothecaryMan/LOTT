@@ -323,7 +323,7 @@ body.list-is-open {
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-bottom: 3px;
+  margin-bottom: 20px;
   will-change: transform;
   transform: translateX(0);
   transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -331,7 +331,7 @@ body.list-is-open {
 
 .novel-item.expanded .novel-item-header {
   justify-content: center;
-  margin-bottom: 6px;
+  margin-bottom: 0px;
   transform: translateY(-15px);
 }
 
@@ -349,6 +349,7 @@ body.list-is-open {
 
 .novel-item.expanded .novel-title {
   font-size: 18px;
+  margin-top: -20px;
 }
 
 /* Body (Chapter Number and Title) */
@@ -379,3 +380,40 @@ body.list-is-open {
 /* ---------------------------------------------------- */
 /* ✨✨✨ نهاية قسم أكواد الـ Expand ✨✨✨ */
 /* ---------------------------------------------------- */
+
+/* Novel Categories */
+.novel-item-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-height: 0;
+  overflow: hidden;
+  margin-top: -15px; /* Adds spacing below description */
+  position: relative; /* <-- keep it in normal flow */
+}
+
+/* عند التمدد */
+.novel-item.expanded .novel-item-categories {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 120px;
+  transition-delay: 0.15s;
+  justify-content: center;
+}
+
+/* الفئة نفسها */
+.novel-category {
+  padding: 0px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}

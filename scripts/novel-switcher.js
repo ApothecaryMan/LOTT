@@ -179,9 +179,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           ...novel,
           chapterCount: data.chapters.length,
           description: data.novel.description,
+          categories: novel.categories || [],
         };
       } catch {
-        return { ...novel, chapterCount: 0 };
+        return { ...novel, chapterCount: 0, categories: novel.categories || [] };
       }
     });
 
@@ -194,6 +195,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       novelItem.className = "novel-item";
       novelItem.dataset.novelId = novel.id;
 
+      // Create categories HTML
+      const categoriesHTML = novel.categories
+        .map((category) => `<span class="novel-category">${category}</span>`)
+        .join("");
+
       // 💅 بناء الهيكل الداخلي لعرض الرواية
       novelItem.innerHTML = `
         <img class="novel-item-img lazy" data-src="${novel.image}" alt="${
@@ -202,6 +208,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="novel-item-details">
           <div class="novel-item-header">
             <p class="novel-title">${novel.title}</p>
+          </div>
+          <div class="novel-item-categories">
+            ${categoriesHTML}
           </div>
           <div class="novel-item-body">
             <span class="novel-chapter-count">
