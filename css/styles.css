@@ -1,0 +1,19 @@
+/* Import external libraries first */
+@import url("https://unpkg.com/atropos@2/atropos.min.css");
+
+/* Import local CSS files */
+@import url("test.css");
+@import url("general.css");
+@import url("novel-list.css");
+@import url("header.css");
+@import url("theme.css");
+@import url("main.css");
+@import url("card.css");
+@import url("carousel.css");
+@import url("font.css");
+@import url("chapter-list.css");
+@import url("comments-auth.css");
+@import url("D-Tilt-Hover-Effect.css");
+@import url("quote-generator.css");
+@import url("rainbow-border.css");
+@import url("desktop-layout.css");
