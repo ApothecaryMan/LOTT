@@ -1,0 +1,22 @@
+/* /home/home.css */
+
+/* Hide the main reader content when the home page is active */
+.home-active .main-content-wrapper {
+  display: none;
+}
+
+/* Styles for the home page container */
+.home-container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Hide the novel list container by default */
+#novel-list-container {
+  display: none;
+}
+
+.home-container #novel-list-container {
+  display: block;
+}
