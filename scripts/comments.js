@@ -943,6 +943,14 @@
           </form>`;
       targetElement.insertAdjacentElement("afterend", formContainer);
       formContainer.querySelector(".reply-textarea").focus();
+
+      // Scroll the new form into view to avoid being hidden by the keyboard
+      setTimeout(() => {
+        formContainer.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 300); // Delay to allow keyboard to start animating
     },
 
     showEditForm(commentElement, commentId, currentBody) {
