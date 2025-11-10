@@ -908,8 +908,7 @@ body.comments-open {
   width: 90%;
   max-width: 400px;
   height: 100%;
-  background-color: rgb(24, 24, 24);
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.5);
+
   z-index: 1002;
   transform: translateX(100%);
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -962,7 +961,7 @@ button:focus-visible {
 @media (max-width: 480px) {
   .auth-modal-content {
     padding: 15px;
-    width: 85%;
+    width: 100%;
   }
 
   .auth-form h3 {
@@ -980,8 +979,9 @@ button:focus-visible {
   }
 
   #comments-panel {
-    width: 95%;
+    width: 100%;
     max-width: none;
+    height: 100%;
   }
 
   .is-reply {

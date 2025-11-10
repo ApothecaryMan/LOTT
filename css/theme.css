@@ -139,3 +139,6 @@ body.light-theme #quote-options-panel label {
 body.light-theme #quote-options-panel .separator {
   color: black;
 }
+body.light-theme #comments-panel p {
+  color: #ffffff;
+}

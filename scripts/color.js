@@ -125,7 +125,7 @@ function changeTheme(event) {
   const typographyAndSelectionRules = `
     ::selection { background-color: ${newColor}; color: white; }
     #chapter-title, #chapter-list-container h3, .chapter-item ,
-    .comment-author, h2, #novel-list-container h3, .toggle-replies-btn, .auth-tab.active, .sort-by-btn .current-sort-value {
+     h2, #novel-list-container h3, .toggle-replies-btn, .auth-tab.active, .sort-by-btn .current-sort-value {
         color: ${newColor};
     }
   `;
@@ -182,7 +182,7 @@ function changeTheme(event) {
     dynamicCSS += `
   body.light-theme { background-color: ${bodyBgColor}; }
 
-  body.light-theme .body,.font-tools-popup, body.light-theme .card, body.light-theme #quote-options-panel {
+  body.light-theme .body,.font-tools-popup, body.light-theme .card, body.light-theme #quote-options-panel,body.light-theme #comments-panel {
     background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.05)")};
@@ -198,13 +198,13 @@ function changeTheme(event) {
   body.light-theme .chapter,
   body.light-theme #info-wrapper,
   body.light-theme .main-header-container,
-  body.light-theme #comments-panel,
   body.light-theme .auth-modal-content,
   body.light-theme input,
   body.light-theme .auth-modal-close:hover,
   body.light-theme .carousel-item button {
     background-color: ${containerBgColor};
   }
+
 
   .spinner {
     border: 3px solid ${containerBgColor};
@@ -216,7 +216,7 @@ function changeTheme(event) {
   body.light-theme #comments-btn:hover svg,
   body.light-theme #comments-btn.active svg { fill: white; }
   body.light-theme .card-title { color: ${newColor}; }
-  body.light-theme .chapter-item .novel-chapter-count p{ color: white; }
+  body.light-theme .chapter-item .novel-chapter-count p, .comment-author,{ color: white; }
   body.light-theme .font-tools-content button.active{ background-color: ${newColor};  }
   body.light-theme .font-tools-content button.active svg { fill: white; }
   .generated-quote { background-color: ${containerBgColor}; }
@@ -235,8 +235,15 @@ function changeTheme(event) {
       .carousel-container .carousel-nav-btn { background-color: ${bodyBgColor}; }
       .chapter, #info-wrapper, .main-header-container,
  
-      #comments-panel, .auth-modal-content {
+      .auth-modal-content {
           background-color: ${l === 0 ? "rgb(0, 0, 0)" : containerBgColor};
+      }
+      #comments-panel {
+        background-color: ${
+          l === 0
+            ? "rgba(0, 0, 0, 0.1)"
+            : containerBgColor.replace("hsl", "hsla").replace(")", ", 0.1)")
+        };
       }
       .spinner { border: 3px solid ${containerBgColor}; border-top-color: ${newColor}; }
       .font-tools-popup svg { fill: #eee; }

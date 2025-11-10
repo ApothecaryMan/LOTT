@@ -1270,6 +1270,7 @@
         elements.commentsOverlay.classList.add("visible");
       }
       elements.commentsBtn?.classList.add("active");
+      document.body.style.overflow = "hidden"; // منع سكرول الصفحة
     },
 
     closePanel() {
@@ -1285,6 +1286,7 @@
         elements.commentsOverlay.classList.remove("visible");
       }
       elements.commentsBtn?.classList.remove("active");
+      document.body.style.overflow = "auto"; // إعادة سكرول الصفحة
     },
 
     togglePanel() {
