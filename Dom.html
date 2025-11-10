@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=2" />
+    <title>Dom</title>
+  </head>
+  <body>
+    <p>Youtube Subscribe Button</p>
+    <button id="sub" onclick="changeText()" ondblclick="resetText()">
+      subscribe
+    </button>
+    <p>Amazon Shipping Calc</p>
+    <p>Order under $40 shipping +$10</p>
+    <p>Order over $40 shipping is free</p>
+    <input type="text" id="amount" placeholder="Enter"
+    style=padding-right:50px;"/>
+    <button id="calc" onclick="calculateShipping()">Calculate</button>
+    <b id="result" style="display: block; margin-top: 20px"></b>
+    <script>
+      function changeText() {
+        let subButton = document.getElementById("sub");
+        subButton.addEventListener("click", function () {
+          subButton.innerHTML = "Subscribed";
+          subButton.style.backgroundColor = "red";
+          subButton.style.color = "white";
+          subButton.style.borderRadius = "20px";
+          subButton.style.border = "none";
+          subButton.style.padding = "0 20px";
+        });
+      }
+      function resetText() {
+        let subButton = document.getElementById("sub");
+        subButton.addEventListener("dblclick", function () {
+          subButton.innerHTML = "Subscribe";
+          subButton.style.backgroundColor = "babygray";
+          subButton.style.color = "black";
+          subButton.style.borderRadius = "0px";
+          subButton.style.border = "1px solid black";
+          subButton.style.padding = "0 10px";
+        });
+      }
+
+      function calculateShipping() {
+        let calcButton = document.getElementById("calc");
+        calcButton.addEventListener("click", function () {
+          let amount = Number(document.getElementById("amount").value);
+          if (amount <= 40) {
+            document.getElementById("result").innerHTML =
+              "Total Shipping Cost: $" + (amount + 10).toFixed(2);
+          } else {
+            document.getElementById("result").innerHTML =
+              "Total Shipping Cost: $" + amount.toFixed(2);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

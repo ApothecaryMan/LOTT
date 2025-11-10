@@ -289,27 +289,24 @@ async function loadChapter(novelId, chapterId, position = "replace") {
 
       // Scroll to the chapter title, accounting for the sticky header
       setTimeout(() => {
-        const isFirstChapter = chapterId === window.currentNovelChapters[0]?.id;
+        const chapterTitleElement = document.getElementById(
+          `chapter-title-${chapterId}`
+        );
 
-        if (isFirstChapter) {
-          // For the first chapter, simply scroll to the top of the document.
-          document.documentElement.scrollTop = 0;
+        if (chapterTitleElement) {
+          const stickyHeader = document.querySelector(".header-container");
+          const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
+          const elementPosition =
+            chapterTitleElement.getBoundingClientRect().top;
+          const offsetPosition =
+            elementPosition + window.scrollY - headerHeight;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
         } else {
-          // For all other chapters, use the existing logic
-          const chapterTitleElement = document.getElementById(
-            `chapter-title-${chapterId}`
-          );
-          if (chapterTitleElement) {
-            const stickyHeader = document.querySelector(".body");
-            const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
-            const elementPosition =
-              chapterTitleElement.getBoundingClientRect().top;
-            const offsetPosition =
-              elementPosition + window.scrollY - headerHeight;
-            document.documentElement.scrollTop = offsetPosition;
-          } else {
-            document.documentElement.scrollTop = 0;
-          }
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }
       }, 100); // Increased delay to ensure rendering is complete
     }
