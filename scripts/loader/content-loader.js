@@ -93,12 +93,26 @@ function createChapterElement(chapterId, title, content) {
   const wrapper = document.createElement("div");
   wrapper.className = "chapter-block";
   wrapper.dataset.chapterId = chapterId;
-  wrapper.innerHTML = `
+
+  const currentIndex = window.currentNovelChapters.findIndex(
+    (c) => c.id === chapterId
+  );
+  const isLastChapter = currentIndex === window.currentNovelChapters.length - 1;
+
+  let chapterHTML = `
     <h2 id="chapter-title-${chapterId}" class="chapter-title">
       ${chapterId} – ${title}
     </h2>
     ${content}
   `;
+
+  if (!isLastChapter) {
+    chapterHTML += `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><path fill="rgba(0, 0, 0, 1)" d="M500 0c0 28-22 50-50 50 28 0 50 22 50 50 0-28 22-50 50-50-28 0-50-22-50-50ZM620 10c0 22-18 40-40 40 22 0 40 18 40 40 0-22 18-40 40-40-22 0-40-18-40-40ZM380 10c0 22-18 40-40 40 22 0 40 18 40 40 0-22 18-40 40-40-22 0-40-18-40-40ZM720 20c0 17-13 30-30 30 17 0 30 13 30 30 0-17 13-30 30-30-17 0-30-13-30-30ZM280 20c0 17-13 30-30 30 17 0 30 13 30 30 0-17 13-30 30-30-17 0-30-13-30-30Z"></path></svg>
+    `;
+  }
+
+  wrapper.innerHTML = chapterHTML;
   return wrapper;
 }
 
