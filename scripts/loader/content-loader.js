@@ -108,8 +108,7 @@ function createChapterElement(chapterId, title, content) {
 
   if (!isLastChapter) {
     chapterHTML += `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><path fill="rgba(0, 0, 0, 1)" d="M500 0c0 28-22 50-50 50 28 0 50 22 50 50 0-28 22-50 50-50-28 0-50-22-50-50ZM620 10c0 22-18 40-40 40 22 0 40 18 40 40 0-22 18-40 40-40-22 0-40-18-40-40ZM380 10c0 22-18 40-40 40 22 0 40 18 40 40 0-22 18-40 40-40-22 0-40-18-40-40ZM720 20c0 17-13 30-30 30 17 0 30 13 30 30 0-17 13-30 30-30-17 0-30-13-30-30ZM280 20c0 17-13 30-30 30 17 0 30 13 30 30 0-17 13-30 30-30-17 0-30-13-30-30Z"></path></svg>
-    `;
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60"><path fill="none" stroke="rgba(0, 0, 0, 1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M217.7 37.3a25 25 0 0 1-35.4 0l-14.6-14.6a25 25 0 0 0-35.4 0l-14.6 14.6a25 25 0 0 1-35.4 0L67.7 22.7a25 25 0 0 0-35.4 0L17.7 37.3a25 25 0 0 1-35.4 0"></path></svg>    `;
   }
 
   wrapper.innerHTML = chapterHTML;
@@ -308,7 +307,7 @@ async function loadChapter(novelId, chapterId, position = "replace") {
         );
 
         if (chapterTitleElement) {
-          const stickyHeader = document.querySelector(".header-container");
+          const stickyHeader = document.querySelector(".chapter-title");
           const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
           const elementPosition =
             chapterTitleElement.getBoundingClientRect().top;
