@@ -933,7 +933,7 @@ button:focus-visible {
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 480px) {
+@media (max-width: 880px) {
   .auth-modal-content {
     padding: 15px;
     width: 100%;
