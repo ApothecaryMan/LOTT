@@ -253,8 +253,6 @@ function setCurrentChapter(chapterId) {
   const newUrl = `#chapter-${chapterId}`;
   // تغيير الـ URL بدون إعادة تحميل الصفحة
   history.pushState(null, "", newUrl);
-
-  console.log(`📖 الفصل الحالي: ${chapterId}`);
 }
 
 // =======================================================================
@@ -354,6 +352,7 @@ function initInfiniteScroll() {
   const spinner = document.getElementById("loading-spinner");
   if (!sentinel || !spinner) return;
 
+  // فصل أي مراقب قديم
   state.observers.infinite?.disconnect();
 
   state.observers.infinite = new IntersectionObserver(
@@ -361,11 +360,6 @@ function initInfiniteScroll() {
       if (entries[0].isIntersecting && !state.isLoading && !state.reachedEnd) {
         spinner.style.display = "block";
 
-        const currentIndex = window.currentNovelChapters.findIndex(
-          (c) => c.id === state.currentChapterId
-        );
-
-        // ابحث عن الفصل التالي بناءً على آخر فصل تم تحميله
         const lastLoadedChapterId = document
           .querySelector(".chapter-block:last-child")
           ?.dataset.chapterId.toString();
@@ -378,8 +372,15 @@ function initInfiniteScroll() {
           window.currentNovelChapters[lastLoadedChapterIndex + 1];
 
         if (nextChapter) {
-          // await new Promise((resolve) => setTimeout(resolve, 500));
+          // تحميل الفصل التالي
           await loadChapter(window.currentNovelId, nextChapter.id, "append");
+
+          // تحميل مسبق للفصل الذي بعده
+          const nextNext =
+            window.currentNovelChapters[lastLoadedChapterIndex + 2];
+          if (nextNext && !state.chapterCache[nextNext.id]) {
+            fetchChapterContent(window.currentNovelId, nextNext.id);
+          }
         } else {
           state.reachedEnd = true;
           console.log("وصلت إلى نهاية الرواية.");
@@ -388,7 +389,10 @@ function initInfiniteScroll() {
         spinner.style.display = "none";
       }
     },
-    { threshold: 1.0 }
+    {
+      threshold: 0,
+      rootMargin: "600px 0px 0px 0px", // يبدأ التحميل قبل الوصول للنهاية بـ 600 بكسل
+    }
   );
 
   state.observers.infinite.observe(sentinel);
@@ -399,6 +403,7 @@ function initInfiniteScrollUp() {
   const spinner = document.getElementById("loading-spinner-top");
   if (!sentinel || !spinner) return;
 
+  // فصل أي مراقب قديم
   state.observers.infiniteUp?.disconnect();
 
   state.observers.infiniteUp = new IntersectionObserver(
@@ -422,8 +427,14 @@ function initInfiniteScrollUp() {
           window.currentNovelChapters[firstLoadedChapterIndex - 1];
 
         if (prevChapter) {
-          await new Promise((resolve) => setTimeout(resolve, 500));
           await loadChapter(window.currentNovelId, prevChapter.id, "prepend");
+
+          // تحميل مسبق للفصل الأسبق
+          const prevPrev =
+            window.currentNovelChapters[firstLoadedChapterIndex - 2];
+          if (prevPrev && !state.chapterCache[prevPrev.id]) {
+            fetchChapterContent(window.currentNovelId, prevPrev.id);
+          }
         } else {
           state.reachedStart = true;
           console.log("وصلت إلى بداية الرواية.");
@@ -432,14 +443,17 @@ function initInfiniteScrollUp() {
         spinner.style.display = "none";
       }
     },
-    { threshold: 1.0 }
+    {
+      threshold: 0,
+      rootMargin: "0px 0px 600px 0px", // يبدأ التحميل قبل الوصول للأعلى بـ 600 بكسل
+    }
   );
 
   state.observers.infiniteUp.observe(sentinel);
 }
 
 /**
- * إعادة تعيين نظام التمرير اللانهائي (مفيد عند التحميل اليدوي).
+ * إعادة تعيين نظام التمرير اللانهائي
  */
 function resetInfiniteScroll() {
   state.isLoading = false;
@@ -451,6 +465,20 @@ function resetInfiniteScroll() {
   initInfiniteScrollUp();
 }
 
+/**
+ * تحميل مسبق للفصل لتسريع التجربة
+ */
+async function fetchChapterContent(novelId, chapterId) {
+  try {
+    const response = await fetch(
+      `/api/novels/${novelId}/chapters/${chapterId}`
+    );
+    const data = await response.json();
+    state.chapterCache[chapterId] = data;
+  } catch (err) {
+    console.error("Prefetch failed", err);
+  }
+}
 // =======================================================================
 // 7. نظام تتبع الفصول الذكي (Smart Chapter Tracking)
 // -----------------------------------------------------------------------
@@ -474,7 +502,7 @@ function initChapterTracking() {
         }
       });
 
-      // إيجاد الفصل صاحب أعلى نسبة ظهور
+      // إيجاد الفصل الأكثر ظهوراً
       if (visibilityMap.size > 0) {
         let maxRatio = 0;
         let mostVisibleChapter = null;
@@ -486,22 +514,29 @@ function initChapterTracking() {
           }
         });
 
-        // تحديث الفصل الحالي إذا تم العثور على فصل مهيمن
         if (mostVisibleChapter) {
           setCurrentChapter(mostVisibleChapter);
         }
       }
     },
     {
-      rootMargin: "0px 0px -30% 0px", // منطقة مراقبة محسّنة
-      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0], // نسب متعددة لدقة أعلى
+      rootMargin: "0px 0px -30% 0px",
+      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
     }
   );
 
-  // مراقبة جميع عناصر الفصول الموجودة في الصفحة
+  // مراقبة كل الفصول في الصفحة
   document.querySelectorAll(".chapter-block").forEach((block) => {
     state.observers.tracking.observe(block);
   });
+}
+
+/**
+ * تحسين بسيط لتأثير الظهور للفصول الجديدة
+ */
+function applyChapterFadeIn(chapterElement) {
+  chapterElement.classList.add("fade-in");
+  setTimeout(() => chapterElement.classList.remove("fade-in"), 400);
 }
 
 // =======================================================================
