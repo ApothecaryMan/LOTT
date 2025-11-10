@@ -311,26 +311,72 @@
     },
 
     buildCommentTree(flatComments) {
-      const commentMap = {};
+      const commentMap = new Map();
       const rootComments = [];
 
+      // First pass: create comment nodes with metadata
       flatComments.forEach((comment) => {
-        commentMap[comment.id] = {
+        commentMap.set(comment.id, {
           ...comment,
           replies: [],
           time: this.formatTimeAgo(comment.created_at),
-        };
+          depth: 0,
+          isCollapsed: false,
+        });
       });
 
+      // Second pass: build parent-child relationships
       flatComments.forEach((comment) => {
-        if (comment.parent_id && commentMap[comment.parent_id]) {
-          commentMap[comment.parent_id].replies.push(commentMap[comment.id]);
-        } else if (!comment.parent_id) {
-          rootComments.push(commentMap[comment.id]);
+        const node = commentMap.get(comment.id);
+
+        if (comment.parent_id) {
+          const parent = commentMap.get(comment.parent_id);
+          if (parent) {
+            parent.replies.push(node);
+            node.depth = (parent.depth || 0) + 1;
+          } else {
+            // Orphaned comment - treat as root
+            rootComments.push(node);
+          }
+        } else {
+          rootComments.push(node);
         }
       });
 
-      return rootComments;
+      // Sort replies by creation date (newest first)
+      const sortReplies = (node) => {
+        node.replies.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+        node.replies.forEach(sortReplies);
+      };
+
+      rootComments.forEach(sortReplies);
+      return rootComments.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+    },
+
+    // Render helper for React/Vue
+    renderCommentTree(comments, maxDepth = 5) {
+      return comments.map((comment) => ({
+        ...comment,
+        replies:
+          comment.depth < maxDepth
+            ? this.renderCommentTree(comment.replies, maxDepth)
+            : [],
+        replyCount: this.countReplies(comment),
+      }));
+    },
+
+    countReplies(comment) {
+      return (
+        comment.replies.length +
+        comment.replies.reduce(
+          (sum, reply) => sum + this.countReplies(reply),
+          0
+        )
+      );
     },
 
     formatTimeAgo(date) {
@@ -1303,160 +1349,6 @@
       } else {
         this.openPanel();
       }
-    },
-  };
-
-  // ========================================================================
-  // SVG Connectors - FIXED VERSION
-  // ========================================================================
-  const Connector = {
-    svg: null,
-    container: null,
-    pathClass: "connector-path",
-    enabled: true, // Disable by default - can be toggled
-
-    init() {
-      // You can enable/disable connectors here
-      if (!this.enabled) return;
-
-      this.container = document.querySelector(".comments-container");
-      if (!this.container) return;
-
-      const compStyle = getComputedStyle(this.container).position;
-      if (compStyle === "static") this.container.style.position = "relative";
-
-      this.svg = this.container.querySelector(".comments-connector-svg");
-      if (!this.svg) {
-        this.svg = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "svg"
-        );
-        this.svg.classList.add("comments-connector-svg");
-        this.svg.setAttribute("aria-hidden", "true");
-        this.container.prepend(this.svg);
-      }
-
-      this.observeMutations();
-      this.redrawDebounced();
-      window.addEventListener("resize", this.redrawDebounced.bind(this));
-    },
-
-    enable() {
-      this.enabled = true;
-      this.init();
-    },
-
-    disable() {
-      this.enabled = false;
-      if (this.svg) {
-        this.svg.remove();
-        this.svg = null;
-      }
-      if (this._observer) {
-        this._observer.disconnect();
-      }
-    },
-
-    redrawDebounced: utils.debounce(function () {
-      if (Connector.enabled) Connector.redraw();
-    }, 150),
-
-    observeMutations() {
-      if (this._observer) this._observer.disconnect();
-      const obs = new MutationObserver(() => this.redrawDebounced());
-      obs.observe(this.container, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["class", "style"],
-      });
-      this._observer = obs;
-    },
-
-    clearSVG() {
-      if (!this.svg) return;
-      while (this.svg.firstChild) this.svg.removeChild(this.svg.firstChild);
-    },
-
-    redraw() {
-      if (!this.enabled || !this.container || !this.svg) return;
-
-      const rect = this.container.getBoundingClientRect();
-      this.svg.setAttribute("width", rect.width);
-      this.svg.setAttribute("height", rect.height);
-      this.svg.setAttribute("viewBox", `0 0 ${rect.width} ${rect.height}`);
-
-      this.clearSVG();
-
-      // Get all reply comments (those with parent_id)
-      const replyComments = Array.from(
-        this.container.querySelectorAll(
-          ".comment-section.is-reply[data-parent-id]"
-        )
-      ).filter((el) => {
-        // Only show visible replies (not in collapsed containers)
-        const repliesContainer = el.closest(".replies-container");
-        return repliesContainer && repliesContainer.classList.contains("open");
-      });
-
-      replyComments.forEach((replyEl) => {
-        const replyId = replyEl.dataset.commentId;
-        const parentId = replyEl.dataset.parentId;
-        if (!parentId) return;
-
-        const parentEl = this.container.querySelector(
-          `[data-comment-id="${parentId}"]`
-        );
-        if (!parentEl) return;
-
-        const replyAvatar = replyEl.querySelector(".author-image");
-        const parentAvatar = parentEl.querySelector(".author-image");
-
-        if (!replyAvatar || !parentAvatar) return;
-
-        const replyRect = replyAvatar.getBoundingClientRect();
-        const parentRect = parentAvatar.getBoundingClientRect();
-
-        // Calculate positions relative to container
-        const x1 = replyRect.left - rect.left + replyRect.width / 2;
-        const y1 = replyRect.top - rect.top + replyRect.height / 2;
-        const x2 = parentRect.left - rect.left + parentRect.width / 2;
-        const y2 = parentRect.top - rect.top + parentRect.height / 2;
-
-        // Skip if reply is above parent (shouldn't happen)
-        if (y1 <= y2) return;
-
-        // Skip if too close
-        const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-        if (distance < 30) return;
-
-        // Draw a simple curved line from reply to parent
-        this.drawConnection(x1, y1, x2, y2);
-      });
-    },
-
-    drawConnection(x1, y1, x2, y2) {
-      // Calculate the midpoint Y
-      const midY = (y1 + y2) / 2;
-
-      const path = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-
-      // --- START OF CHANGE ---
-      // Use a Cubic Bezier curve for a smooth "S" shape
-      // This creates a curve that bends from the parent's vertical line towards the reply
-      const pathD = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
-      // --- END OF CHANGE ---
-
-      path.setAttribute("d", pathD);
-      path.setAttribute("class", this.pathClass);
-      // Note: Stroke styles can be controlled from CSS for better management
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke-linecap", "round");
-
-      this.svg.appendChild(path);
     },
   };
 
