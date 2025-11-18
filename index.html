@@ -1,62 +1,71 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Lord Of The Truth" />
 
-    <title>Lord Of The Truth - custom</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Lord Of The Truth" />
 
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+  <title>Lord Of The Truth - custom</title>
 
-    <!-- PWA manifest -->
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#1a1a1a" />
-    <link rel="apple-touch-icon" href="/img/icon-512.jpg" />
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Arizonia&family=Beiruti:wght@200..900&family=El+Messiri:wght@400..700&family=Felipa&family=Lalezar&family=Lateef:wght@200;300;400;500;600;700;800&family=Playpen+Sans+Arabic:wght@100..800&display=swap"
-      rel="stylesheet"
-    />
+  <!-- PWA manifest -->
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#1a1a1a" />
+  <link rel="apple-touch-icon" href="/img/icon-512.jpg" />
 
-    <!-- ATROPOS LIB -->
-    <link rel="stylesheet" href="https://unpkg.com/atropos@2/atropos.min.css" />
-    <script src="https://unpkg.com/atropos@2/atropos.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Arizonia&family=Beiruti:wght@200..900&family=El+Messiri:wght@400..700&family=Felipa&family=Lalezar&family=Lateef:wght@200;300;400;500;600;700;800&family=Playpen+Sans+Arabic:wght@100..800&display=swap"
+    rel="stylesheet" />
 
-    <!-- Consolidated CSS -->
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #121212;
-        font-family: "Alexandria", sans-serif;
+  <!-- ATROPOS LIB -->
+  <link rel="stylesheet" href="https://unpkg.com/atropos@2/atropos.min.css" />
+  <script src="https://unpkg.com/atropos@2/atropos.min.js"></script>
+
+  <!-- Consolidated CSS -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div class="card-carousel-container" style="display: block; margin-top: 50px;">
+    <div class="cards" id="novel-cards-container" style="justify-content: center; flex-wrap: wrap;">
+      <!-- Cards will be injected here -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("novels.json");
+        const novels = await response.json();
+        const container = document.getElementById("novel-cards-container");
+
+        novels.forEach(novel => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.style.width = "200px"; // Set a fixed width for home page cards
+          card.style.cursor = "pointer";
+          card.onclick = () => {
+            localStorage.setItem("lastOpenNovelId", novel.id);
+            window.location.href = "reader.html";
+          };
+
+          card.innerHTML = `
+              <img class="card-img" src="${novel.image}" alt="${novel.title}" />
+              <div class="card-info">
+                <span class="card-title" style="color: white; font-weight: bold; display: block; text-align: center; margin-top: 5px;">${novel.title}</span>
+              </div>
+            `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Failed to load novels:", error);
       }
-      .entry-button {
-        display: inline-block;
-        padding: 15px 30px;
-        font-size: 18px;
-        font-weight: 600;
-        color: #ffffff;
-        background-color: #3ea6ff;
-        border: none;
-        border-radius: 10px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-      }
-      .entry-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(62, 166, 255, 0.2);
-      }
-    </style>
+    });
+  </script>
+</body>
 
-    <a href="reader.html" class="entry-button">الدخول إلى القصة</a>
-  </body>
 </html>
