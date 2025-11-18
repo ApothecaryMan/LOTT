@@ -18,9 +18,10 @@ function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
   }
 
   // Use the card's width for scrolling the card carousel, otherwise a fixed amount
+  const card = carousel.querySelector(".card");
   const scrollAmount =
-    carouselId === "card-carousel"
-      ? carousel.querySelector(".card").offsetWidth + 15 // Card width + gap
+    carouselId === "card-carousel" && card
+      ? card.offsetWidth + 15 // Card width + gap
       : 300;
 
   let isAtStart = true;
@@ -144,10 +145,10 @@ function initializeCarousel(carouselId, prevBtnId, nextBtnId) {
 // Wait for the page to be loaded
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize the top control bar carousel
-  initializeCarousel("carousel", "prev-btn", "next-btn");
+  initializeCarousel("carousel", "next-btn", "prev-btn");
 
   // Initialize the new card carousel
-  initializeCarousel("card-carousel", "card-prev-btn", "card-next-btn");
+  initializeCarousel("card-carousel", "card-next-btn", "card-prev-btn");
 });
 
 //>>>>>>>>>>>>>>>>>>>>>>>>> END CAROUSEL >>>>>>>>>>>>>>>>>>>>>

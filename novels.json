@@ -3,21 +3,38 @@
     "id": "LordOfTheTruth",
     "path": "chapters/Lord of The Truth/LordOfTheTruth.json",
     "title": "Lord Of The Truth",
+    "arTitle": "لورد الحقيقة",
     "image": "img/novels/LordOfTheTruth.jpg",
-    "categories": ["أكشن", "مغامرات", "خيال"]
+    "categories": [
+      "أكشن",
+      "مغامرات",
+      "خيال"
+    ]
   },
   {
     "id": "TalesOfHerdingGods",
     "path": "chapters/TalesOfHerdingGods/TalesOfHerdingGods.json",
     "title": "Tales Of Herding Gods",
+    "arTitle": "حكايات رعي الالهة",
     "image": "img/novels/TalesOfHerdingGods.webp",
-    "categories": ["أكشن", "مغامرات", "خيال", "كوميدي"]
+    "categories": [
+      "أكشن",
+      "مغامرات",
+      "خيال",
+      "كوميدي"
+    ]
   },
   {
     "id": "DevilsSonInLaw",
     "path": "chapters/DevilsSonInLaw/DevilsSonInLaw.json",
     "title": "Devil's Son In Law",
+    "arTitle": "صهر الشيطان",
     "image": "img/novels/DevilsSonInLaw.jpg",
-    "categories": ["خيال", "أكشن", "مغامرات", "رومانسي"]
+    "categories": [
+      "خيال",
+      "أكشن",
+      "مغامرات",
+      "رومانسي"
+    ]
   }
 ]

@@ -31,23 +31,38 @@
 
 <body>
   <div class="card-carousel-container" style="display: block; margin-top: 50px;">
-    <div class="cards" id="novel-cards-container" style="justify-content: center; flex-wrap: wrap;">
+    <button id="card-prev-btn" class="carousel-nav-btn hidden">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
+        <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+      </svg>
+    </button>
+
+    <div class="cards" id="card-carousel">
       <!-- Cards will be injected here -->
     </div>
+
+    <button id="card-next-btn" class="carousel-nav-btn hidden">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
+        <path d="M400-240 344-296l184-184-184-184 56-56 240 240-240 240Z" />
+      </svg>
+    </button>
   </div>
 
+  <script src="scripts/carousel.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       try {
         const response = await fetch("novels.json");
         const novels = await response.json();
-        const container = document.getElementById("novel-cards-container");
+        const container = document.getElementById("card-carousel");
 
         novels.forEach(novel => {
           const card = document.createElement("div");
           card.className = "card";
-          card.style.width = "200px"; // Set a fixed width for home page cards
+          card.style.minWidth = "200px";
+          card.style.width = "200px";
           card.style.cursor = "pointer";
+
           card.onclick = () => {
             localStorage.setItem("lastOpenNovelId", novel.id);
             window.location.href = "reader.html";
@@ -56,7 +71,7 @@
           card.innerHTML = `
               <img class="card-img" src="${novel.image}" alt="${novel.title}" />
               <div class="card-info">
-                <span class="card-title" style="color: white; font-weight: bold; display: block; text-align: center; margin-top: 5px;">${novel.title}</span>
+                <span class="card-title js-card-title" style="font-family: 'Ink'; font-size: 23px;">${novel.arTitle}</span>
               </div>
             `;
           container.appendChild(card);

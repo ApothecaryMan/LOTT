@@ -12,6 +12,7 @@
 .card-container {
   perspective: 1500px;
 }
+
 .card-container:hover {
   z-index: 100000;
 }
@@ -40,11 +41,9 @@
   position: absolute;
   width: 250px;
   height: 250px;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.15),
-    rgba(255, 255, 255, 0) 70%
-  );
+  background: radial-gradient(circle,
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0) 70%);
   border-radius: 50%;
   top: var(--mouse-y, -100px);
   left: var(--mouse-x, -100px);
@@ -78,9 +77,16 @@
   color: white;
   font-size: 30px;
 }
+
+.js-card-title {
+  font-size: 20px;
+  font-family: "Ink";
+}
+
 .card-info .title {
   font-weight: 700;
 }
+
 .card-info .chapter-number {
   color: #c0c8e7;
   font-size: 40px;
