@@ -127,7 +127,11 @@
 /* ============================================== */
 /* ======= FONT SIZE SLIDER INTEGRATED STYLES ======= */
 /* ============================================== */
-
+#homepage-btn{
+  margin-left: 5px;
+  border-radius: 25px;
+  padding: 10px 3px;
+}
 #font-size-control-group {
   padding: 0 5px;
 }

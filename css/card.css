@@ -31,7 +31,7 @@
 
 /* --- Card Styling (Individual Card) --- */
 .card {
-  width: 100%;
+  width: 50%;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -63,31 +63,7 @@
   font-weight: 900;
   margin: 1px 0;
 }
-.x {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.card .date {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-}
 
-.card .date p {
-  font-size: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-}
-
-.card .date .zeus {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-}
 
 /* ============================================= */
 /* === THIS IS THE IMPORTANT CHANGE FOR BUTTONS === */
@@ -127,14 +103,12 @@
 
 /* --- Responsive adjustments --- */
 @media (max-width: 768px) {
-  /* Adjust button vertical position on smaller screens if needed */
   .card-carousel-container .carousel-nav-btn {
-    transform: translateY(-calc(100% + 130px)); /* Slightly less distance */
+    transform: translateY(-calc(100% + 130px));
   }
 }
 
 @media (max-width: 480px) {
-  /* Further adjustment for very small screens */
   .card-carousel-container .carousel-nav-btn {
     transform: translateY(-calc(100% + 110px));
     width: 35px;

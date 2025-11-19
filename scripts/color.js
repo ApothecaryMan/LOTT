@@ -113,7 +113,7 @@ function changeTheme(event) {
     }
 
     /* تغيير لون أيقونات SVG داخل الأزرار التفاعلية إلى الأبيض عند التفعيل */
-    #increase-font-size:hover svg, #decrease-font-size:hover svg, #title-btn:hover svg,
+    #title-btn:hover svg,
     #align-formate button:hover svg,
     .carousel-item #align-formate button.active svg,
     .carousel-item button #title-btn.active svg, .carousel-btn-middle:hover svg {
@@ -148,7 +148,7 @@ function changeTheme(event) {
     .toggle-replies-btn:hover, .reply-btn:hover { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.1)")}; }
-    .sort-option:hover, #font-panel-btn:hover { background-color: ${newColor}; color: #0f0f0f; }
+    .sort-option:hover, #font-panel-btn:active { background-color: ${newColor}; color: #0f0f0f; }
     .sort-option.active { background-color: ${newColor
       .replace("rgb", "rgba")
       .replace(")", ", 0.2)")}; }

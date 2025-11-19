@@ -151,4 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeCarousel("card-carousel", "card-next-btn", "card-prev-btn");
 });
 
-//>>>>>>>>>>>>>>>>>>>>>>>>> END CAROUSEL >>>>>>>>>>>>>>>>>>>>>
+const homepageBtn = document.getElementById("homepage-btn");
+homepageBtn.addEventListener("click", () => {
+    window.location.href = "/index.html";
+});

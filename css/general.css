@@ -131,7 +131,7 @@ h3,
 #download-quote-btn,
 .quote-modal-content,
 #quote-options-panel,
-.auth-prompt-btn {
+.auth-prompt-btn,#homepage-btn {
   border: 1px solid rgba(255, 255, 255, 0.068);
   background: rgba(0, 0, 0, 0);
   backdrop-filter: blur(4px);
